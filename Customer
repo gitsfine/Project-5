@@ -1,1 +1,157 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
+public class Customer extends User {
+
+    boolean seller = false;
+    ArrayList<String> cart = new ArrayList<>();
+    ArrayList<String> purchased = new ArrayList<>();
+
+    public Customer(String username, String password, String email, boolean seller) {
+        super(username, password, email, seller);
+        this.seller = false;
+    }
+
+    //"buy" method
+
+    public void buy(Product prod, Store str, int numberBought) {
+        prod.sell(numberBought);
+        addProductToPurchased(prod, str);
+        //must also edit the file to reflect the purchase
+    }
+
+
+    //"addToCart" method
+    //this takes in a product and adds a string representation to the cart Array list.
+    public void addProductToCart(Product product, Store store) {
+        String cartValue = String.format("%s, %s, %s, %.2f", store.getStoreName(), product.getProductName(), product.toString(), product.getPrice());
+        cart.add(cartValue);
+    }
+
+    //"addToCart" method
+    //do not use. this is for the processData() method.
+    public void addStringToCart(String line) {
+        cart.add(line);
+    }
+
+    //"addToPurchased" method
+    //this takes in a product and adds a string representation to the purchased Array list.
+    public void addProductToPurchased(Product product, Store store) {
+        String purchasedValue = String.format("%s, %s, %s, %.2f", store.getStoreName(), product.getProductName(), product.toString(), product.getPrice());
+        purchased.add(purchasedValue);
+    }
+
+    //"addToPurchased" method
+    //do not use. this is for the processData() method.
+    public void addStringToPurchased(String line) {
+        purchased.add(line);
+    }
+
+    //"editCart"
+    public void editCart(String cartValue) {
+        //prints out each element of the cart
+        for (int i = 0; i < cart.size(); i++) {
+            System.out.print(cart.get(i) + "\n");
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        int ans = 0;
+        System.out.println("Would you like to remove the product from the cart?");
+        System.out.printf("(1) Yes\n(2) No\n");
+        ans = scanner.nextInt();
+        scanner.nextLine();
+
+        if (ans == 1) {
+            try {
+                cart.remove(cartValue);
+            } catch (Exception e) {
+                System.out.println("The product does not exist");
+            }
+
+            //try-catch for writing new changes
+            try {
+                File file = new File("data.txt"); //fileName
+                ArrayList<String> newCart = new ArrayList<>();
+
+                BufferedReader reader = new BufferedReader(new FileReader(file)); // create file reader
+
+                String line = reader.readLine();
+
+                while (line != null) { // read through entire list
+                    newCart.add(line);
+                    line = reader.readLine();
+                }
+                reader.close();
+
+                //writing the file w/ new info
+                FileWriter writer = new FileWriter(file); // create file writer
+                String[] newCartData = new String[newCart.size()];
+                for (int i = 0; i < newCart.size(); i++) {
+                    if (newCartData[i] != null) {
+                        writer.write(newCartData[i] + "\n");
+                        //writer.remove(dataStringArray[i]);
+                    }
+                }
+
+                writer.close();
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+
+    //getters and setters
+    public boolean isSeller() {
+        return seller;
+    }
+
+    public void setSeller(boolean seller) {
+        this.seller = seller;
+    }
+
+    public ArrayList<String> getCart() {
+        return cart;
+    }
+
+    public void setCart(ArrayList<String> cart) {
+        this.cart = cart;
+    }
+
+    public ArrayList<String> getPurchased() {
+        return purchased;
+    }
+
+    public void setPurchased(ArrayList<String> purchased) {
+        this.purchased = purchased;
+    }
+public void printStatistics(){
+        HashMap<String,Integer> productsBoughtCount= new HashMap<>();
+        HashMap<String, Set<String>> productsBoughtFromStore= new HashMap<>();
+        for (String sale : purchased) {
+            String[] splitSale = sale.split(",");
+            String storeName = splitSale[0];
+            String productName = splitSale[1];
+            productsBoughtCount.put(productName, productsBoughtCount.getOrDefault(productName,0)+1);
+            Set<String> products = productsBoughtFromStore.getOrDefault(storeName, new HashSet<>());
+            products.add(productName);
+            productsBoughtFromStore.put(storeName, products);
+        }
+
+        System.out.println("Product Name, Quantity");
+        for (Map.Entry<String,Integer> e : productsBoughtCount.entrySet()){
+            System.out.println(e.getKey()+","+e.getValue());
+        }
+        for (Map.Entry<String,Set<String>> e : productsBoughtFromStore.entrySet()){
+            System.out.println("Store: "+e.getKey());
+            for(String product: e.getValue()) {
+                System.out.println(product);
+            }
+        }
+}
