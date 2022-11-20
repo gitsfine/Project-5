@@ -1,1 +1,182 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 
+public class Seller extends User {
+
+    boolean seller;
+
+    //create store fields
+    private static String newStoreName;
+    private static String newStoreProds;
+    private static String[] newProdsNames;
+    private static String[] newProdsDescrips;
+    private static int[] newProdsAvail;
+    private static double[] newProdsPrice;
+    private ArrayList<String> sales = new ArrayList<>();
+    private ArrayList<Store> stores = new ArrayList<>();
+
+    //delete store field
+    private static String delStoreName;
+
+
+    public Seller(String username, String password, String email, boolean seller) {
+        super(username, password, email);
+        this.seller = true;
+    }
+
+
+    public void setSales(ArrayList<String> sales) {
+        this.sales = sales;
+    }
+
+    public void addSales(String line) { //adds a string representation of a sale in. called in the process data method.
+        sales.add(line);
+    }
+
+    public void createStore() {
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayList<Product> storeProds = new ArrayList<>(); //array list for products
+
+        System.out.println("What is your new stores name?");
+        newStoreName = scanner.nextLine();
+
+        System.out.println("How many products are sold at your store?");
+        int numProds = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numProds; i++) {
+            //getting info abt each product and putting it in the respective spot in its specific attribute array
+            //multiple sections to denote 1st, 2nd, 3rd, 4th ... nth
+            if (i == 0) {
+                System.out.println("What is the 1st product's name?");
+                newProdsNames[i] = scanner.nextLine();
+
+                System.out.println("What is the 1st product's description?\nFormat: type,milk,syrup,special");
+                newProdsDescrips[i] = scanner.nextLine();
+
+                System.out.println("What is the 1st product's quantity available?");
+                newProdsAvail[i] = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("What is the 1st product's price?");
+                newProdsPrice[i] = scanner.nextDouble();
+                scanner.nextLine();
+            } else if (i == 1) {
+                System.out.println("What is the 2nd product's name?");
+                newProdsNames[i] = scanner.nextLine();
+
+                System.out.println("What is the 2nd product's description?\nFormat: type,milk,syrup,special");
+                newProdsDescrips[i] = scanner.nextLine();
+
+                System.out.println("What is the 2nd product's quantity available?");
+                newProdsAvail[i] = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("What is the 2nd product's price?");
+                newProdsPrice[i] = scanner.nextDouble();
+                scanner.nextLine();
+            } else if (i == 2) {
+                System.out.println("What is the 3rd product's name?");
+                newProdsNames[i] = scanner.nextLine();
+
+                System.out.println("What is the 3rd product's description?\nFormat: type,milk,syrup,special");
+                newProdsDescrips[i] = scanner.nextLine();
+
+                System.out.println("What is the 3rd product's quantity available?");
+                newProdsAvail[i] = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("What is the 3rd product's price?");
+                newProdsPrice[i] = scanner.nextDouble();
+                scanner.nextLine();
+            } else {
+                System.out.printf("What is the %dth product's name?\n", i);
+                newProdsNames[i] = scanner.nextLine();
+
+                System.out.printf("What is the %dth product's description?\nFormat: type,milk,syrup,special\n", i);
+                newProdsDescrips[i] = scanner.nextLine();
+
+                System.out.printf("What is the %dth product's quantity available?\n", i);
+                newProdsAvail[i] = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.printf("What is the %dth product's price?\n", i);
+                newProdsPrice[i] = scanner.nextDouble();
+                scanner.nextLine();
+            }
+
+            String description = newProdsDescrips[i];
+            String type = "";
+            String milk = "";
+            String syrup = "";
+            String special = "";
+            for (int j = 0; j < 4; j++) {
+                if (j == 3) {
+                    special = description;
+                } else {
+                    if (j == 0) {
+                        type = description.substring(0, description.indexOf(","));
+                    } else if (j == 1) {
+                        milk = description.substring(0, description.indexOf(","));
+                    } else if (j == 2) {
+                        syrup = description.substring(0, description.indexOf(","));
+                    }
+                    description = description.substring(description.indexOf(",") + 2);
+                }
+            }
+
+            Product newProduct = new Product(getUsername(), newStoreName, newProdsNames[i], type, milk, syrup, special, newProdsPrice[i], newProdsAvail[i]);
+            storeProds.add(newProduct); //arrayList that holds this store's products
+        }
+
+        Store newStore = new Store(getUsername(), newStoreName);
+        stores.add(newStore); //arrayList to hold this seller's stores
+        newStore.setProducts(storeProds);
+    }
+
+    public void deleteStore() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("What is the name of the store you would like to delete?");
+        delStoreName = scanner.nextLine();
+
+        //find what store it is
+        int delStoreIndex = 0;
+        for (int i = 0; i < stores.size(); i++) {
+            if (delStoreName.equalsIgnoreCase(stores.get(i).getStoreName())) {
+                delStoreIndex = i;
+            }
+        }
+
+        stores.remove(stores.get(delStoreIndex));
+
+    }
+
+
+    //editStore
+    public void editStore(ArrayList<Store> stores, Store storeName) {
+        Scanner scanner = new Scanner(System.in);
+
+        //find the stores index they'd like to edit in the stores array
+        int editStoreIndex = 0;
+
+        try {
+            for (int i = 0; i < stores.size(); i++) {
+                if (storeName.equals(stores.get(i).getStoreName())) {
+                    editStoreIndex = i;
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("That store does not exist!");
+        }
+
+        String ans = "";
+        System.out.println("What would you like the new store name to be?");
+        ans = scanner.nextLine();
+
+        stores.get(editStoreIndex).setStoreName(ans);
+
+    }
+}
