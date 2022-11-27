@@ -1,0 +1,23 @@
+import java.util.*;
+
+public class Sale {
+    private Product product;
+    private Customer buyer;
+
+    public Sale(Product product, Customer customer) {
+        this.product = product;
+        buyer = customer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public Customer getBuyer() {
+        return buyer;
+    }
+
+    public String toString() {
+        return buyer.getUsername() + ", " + product.getName();
+    }
+}
