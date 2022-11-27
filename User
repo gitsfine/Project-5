@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,11 +8,10 @@ public class User {
     private String email;
     private boolean seller;
 
-    public User() {
+    public User () {
 
     }
-
-    public User(String username, String password, String email, boolean seller) {
+    public User (String username, String password, String email, boolean seller) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -23,11 +21,9 @@ public class User {
     public String getUsername() {
         return username;
     }
-
     public String getPassword() {
         return password;
     }
-
     public String getEmail() {
         return email;
     }
@@ -35,7 +31,6 @@ public class User {
     public boolean isSeller() {
         return seller;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -60,33 +55,12 @@ public class User {
         }
     }
 
-   
+    public void statistics() { // statistics method
+        // CODE
+    }
 
-    public void exportFile(Product product, Store store, String line) { // exportFile method
-
-        Customer customerFile = new Customer(username, password, email, seller);
-        customerFile.addProductToPurchased(product, store);
-        ArrayList<String> purchased = customerFile.getPurchased();
-
-        Seller sellerFile = new Seller(username, password, email, seller);
-        sellerFile.addSales(line);
-        ArrayList<String> sales = sellerFile.getSales();
-
-        try {
-            File file = new File("data.txt"); //fileName
-            FileWriter writer = new FileWriter(file);
-
-            if (seller == true) {
-                writer.write(String.valueOf(purchased)); //sales arraylist
-
-            } else if (seller == false) {
-                writer.write(String.valueOf(sales)); //purchased arraylist
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void exportFile() { // exportFile method
+        // CODE
     }
 
     //begin editAccount method
@@ -144,6 +118,24 @@ public class User {
                 }
                 System.out.printf("Great! Your username was changed from %s to %s!\n", user.getUsername(), username);
                 user.setUsername(username);
+
+                //editing data.txt
+                ArrayList<String> data = Marketplace.readData();
+                String email = user.getEmail();
+                int emailIndex = 0;
+
+                for (int i = 0; i < data.size(); i++) {
+                    if (data.get(i).equals(email)) {
+                        emailIndex = i;
+                    }
+                }
+                data.set((emailIndex - 2), username); //change username
+                String stores = data.get(emailIndex + 2);
+                stores = stores.substring(stores.indexOf("'"));
+                data.set((emailIndex + 2), (username + stores)); //change username
+
+                Marketplace.writeData(data);
+
                 //edit password
             } else if (choice == 2) {
                 boolean invalidPassword = true;
@@ -179,6 +171,20 @@ public class User {
                 }
                 System.out.printf("Great! Your password was changed.\n");
                 user.setPassword(password);
+
+                //editing data.txt
+                ArrayList<String> data = Marketplace.readData();
+                String email = user.getEmail();
+                int emailIndex = 0;
+
+                for (int i = 0; i < data.size(); i++) {
+                    if (data.get(i).equals(email)) {
+                        emailIndex = i;
+                    }
+                }
+                data.set((emailIndex - 1), password); //change password
+
+                Marketplace.writeData(data);
             } else {
                 noPick = true;
             }
