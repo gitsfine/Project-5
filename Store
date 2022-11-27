@@ -1,0 +1,230 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class Store {
+    private String storeName;
+    private String userName;
+    private ArrayList<Product> products = new ArrayList<>();
+
+    public Store(String username, String storeName) {
+        this.storeName = storeName;
+        this.userName = username;
+    }
+
+    //getters and setters
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
+
+    //toString method
+    public String toString() {
+        return String.format("\n\n%s's store: %s\n", userName, storeName);
+    }
+
+    //add product to array list
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    //edit product
+    public void editProduct(Product product) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        String newType = "";
+        String newMilk = "";
+        String newSyrup = "";
+        String newSpecial = "";
+        String oldComponent = "";
+        double newPrice = 0.00;
+        int newQuantity = 0;
+
+        //locating old product in data.txt
+        String oldLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(), product.getQuantity());
+        ArrayList<String> data = Marketplace.readData();
+        int productIndex = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(oldLine)) {
+                productIndex = i;
+            }
+        }
+
+        int ans = 0;
+        System.out.println("What would you like to edit about the product? Select a number.");
+        System.out.printf("(1) Type\n(2) Milk\n(3) Syrup\n(4) Special\n(5) Price\n(6) Quantity\n");
+        ans = scanner.nextInt();
+        scanner.nextLine();
+
+        //edit Type
+        if (ans == 1) {
+            System.out.println("What would you like the products new type to be?");
+            newType = scanner.nextLine();
+            oldComponent = product.getCoffeeType();
+            product.setCoffeeType(newType);
+            System.out.printf("Great! The type was changed from %s to %s!\n", oldComponent, newType);
+        }
+        //edit Milk
+        if (ans == 2) {
+            System.out.println("What would you like the products new milk to be?");
+            newMilk = scanner.nextLine();
+            oldComponent = product.getMilkType();
+            product.setMilkType(newMilk);
+            System.out.printf("Great! The milk was changed from %s to %s!\n", oldComponent, newMilk);
+        }
+        //edit Syrup
+        if (ans == 3) {
+            System.out.println("What would you like the products new syrup to be?");
+            newSyrup = scanner.nextLine();
+            oldComponent = product.getSyrup();
+            product.setSyrup(newSyrup);
+            System.out.printf("Great! The syrup was changed from %s to %s!\n", oldComponent, newSyrup);
+        }
+        //edit Special
+        if (ans == 4) {
+            System.out.println("What would you like the products new special to be?");
+            newSpecial = scanner.nextLine();
+            oldComponent = product.getSpecial();
+            product.setSpecial(newSpecial);
+            System.out.printf("Great! The special was changed from %s to %s!\n", oldComponent, newSpecial);
+        }
+        //edit Price
+        if (ans == 5) {
+            System.out.println("What would you like the products new price to be?");
+            newPrice = scanner.nextDouble();
+            scanner.nextLine();
+            double oldPrice = product.getPrice();
+            product.setPrice(newPrice);
+            System.out.printf("Great! The price was changed from %.2f to %.2f!\n", oldPrice, newPrice);
+        }
+        //edit Quantity
+        if (ans == 6) {
+            System.out.println("What would you like the products new quantity available to be?");
+            newQuantity = scanner.nextInt();
+            scanner.nextLine();
+            int oldQuantity = product.getQuantity();
+            product.setQuantity(newQuantity);
+            System.out.printf("Great! The quantity available was changed from %d to %d!\n", oldQuantity, newQuantity);
+        }
+
+        //updating data.txt
+        String newLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(), product.getQuantity());
+        data.set(productIndex, newLine);
+        Marketplace.writeData(data);
+    }
+
+    public Product createProduct() {
+
+        //locating benchmark in data.txt
+        String locator = getStoreName() + "'s";
+        ArrayList<String> data = Marketplace.readData();
+        int storeStartIndex = 0;
+        int locatorSize = locator.length();
+        for (int i = 0; i < data.size(); i++) {
+            String sizedLine = "";
+            if (data.get(i).length() >= locatorSize) {
+                sizedLine = data.get(i).substring(0, locatorSize);
+            }
+
+            if (sizedLine.equals(locator)) {
+                storeStartIndex = i;
+            }
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("What is the new product's name?");
+        String productName = scanner.nextLine();
+
+        System.out.println("What is the new product's description?\nFormat: type,milk,syrup,special");
+        String productDescription = scanner.nextLine();
+
+        System.out.println("What is the new product's quantity available?");
+        int productQuantity = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("What is the new product's price?");
+        double productPrice = scanner.nextDouble();
+        scanner.nextLine();
+
+        String type = "";
+        String milk = "";
+        String syrup = "";
+        String special = "";
+        for (int j = 0; j < 4; j++) {
+            if (j == 3) {
+                special = productDescription;
+            } else {
+                if (j == 0) {
+                    type = productDescription.substring(0, productDescription.indexOf(","));
+                } else if (j == 1) {
+                    milk = productDescription.substring(0, productDescription.indexOf(","));
+                } else {
+                    syrup = productDescription.substring(0, productDescription.indexOf(","));
+                }
+                productDescription = productDescription.substring(productDescription.indexOf(",") + 1);
+            }
+        }
+
+        Product newProduct = new Product(getUserName(), getStoreName(), productName, type, milk, syrup, special, productPrice, productQuantity);
+        addProduct(newProduct);
+
+        //updating data.txt
+        ArrayList<String> editedData = new ArrayList<>();
+        for (int i = 0; i < (storeStartIndex + 1); i++) {
+            editedData.add(data.get(i));
+        }
+
+        String newLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", newProduct.getProductName(), newProduct.getCoffeeType(), newProduct.getMilkType(), newProduct.getSyrup(), newProduct.getSpecial(), newProduct.getPrice(), newProduct.getQuantity());
+        editedData.add(newLine);
+
+        for (int i = (storeStartIndex + 1); i < data.size(); i++) {
+            editedData.add(data.get(i));
+        }
+        Marketplace.writeData(editedData);
+
+        return newProduct;
+    }
+
+    public void deleteProduct(Product product) {
+        //locating old product in data.txt
+        String oldLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(), product.getQuantity());
+        ArrayList<String> data = Marketplace.readData();
+        int productIndex = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(oldLine)) {
+                productIndex = i;
+            }
+        }
+
+        data.remove(productIndex);
+        Marketplace.writeData(data);
+
+        System.out.printf("Okay, %s was deleted!\n", product.getProductName());
+        products.remove(product);
+    }
+
+    public void listProducts() {
+        for (int i = 0; i < products.size(); i++) {
+            System.out.printf("%d. %s\n", (i + 1), products.get(i).getProductName());
+        }
+    }
+}
