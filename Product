@@ -102,12 +102,16 @@ public class Product {
     public String toString() {
         return String.format("%s\nCoffee: %s | " +
                         "Milk Type: %s | Syrup: %s | Special: %s\n" +
-                        "Price: $%.2f | Quantity: %d",
+                        "Price: %.2f | Quantity: %d",
                 productName, coffeeType, milkType, syrup, special, price, quantity);
     }
 
     public String getDescription() { //description of product for other methods to call
         return String.format("Coffee: %s | Milk Type: %s | Syrup: %s | Special: %s\n", coffeeType, milkType, syrup, special);
+    }
+
+    public String dataTXTRepresentation() {
+        return String.format("%s,%s,%s,%s,%s,%.2f,%d", getProductName(), getCoffeeType(), getMilkType(), getSyrup(), getSpecial(), getPrice(), getQuantity());
     }
 
     public void sell(int numberSold) {
