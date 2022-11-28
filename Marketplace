@@ -46,7 +46,7 @@ public class Marketplace {
                     }
 
                     if (alreadyTaken) {
-                        System.out.println("It appears that email is already being used.\nPlease try a different email. :(");
+                        System.out.println("It appears that email is already being used.\nPlease try a different email or login instead\n");
                     } else {
                         System.out.println("Thank you for inputing a valid email.\n"); // if both true, email is good
                         invalidEmail = false;
@@ -155,16 +155,19 @@ public class Marketplace {
         }
 
         //updating data.txt
-        ArrayList<String> data = readData();
-        data.add("*NEW USER*");
-        data.add(user.getUsername());
-        data.add(user.getPassword());
-        data.add(user.getEmail());
+        ArrayList<String> editedData = new ArrayList<>();
+        editedData.add("*NEW USER*");
+        editedData.add(user.getUsername());
+        editedData.add(user.getPassword());
+        editedData.add(user.getEmail());
         if (user.isSeller()) {
-            data.add("seller");
+            editedData.add("seller");
         } else {
-            data.add("customer");
+            editedData.add("customer");
         }
+
+        ArrayList<String> data = readData();
+        editedData.addAll(data);
         writeData(data);
 
         return user;
