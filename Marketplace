@@ -503,7 +503,7 @@ public class Marketplace {
             boolean sellerMainMenu = false;
             do {
                 boolean validAF = false;
-                System.out.printf("How may I help you?\n1. Create a New Store\n2. Go to Your Stores\n3. View Statistics\n4. Export File\n5. Edit\\Delete Account\n");
+                System.out.printf("How may I help you?\n1. Create a New Store\n2. Go to Your Stores\n3. View Statistics\n4. Export File\n5. Import File\n6. Edit\\Delete Account\n");
                 responseInt = scanner.nextInt();
                 scanner.nextLine();
 
@@ -583,8 +583,11 @@ public class Marketplace {
                 } else if (responseInt == 3) { //statistics
                     currentUser.statistics();
                 } else if (responseInt == 4) { //exportfile
-                    currentUser.exportFile();
-                } else if (responseInt == 5) {
+                    currentSeller.exportFile();
+                } else if (responseInt == 5) { //importfile
+                    currentSeller.importFile();
+                    processData("data.txt");
+                } else if (responseInt == 6) {
                     boolean accountEdit;
                     do {
                         accountEdit = false;
@@ -661,7 +664,7 @@ public class Marketplace {
                 } else if (responseInt == 2) {  //statistics
                     currentCustomer.statistics();
                 } else if (responseInt == 3) { //export file
-                    currentUser.exportFile();
+                    currentCustomer.exportFile();
                 } else if (responseInt == 4) { // view/edit shopping cart
                     boolean invalidInt = true;
                     while (invalidInt) {
