@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Customer extends User {
@@ -101,6 +104,48 @@ public class Customer extends User {
             for (String product : e.getValue()) {
                 System.out.println(product);
             }
+        }
+    }
+
+    public void exportFile() {
+        ArrayList<String> data = Marketplace.readData();
+        String variable = this.getUsername();
+
+        int purchasesIndex = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(variable)) {
+                int usernameIndex = i;
+                System.out.printf("%d\n", usernameIndex);
+                for (int j = usernameIndex; j < data.size(); j++) {
+                    if (data.get(j).equals("*PURCHASES*")) {
+                        purchasesIndex = j;
+                        System.out.printf("%d\n", purchasesIndex);
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+            System.out.printf("What would you like your new file to be called?\n");
+            String newFileName = Marketplace.scanner.nextLine();
+
+            File file = new File(newFileName);
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+
+            for (int i = purchasesIndex; i < data.size(); i++) {
+                if ((data.get(i).charAt(0) == 42) && (i != purchasesIndex)) {
+                   break;
+                } else {
+                    String line = String.format("%s\n", data.get(i));
+                    writer.write(line);
+                }
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
