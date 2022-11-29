@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class Seller extends User {
     public void addSales(String line) { //adds a string representation of a sale in.  called in the process data method.
         sales.add(line);
     }
-    
+
     public ArrayList<String> getSales() {
         return sales;
     }
@@ -326,5 +327,112 @@ public class Seller extends User {
     }
     public ArrayList<Store> getStores() {
         return stores;
+    }
+
+    public void exportFile() {
+        ArrayList<String> data = Marketplace.readData();
+        String listOfStores = getUsername() + "'s stores: ";
+        for (int i = 0; i < stores.size(); i++) {
+            if (i == 0) {
+                listOfStores += stores.get(i).getStoreName();
+            } else {
+                listOfStores += ", " + stores.get(i).getStoreName();
+            }
+        }
+
+        int storesIndex = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(listOfStores)) {
+                storesIndex = i;
+            }
+        }
+
+        try {
+            System.out.printf("What would you like your new file to be called?\n");
+            String newFileName = Marketplace.scanner.nextLine();
+
+            File file = new File(newFileName);
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+
+            for (int i = (storesIndex + 1); i < data.size(); i++) {
+                if (data.get(i).charAt(0) == 42) {
+                    if (data.get(i).equals("*NEW STORE*")) {
+                        String line = String.format("%s\n", data.get(i));
+                        writer.write(line);
+                    } else {
+                        break;
+                    }
+                } else {
+                    String line = String.format("%s\n", data.get(i));
+                    writer.write(line);
+                }
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void importFile() {
+        //data.txt updates #1 locating index
+        ArrayList<String> data = Marketplace.readData();
+        String listOfStores = getUsername() + "'s stores: ";
+        for (int i = 0; i < stores.size(); i++) {
+            if (i == 0) {
+                listOfStores += stores.get(i).getStoreName();
+            } else {
+                listOfStores += ", " + stores.get(i).getStoreName();
+            }
+        }
+        int storesIndex = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(listOfStores)) {
+                storesIndex = (i);
+            }
+        }
+
+        System.out.printf("What is your file called?\n");
+        String importedFileName = Marketplace.scanner.nextLine();
+
+        ArrayList<String> imports = new ArrayList<>();
+        try {
+            FileReader fr = new FileReader(importedFileName);
+            BufferedReader br = new BufferedReader(fr);
+
+            boolean add = false;
+            while (true) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                imports.add(line);
+
+                //data.txt info
+                if (line.charAt(0) == 42) {
+                    add = true;
+                } else if (add) {
+                    listOfStores += ", " + line.substring(0, line.indexOf("'"));
+                    add = false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.printf("Error in import file lol");
+        }
+
+        //data.txt updates #2 making the edits
+        ArrayList<String> editedData = new ArrayList<>();
+        for (int i = 0; i < storesIndex; i++) {
+            editedData.add(data.get(i));
+        }
+        editedData.add(listOfStores);
+        editedData.addAll(imports);
+        for (int i = (storesIndex + 1); i < data.size(); i++) {
+            editedData.add(data.get(i));
+        }
+
+        Marketplace.writeData(editedData);
+        System.out.printf("%s was successfully imported!\nEverything should be up to date now :)\n\n", importedFileName);
     }
 }
