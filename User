@@ -60,7 +60,23 @@ public class User {
     }
 
     public void exportFile() { // exportFile method
-        // CODE
+        try {
+            File file = new File("data.txt");
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+
+            if (seller) {
+                writer.write(String.valueOf(((Seller)this).getSales())); //sales arraylist
+                writer.write(String.valueOf(((Seller)this).getStores())); //store arraylist
+
+            } else {
+                writer.write(String.valueOf(((Customer)this).getPurchased())); //purchased arraylist
+
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //begin editAccount method
