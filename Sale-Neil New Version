@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Sale {
+public class Sale implements java.io.Serializable {
     private Product product;
     private Customer buyer;
 
