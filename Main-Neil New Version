@@ -4,9 +4,13 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        Marketplace marketplace = new Marketplace();
+        Marketplace marketplace = loadMarketplace();
+        if(marketplace == null){
+            marketplace = new Marketplace();
+        }
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
         while(startUserInput(scanner, marketplace));
+        saveMarketplace(marketplace);
     }
 
     public static boolean startUserInput(Scanner s, Marketplace m) {
