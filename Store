@@ -1,5 +1,12 @@
+
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class Store {
     private String storeName;
     private String userName;
@@ -59,7 +66,9 @@ public class Store {
         int newQuantity = 0;
 
         //locating old product in data.txt
-        String oldLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(), product.getQuantity());
+        String oldLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(),
+                product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(),
+                product.getQuantity());
         ArrayList<String> data = Marketplace.readData();
         int productIndex = 0;
         for (int i = 0; i < data.size(); i++) {
@@ -126,7 +135,9 @@ public class Store {
         }
 
         //updating data.txt
-        String newLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(), product.getQuantity());
+        String newLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(),
+                product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(),
+                product.getQuantity());
         data.set(productIndex, newLine);
         Marketplace.writeData(data);
     }
@@ -184,7 +195,8 @@ public class Store {
             }
         }
 
-        Product newProduct = new Product(getUserName(), getStoreName(), productName, type, milk, syrup, special, productPrice, productQuantity);
+        Product newProduct = new Product(getUserName(), getStoreName(), productName, type, milk, syrup, special,
+                productPrice, productQuantity);
         addProduct(newProduct);
 
         //updating data.txt
@@ -193,7 +205,9 @@ public class Store {
             editedData.add(data.get(i));
         }
 
-        String newLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", newProduct.getProductName(), newProduct.getCoffeeType(), newProduct.getMilkType(), newProduct.getSyrup(), newProduct.getSpecial(), newProduct.getPrice(), newProduct.getQuantity());
+        String newLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", newProduct.getProductName(),
+                newProduct.getCoffeeType(), newProduct.getMilkType(), newProduct.getSyrup(),
+                newProduct.getSpecial(), newProduct.getPrice(), newProduct.getQuantity());
         editedData.add(newLine);
 
         for (int i = (storeStartIndex + 1); i < data.size(); i++) {
@@ -206,7 +220,9 @@ public class Store {
 
     public void deleteProduct(Product product) {
         //locating old product in data.txt
-        String oldLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(), product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(), product.getPrice(), product.getQuantity());
+        String oldLine = String.format("%s,%s,%s,%s,%s,%.2f,%d", product.getProductName(),
+                product.getCoffeeType(), product.getMilkType(), product.getSyrup(), product.getSpecial(),
+                product.getPrice(), product.getQuantity());
         ArrayList<String> data = Marketplace.readData();
         int productIndex = 0;
         for (int i = 0; i < data.size(); i++) {
@@ -222,9 +238,35 @@ public class Store {
         products.remove(product);
     }
 
-    public void listProducts() {
-        for (int i = 0; i < products.size(); i++) {
-            System.out.printf("%d. %s\n", (i + 1), products.get(i).getProductName());
+    public String[] listProducts() {
+        String[] listArr;
+        try {
+            BufferedReader bfr = new BufferedReader(new FileReader("data.txt"));
+            String line = bfr.readLine();
+            ArrayList<String> list = new ArrayList<String>();
+
+            while (line != null) {
+                if (line.equals("*NEW STORE*")) {
+                    do {
+                        System.out.println(line);
+                        list.add(line);
+                        line = bfr.readLine();
+                    } while (!(line.equals("*NEW STORE*")));
+                }
+            }
+
+            //convert to array
+            listArr = new String[list.size()];
+
+            //filling String arr
+            for (int i = 0; i < listArr.length; i++) {
+                listArr[i] = list.get(i);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        return listArr;
     }
 }
