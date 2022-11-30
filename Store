@@ -239,16 +239,16 @@ public class Store {
     }
 
     public String[] listProducts() {
-        String[] listArr;
         try {
+            String[] listArr;
             BufferedReader bfr = new BufferedReader(new FileReader("data.txt"));
-            String line = bfr.readLine();
+            String line = "";
             ArrayList<String> list = new ArrayList<String>();
 
-            while (line != null) {
+            while ((line = bfr.readLine()) != null) {
                 if (line.equals("*NEW STORE*")) {
                     do {
-                        System.out.println(line);
+                        //System.out.println(line);
                         list.add(line);
                         line = bfr.readLine();
                     } while (!(line.equals("*NEW STORE*")));
@@ -262,11 +262,13 @@ public class Store {
             for (int i = 0; i < listArr.length; i++) {
                 listArr[i] = list.get(i);
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+            return listArr;
+
+        } catch (Exception e) {
+            System.out.println("No Products!");
         }
-        return listArr;
+        return null;
     }
+
 }
