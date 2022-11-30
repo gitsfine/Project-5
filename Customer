@@ -25,7 +25,8 @@ public class Customer extends User {
     //"addToCart" method
     //this takes in a product and adds a string representation to the cart Array list.
     public void addProductToCart(Product product) {
-        String cartValue = String.format("%s, %s, %s, %.2f", product.getStoreName(), product.getProductName(), product.getDescription(), product.getPrice());
+        String cartValue = String.format("%s, %s, %s, %.2f", product.getStoreName(), product.getProductName(),
+                product.getDescription(), product.getPrice());
         cart.add(cartValue);
     }
     //"addToCart" method
@@ -37,7 +38,8 @@ public class Customer extends User {
     //"addToPurchased" method
     //this takes in a product and adds a string representation to the purchased Array list.
     public void addProductToPurchased(Product product) {
-        String purchasedValue = String.format("%s, %s, %s, %.2f", product.getStoreName(), product.getProductName(), product.getDescription(), product.getPrice());
+        String purchasedValue = String.format("%s, %s, %s, %.2f", product.getStoreName(), product.getProductName(),
+                product.getDescription(), product.getPrice());
         purchased.add(purchasedValue);
     }
     //"addToPurchased" method
@@ -136,7 +138,7 @@ public class Customer extends User {
 
             for (int i = purchasesIndex; i < data.size(); i++) {
                 if ((data.get(i).charAt(0) == 42) && (i != purchasesIndex)) {
-                   break;
+                    break;
                 } else {
                     String line = String.format("%s\n", data.get(i));
                     writer.write(line);
