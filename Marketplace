@@ -46,7 +46,8 @@ public class Marketplace {
                     }
 
                     if (alreadyTaken) {
-                        System.out.println("It appears that email is already being used.\nPlease try a different email or login instead\n");
+                        System.out.println("It appears that email is already being used.\nPlease try a different " +
+                                "email or login instead\n");
                     } else {
                         System.out.println("Thank you for inputing a valid email.\n"); // if both true, email is good
                         invalidEmail = false;
@@ -56,7 +57,8 @@ public class Marketplace {
                 } else if (hasDot) {
                     System.out.println("Email is missing an @"); // missing .ext
                 } else {
-                    System.out.println("Email is improperly formatted.\nPlease ensure it includes an @ sign, and a valid extension (such as .com) at the end."); // just bad format
+                    System.out.println("Email is improperly formatted.\nPlease ensure it includes an @ sign, and a " +
+                            "valid extension (such as .com) at the end."); // just bad format
                 }
             }
         }
@@ -130,7 +132,8 @@ public class Marketplace {
                 } else if (hasLetter) {
                     System.out.println("Password is missing a number. Please try again."); // re-prompt
                 } else {
-                    System.out.println("Password does not contain a letter and number. Please try again."); // re-prompt
+                    System.out.println("Password does not contain a letter and number. Please try again.");
+                    // re-prompt
                 }
             }
         }
@@ -410,7 +413,8 @@ public class Marketplace {
                         String quantityString = line;
                         quantity = Integer.parseInt(quantityString);
 
-                        Product tempProduct = new Product(username, storeName, productName, type, milk, syrup, special, price, quantity);
+                        Product tempProduct = new Product(username, storeName, productName, type, milk, syrup,
+                                special, price, quantity);
                         productArrayList.add(tempProduct);
 
                         for (int i = 0; i < storeArrayList.size(); i++) {
@@ -424,19 +428,25 @@ public class Marketplace {
 
                 //SALES
                 if (section == 3) {
-                    tempSeller = new Seller(userArrayList.get(userCount).getUsername(),userArrayList.get(userCount).getPassword(), userArrayList.get(userCount).getEmail(), true);
+                    tempSeller = new Seller(userArrayList.get(userCount).getUsername(),
+                            userArrayList.get(userCount).getPassword(), userArrayList.get(userCount).getEmail(),
+                            true);
                     tempSeller.addSales(line);
                 }
 
                 //CARTS
                 if (section == 4) {
-                    Customer tempCustomer = new Customer(userArrayList.get(userCount).getUsername(),userArrayList.get(userCount).getPassword(), userArrayList.get(userCount).getEmail(), false);
+                    Customer tempCustomer = new Customer(userArrayList.get(userCount).getUsername(),
+                            userArrayList.get(userCount).getPassword(), userArrayList.get(userCount).getEmail(),
+                            false);
                     tempCustomer.addStringToCart(line);
                 }
 
                 //PURCHASES
                 if (section == 5) {
-                    Customer tempCustomer = new Customer(userArrayList.get(userCount).getUsername(),userArrayList.get(userCount).getPassword(), userArrayList.get(userCount).getEmail(), false);
+                    Customer tempCustomer = new Customer(userArrayList.get(userCount).getUsername(),
+                            userArrayList.get(userCount).getPassword(), userArrayList.get(userCount).getEmail(),
+                            false);
                     tempCustomer.addStringToPurchased(line);
                 }
             }
@@ -445,20 +455,15 @@ public class Marketplace {
             System.out.printf("There is an error in your process data method!");
         }
     }
-    public static void listStores() {
-        for (int i = 0; i < userArrayList.size(); i++) {
-//            System.out.println(userArrayList.get(i).toString());
-            for (int j = 0; j < storeArrayList.size(); j++) {
-                if (storeArrayList.get(j).getUserName().equals(userArrayList.get(i).getUsername())) {
-                    System.out.println(storeArrayList.get(j).toString());
-                    for (int k = 0; k < productArrayList.size(); k++) {
-                        if (productArrayList.get(k).getStoreName().equals(storeArrayList.get(j).getStoreName())) {
-                            System.out.println(productArrayList.get(k).toString());
-                        }
-                    }
-                }
-            }
+
+    public static String listStores() {
+        String storeArrayItem = null;
+        String storeArrayString = null;
+        for (int i = 0; i < storeArrayList.size(); i++) {
+            storeArrayItem = String.valueOf(storeArrayList.get(i));
+            storeArrayString += storeArrayItem;
         }
+        return storeArrayString;
     }
 
     public static void main(String[] args) { // main method
@@ -479,10 +484,12 @@ public class Marketplace {
                 currentUser = createAccount();
                 userArrayList.add(currentUser);
                 if (!currentUser.isSeller()) {
-                    Customer tempCustomer = new Customer(currentUser.getUsername(), currentUser.getPassword(), currentUser.getEmail(), false);
+                    Customer tempCustomer = new Customer(currentUser.getUsername(), currentUser.getPassword(),
+                            currentUser.getEmail(), false);
                     CustomerArrayList.add(tempCustomer);
                 } else {
-                    Seller tempSeller = new Seller(currentUser.getUsername(), currentUser.getPassword(), currentUser.getEmail(), true);
+                    Seller tempSeller = new Seller(currentUser.getUsername(), currentUser.getPassword(),
+                            currentUser.getEmail(), true);
                     SellerArrayList.add(tempSeller);
                 }
                 System.out.printf("\nWelcome to the Marketplace :)\nWe are so glad to have you as a user.\n\n");
@@ -503,7 +510,8 @@ public class Marketplace {
             boolean sellerMainMenu = false;
             do {
                 boolean validAF = false;
-                System.out.printf("How may I help you?\n1. Create a New Store\n2. Go to Your Stores\n3. View Statistics\n4. Export File\n5. Import File\n6. Edit\\Delete Account\n");
+                System.out.printf("How may I help you?\n1. Create a New Store\n2. Go to Your Stores\n3. View " +
+                        "Statistics\n4. Export File\n5. Import File\n6. Edit\\Delete Account\n");
                 responseInt = scanner.nextInt();
                 scanner.nextLine();
 
@@ -526,7 +534,8 @@ public class Marketplace {
                         do {
                             storeMenu = false;
                             Store currentStore = currentSeller.getStores().get(storeInt - 1);
-                            System.out.printf("What would you like to do with %s?\n1. Edit Store Name\n2. Delete Store\n3. Go to Your Products\n4. Add a Product\n", currentStore.getStoreName());
+                            System.out.printf("What would you like to do with %s?\n1. Edit Store Name\n2. Delete" +
+                                    " Store\n3. Go to Your Products\n4. Add a Product\n", currentStore.getStoreName());
                             int storeMenuChoice = scanner.nextInt();
                             scanner.nextLine();
 
@@ -536,7 +545,8 @@ public class Marketplace {
 
                                 currentSeller.editStore(currentStore, newStoreName); //calls method to update data.txt
                             } else if (storeMenuChoice == 2) { //deleting the store
-                                System.out.printf("Are you sure you want to delete: %s?\n1. Yes\n2. No\n", currentStore.getStoreName());
+                                System.out.printf("Are you sure you want to delete: %s?\n1. Yes\n2. No\n",
+                                        currentStore.getStoreName());
                                 int deleteResponse = scanner.nextInt();
                                 scanner.nextLine();
 
@@ -558,7 +568,9 @@ public class Marketplace {
                                 do {
                                     productMenu = false;
                                     Product currentProduct = currentStore.getProducts().get(productInt - 1);
-                                    System.out.printf("What would you like to do with %s?\n1. Edit Product\n2. Delete Product\n3. View Product Description\n", currentProduct.getProductName());
+                                    System.out.printf("What would you like to do with %s?\n1. Edit Product\n2. " +
+                                            "Delete Product\n3. View Product Description\n",
+                                            currentProduct.getProductName());
                                     int productMenuChoice = scanner.nextInt();
                                     scanner.nextLine();
 
@@ -591,7 +603,8 @@ public class Marketplace {
                     boolean accountEdit;
                     do {
                         accountEdit = false;
-                        System.out.printf("What would you like to do?\n1. Edit Account\n2. Delete Account\n3. Return\n");
+                        System.out.printf("What would you like to do?\n1. Edit Account\n2. Delete Account\n3. " +
+                                "Return\n");
                         int editResponse = scanner.nextInt();
                         scanner.nextLine();
                         if (editResponse == 1) {
@@ -640,20 +653,22 @@ public class Marketplace {
             }
             boolean customerMainMenu = false;
             boolean validAF = false;
-            do {
+            do { // CUSTOMER BEGINS HERE!!!
                 System.out.printf("How may I help you?\n1. List stores (Shop)\n2. View Statistics\n3. Export " +
                         "File\n4. View/Edit Shopping Cart\n5. Edit Account\n");
                 responseInt = scanner.nextInt();
                 scanner.nextLine();
                 if (responseInt == 1) { // list stores and shop
-                    listStores();
+                    System.out.println(listStores());
                     System.out.println("Which store would you like to shop at? Please type exactly.");
                     String preferredStore = scanner.nextLine();
-                    Store store = new Store(currentCustomer.getUsername(), preferredStore);
+                    Store prefferedStore = new Store(currentCustomer.getUsername(), preferredStore);
                     System.out.println("What item would you like to purchase?");
+                    System.out.println(prefferedStore.listProducts());
                     String product = scanner.nextLine();
 
-                    Product addedProduct = new Product(null, null, null, null, null, null, null, 0, 0);
+                    Product addedProduct = new Product(null, null, null,
+                            null, null, null, null, 0, 0);
                     for (int i = 0; i < productArrayList.size(); i++) {
                         if (productArrayList.get(i).getProductName().equals(product)) {
                             addedProduct = productArrayList.get(i);
@@ -670,7 +685,8 @@ public class Marketplace {
                     while (invalidInt) {
                         boolean noReturn = true;
                         while (noReturn) {
-                            System.out.println("Would you like to view or edit your shopping cart? \n1. View\n2. Edit");
+                            System.out.println("Would you like to view or edit your shopping cart? \n1. View\n" +
+                                    "2. Edit");
                             int viewEdit = scanner.nextInt();
                             scanner.nextLine();
                             if (viewEdit == 1) { // view cart
@@ -681,7 +697,8 @@ public class Marketplace {
                                 } else {
                                     for (int i = 0; i < currentCustomer.getCart().size(); i++) {
                                         try {
-                                            BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
+                                            BufferedReader reader = new BufferedReader(new FileReader(
+                                                    "data.txt"));
                                             String line = reader.readLine();
                                             while (line != null) { // read through entire list
                                                 line = reader.readLine();
