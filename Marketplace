@@ -175,6 +175,7 @@ public class Marketplace {
 
         return user;
     }
+
     public static User loginToAccount() {
         User user = new User(null, null, null, true);
         String username = "";
@@ -216,6 +217,7 @@ public class Marketplace {
         }
         return userArrayList.get(currentUser);
     }
+
     public static void deleteAccount() {
         User user = new User(null, null, null, true);
         String username = "";
@@ -290,6 +292,7 @@ public class Marketplace {
         userArrayList.remove(currentUser);
         System.out.println("Account has been deleted.\n");
     }
+
     public static void processData(String filename) {
 
         try {
@@ -389,24 +392,23 @@ public class Marketplace {
                 if (section == 2) {
                     if (lineCount == 1) {
                         storeName = line.substring(0, line.indexOf(39)); //ascii index of " ' "
-                    }
-                    else if (lineCount > 1) {
-                        productName = line.substring(0,line.indexOf(','));
+                    } else if (lineCount > 1) {
+                        productName = line.substring(0, line.indexOf(','));
                         line = line.substring(productName.length() + 1);
 
-                        type = line.substring(0,line.indexOf(','));
+                        type = line.substring(0, line.indexOf(','));
                         line = line.substring(type.length() + 1);
 
-                        milk = line.substring(0,line.indexOf(','));
+                        milk = line.substring(0, line.indexOf(','));
                         line = line.substring(milk.length() + 1);
 
-                        syrup = line.substring(0,line.indexOf(','));
+                        syrup = line.substring(0, line.indexOf(','));
                         line = line.substring(syrup.length() + 1);
 
-                        special = line.substring(0,line.indexOf(','));
+                        special = line.substring(0, line.indexOf(','));
                         line = line.substring(special.length() + 1);
 
-                        String priceString = line.substring(0,line.indexOf(','));
+                        String priceString = line.substring(0, line.indexOf(','));
                         line = line.substring(priceString.length() + 1);
                         price = Double.parseDouble(priceString);
 
@@ -457,8 +459,8 @@ public class Marketplace {
     }
 
     public static String listStores() {
-        String storeArrayItem = null;
-        String storeArrayString = null;
+        String storeArrayItem;
+        String storeArrayString = "";
         for (int i = 0; i < storeArrayList.size(); i++) {
             storeArrayItem = String.valueOf(storeArrayList.get(i));
             storeArrayString += storeArrayItem;
@@ -569,7 +571,7 @@ public class Marketplace {
                                     productMenu = false;
                                     Product currentProduct = currentStore.getProducts().get(productInt - 1);
                                     System.out.printf("What would you like to do with %s?\n1. Edit Product\n2. " +
-                                            "Delete Product\n3. View Product Description\n",
+                                                    "Delete Product\n3. View Product Description\n",
                                             currentProduct.getProductName());
                                     int productMenuChoice = scanner.nextInt();
                                     scanner.nextLine();
@@ -771,6 +773,7 @@ public class Marketplace {
             } while (customerMainMenu);
         }
     }
+
     public static ArrayList<String> readData() {
         ArrayList<String> data = new ArrayList<>();
         try {
@@ -793,6 +796,7 @@ public class Marketplace {
 
         return data;
     }
+
     public static void writeData(ArrayList<String> information) {
         try {
             FileWriter fw = new FileWriter("data.txt");
