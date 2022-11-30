@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Product {
+public class Product implements java.io.Serializable {
     private Store store;
     private String name;
     private String milkType;
