@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Store {
+public class Store implements java.io.Serializable {
     private String storeName;
     private Seller owner;
     private ArrayList<Product> products;
