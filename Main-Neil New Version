@@ -397,6 +397,29 @@ public class Main {
             System.out.println("Done!");
         }
     }
+      public static Marketplace loadMarketplace() {
+        Marketplace m = null;
+        try {
+            FileInputStream fileIn = new FileInputStream("./MarketplaceState.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            m = (Marketplace) in.readObject();
+            in.close();
+            fileIn.close();
+            return m;
+        } catch (Exception e) {
+            return m;
+        }
+    }
 
-
+    public static void saveMarketplace(Marketplace m) {
+        try {
+         FileOutputStream fileOut = new FileOutputStream("./MarketplaceState.ser");
+         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+         out.writeObject(m);
+         out.close();
+         fileOut.close();
+      } catch (Exception e) {
+         // nothing
+      }
+    }
 }
