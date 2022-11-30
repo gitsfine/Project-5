@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Seller extends User {
+public class Seller extends User implements java.io.Serializable {
     private ArrayList<Store> stores;
 
     public Seller(String userName, String email, String password) {
