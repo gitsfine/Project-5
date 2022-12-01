@@ -1,0 +1,159 @@
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.*;
+
+// API for client to call server
+public class MarketplaceClient{
+
+    public MarketplaceClient() {
+        // Set up socket stuff
+    }
+
+    public boolean isLoggedInUserSeller() {
+        // Call server isLoggedInUserSeller and return value
+        return false;
+    }
+
+    public String getLoggedInUsername() {
+        // Call server getLoggedInUsername and return value
+        return "placeholder";
+    }
+
+    public boolean createAccount(String username, String password, String email, boolean isSeller) {
+        // Call server createAccount and return value
+        return true;
+    }
+
+    public boolean attemptLogin(String username, String password) {
+        // Call server attemptLogin and return value
+        return false;
+    }
+
+    // Start customer actions
+    private Customer getCustomer() {
+        // check if signed in user is customer
+        return null;
+    }
+    public List<Store> listAllStores() {
+        // call server and ask for store list
+        return null;
+    }
+
+    public List<Product> viewProducts(Store s) {
+        // call server and ask to viewProducts for store
+        return null;
+    }
+
+    public List<Product> searchProducts(String item) {
+        // Call server with searchProducts
+        return null;
+    }
+
+    public boolean buyNow(Product p) {
+        // call server buy now
+        return false;
+    }
+
+    public boolean addToCart(Product p) {
+        // call server addToCart
+        return false;
+    }
+
+    public List<Product> viewCart() {
+        // call server view cart
+        return null;
+    }
+
+    public void deleteItemFromCart(Product p) {
+        // call server deleteItemFromCart     
+    }
+
+    public boolean checkoutCart() {
+        // call server checkoutCart
+        return false;
+    }
+
+    public String dashboardSaleCounterByStore(boolean isDsc) {
+        // call server dashboardSaleCounterByStore
+        return "";
+    }
+
+    public String dashboardPurchasesByStore(boolean isDsc) {
+        // call server dashboardPurchasesByStore string
+        return output + String.join("\n",dashboardRow) + "\n";
+    }
+
+    public String exportDashboardPurchasesByStore(String filepath) {
+        // call server exportDashboardPurchasesByStore string
+        return "";
+    }
+    // End customer actions
+
+    // Start seller action
+    private Seller getSeller() {
+        // check if logged in user is a seller
+    }
+    
+    public boolean createStore(String name) {
+        // call server create store
+        return false;
+    }
+
+    public List<Store> listStoresForSeller() {
+        // call server listStoresForSeller
+        return null;
+    }
+    
+    public List<Product> listProducts(Store s) {
+        // call server listProducts
+        return s.getProducts();
+    }
+
+    public boolean createProduct(Store s, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
+        // call server createProduct 
+        return s.createProduct(p);
+    }
+
+    public void removeProduct(Product p) {
+        // call server removeProduct 
+        p.getStore().deleteProduct(p);
+    }
+
+    public boolean editProduct(Product p, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
+        // call server editProduct 
+        return false;
+    }
+
+    public String customerRevenueSaleList(Store s) {
+        // call server customerRevenueSaleList
+        return "";
+    }
+
+    public String getProductList(Store s) {
+        // call server getProductList
+        return output + String.join("\n",listRow) + "\n";
+    }
+
+    public String exportProductList(Store s, String filepath) {
+        // call server exportProductList
+        return "";
+    }
+
+    public boolean importProductList(Store s, String filepath) {
+        // call server importProductList
+        return false;
+    }
+    
+    public String dashboardCustomerNumSales(boolean isDsc) {
+        // call server dashboardCustomerNumSales
+        return output + String.join("\n",dashboardRow) + "\n";
+    }
+
+    public String dashboardProductNumSales(boolean isDsc) {
+        // call server dashboardProductNumSales
+        return output + String.join("\n",dashboardRow) + "\n";
+    }
+    // End seller actions
+}
