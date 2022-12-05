@@ -1,159 +1,293 @@
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+import java.net.*;
 
 // API for client to call server
 public class MarketplaceClient{
-
+    private Socket client = null;
+    private ObjectOutputStream out = null;
+    private ObjectInputStream in = null;
+    
     public MarketplaceClient() {
-        // Set up socket stuff
+        try {
+            client = new Socket("localhost", 4242);
+            out = new ObjectOutputStream(client.getOutputStream());
+            in = new ObjectInputStream(client.getInputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
+    }
+
+    public void disconnectClient() {
+
+        try {        
+            out.close();
+            in.close();
+            client.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void killServer() {
+        executeCommand(new ServerCommand("quit"));
+    }
+
+    public ServerCommand executeCommand(ServerCommand sc) {
+        try {   
+            out.writeObject(sc);
+            out.flush();
+            return (ServerCommand) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sc;
     }
 
     public boolean isLoggedInUserSeller() {
-        // Call server isLoggedInUserSeller and return value
-        return false;
+        ServerCommand sc = new ServerCommand("isLoggedInUserSeller");
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public String getLoggedInUsername() {
         // Call server getLoggedInUsername and return value
-        return "placeholder";
+        ServerCommand sc = new ServerCommand("getLoggedInUsername");
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public boolean createAccount(String username, String password, String email, boolean isSeller) {
-        // Call server createAccount and return value
-        return true;
+        ServerCommand sc = new ServerCommand("createAccount");
+        sc.inStrings = new String[]{username, password, email};
+        sc.inBools = new Boolean[]{ isSeller };
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public boolean attemptLogin(String username, String password) {
-        // Call server attemptLogin and return value
-        return false;
-    }
+        ServerCommand sc = new ServerCommand("attemptLogin");
+        sc.inStrings = new String[]{username,password};
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;  
+        }
 
     // Start customer actions
-    private Customer getCustomer() {
-        // check if signed in user is customer
-        return null;
-    }
     public List<Store> listAllStores() {
-        // call server and ask for store list
-        return null;
+        ServerCommand sc = new ServerCommand("listAllStores");
+
+        sc = executeCommand(sc);
+
+        return sc.outStoreList;
     }
 
     public List<Product> viewProducts(Store s) {
-        // call server and ask to viewProducts for store
-        return null;
+        ServerCommand sc = new ServerCommand("viewProducts");
+        sc.inStores = new Store[]{s};
+
+        sc = executeCommand(sc);
+
+        return sc.outProductList;
     }
 
     public List<Product> searchProducts(String item) {
-        // Call server with searchProducts
-        return null;
+        ServerCommand sc = new ServerCommand("searchProducts");
+        sc.inStrings = new String[]{item};
+
+        sc = executeCommand(sc);
+
+        return sc.outProductList;
+        
     }
 
     public boolean buyNow(Product p) {
-        // call server buy now
-        return false;
-    }
+        ServerCommand sc = new ServerCommand("buyNow");
+        sc.inProducts = new Product[]{p};
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;  
+        }
 
     public boolean addToCart(Product p) {
-        // call server addToCart
-        return false;
+        ServerCommand sc = new ServerCommand("addToCart");
+        sc.inProducts = new Product[]{p};
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public List<Product> viewCart() {
-        // call server view cart
-        return null;
+        ServerCommand sc = new ServerCommand("viewCart");
+
+        sc = executeCommand(sc);
+
+        return sc.outProductList;
     }
 
     public void deleteItemFromCart(Product p) {
-        // call server deleteItemFromCart     
+        ServerCommand sc = new ServerCommand("deleteItemFromCart");
+        sc.inProducts = new Product[]{p};
+
     }
 
     public boolean checkoutCart() {
-        // call server checkoutCart
-        return false;
+        ServerCommand sc = new ServerCommand("checkoutCart");
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public String dashboardSaleCounterByStore(boolean isDsc) {
-        // call server dashboardSaleCounterByStore
-        return "";
+        ServerCommand sc = new ServerCommand("dashboardSaleCounterByStore");
+        sc.inBools = new Boolean[]{isDsc};       
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public String dashboardPurchasesByStore(boolean isDsc) {
-        // call server dashboardPurchasesByStore string
-        return output + String.join("\n",dashboardRow) + "\n";
+        ServerCommand sc = new ServerCommand("dashboardPurchasesByStore");
+        sc.inBools = new Boolean[]{isDsc};       
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public String exportDashboardPurchasesByStore(String filepath) {
-        // call server exportDashboardPurchasesByStore string
-        return "";
+        ServerCommand sc = new ServerCommand("exportDashboardPurchasesByStore");
+        sc.inStrings = new String[]{filepath};      
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
     // End customer actions
 
     // Start seller action
-    private Seller getSeller() {
-        // check if logged in user is a seller
-    }
     
     public boolean createStore(String name) {
-        // call server create store
-        return false;
+        ServerCommand sc = new ServerCommand("createStore");
+        sc.inStrings = new String[]{name}; 
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public List<Store> listStoresForSeller() {
-        // call server listStoresForSeller
-        return null;
+         ServerCommand sc = new ServerCommand("listStoresForSeller");
+
+         sc = executeCommand(sc);
+
+         return sc.outStoreList;
     }
     
     public List<Product> listProducts(Store s) {
-        // call server listProducts
-        return s.getProducts();
+        ServerCommand sc = new ServerCommand("listProducts");
+        sc.inStores = new Store[]{s};
+
+        sc = executeCommand(sc);
+
+        return sc.outProductList;
     }
 
     public boolean createProduct(Store s, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
-        // call server createProduct 
-        return s.createProduct(p);
+        ServerCommand sc = new ServerCommand("createProduct");
+        sc.inStores = new Store[]{s};
+        sc.inStrings = new String[]{name,milkType,coffeeType,syrup,special};
+        sc.inInts = new Integer[]{price,quantity};
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public void removeProduct(Product p) {
-        // call server removeProduct 
+        ServerCommand sc = new ServerCommand("removeProduct");
+        sc.inProducts = new Product[]{p};        
+        
         p.getStore().deleteProduct(p);
     }
 
     public boolean editProduct(Product p, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
-        // call server editProduct 
-        return false;
+        ServerCommand sc = new ServerCommand("editProduct");
+        sc.inProducts = new Product[]{p};    
+        sc.inStrings = new String[]{name,milkType,coffeeType,syrup,special};
+        sc.inInts = new Integer[]{price,quantity};
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
 
     public String customerRevenueSaleList(Store s) {
-        // call server customerRevenueSaleList
-        return "";
+        ServerCommand sc = new ServerCommand("customerRevenueSaleList");
+        sc.inStores = new Store[]{s};    
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public String getProductList(Store s) {
-        // call server getProductList
-        return output + String.join("\n",listRow) + "\n";
+        ServerCommand sc = new ServerCommand("getProductList");
+        sc.inStores = new Store[]{s}; 
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public String exportProductList(Store s, String filepath) {
-        // call server exportProductList
-        return "";
+        ServerCommand sc = new ServerCommand("exportProductList");
+        sc.inStores = new Store[]{s};
+        sc.inStrings = new String[]{filepath};    
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public boolean importProductList(Store s, String filepath) {
-        // call server importProductList
-        return false;
+        ServerCommand sc = new ServerCommand("importProductList");
+        sc.inStores = new Store[]{s}; 
+        sc.inStrings = new String[]{filepath};    
+
+        sc = executeCommand(sc);
+
+        return sc.outBool;
     }
     
     public String dashboardCustomerNumSales(boolean isDsc) {
-        // call server dashboardCustomerNumSales
-        return output + String.join("\n",dashboardRow) + "\n";
+        ServerCommand sc = new ServerCommand("dashboardCustomerNumSales");
+        sc.inBools = new Boolean[]{isDsc}; 
+
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
 
     public String dashboardProductNumSales(boolean isDsc) {
-        // call server dashboardProductNumSales
-        return output + String.join("\n",dashboardRow) + "\n";
+        ServerCommand sc = new ServerCommand("dashboardProductNumSales");
+        sc.inBools = new Boolean[]{isDsc};
+        
+        sc = executeCommand(sc);
+
+        return sc.outString;
     }
     // End seller actions
 }
