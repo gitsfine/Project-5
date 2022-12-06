@@ -153,16 +153,32 @@ public class Main {
 
     //need to do
     public static int readNumberOption(Scanner s, int max) {
+        String inputStr = "";
         int input = 0;
+
+        //old proj4 code
+
+//        while (input <= 0 || input > max) {
+//            //while the next value is not an int
+//            while (!s.hasNextInt()) {
+//                s.nextLine();
+//                System.out.println("Please enter a valid number!");
+//            }
+//            input = s.nextInt();
+//            s.nextLine();
+//        }
+//        return input;
+
         while (input <= 0 || input > max) {
-            while (!s.hasNextInt()) {
-                s.nextLine();
-                System.out.println("Please enter a valid number!");
-            }
-            input = s.nextInt();
-            s.nextLine();
+            //while the next value is not an int
+            do {
+                inputStr = JOptionPane.showInputDialog(null, "Please enter a valid number!",
+                        "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                input = Integer.parseInt(inputStr);
+            } while (input != (int) input);
         }
         return input;
+
     }
 
     //need to do
@@ -191,10 +207,10 @@ public class Main {
 
             int choiceNum = Integer.parseInt(choice);
 
-            //took s out of parameters (s, m). Is this ok since we aren't using the scanner?
-
+            //not going into?
             switch (choiceNum) {
                 case 1:
+                    System.out.println("Working!");
                     createStore(s, m);
                     break;
                 case 2:
