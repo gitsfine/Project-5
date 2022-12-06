@@ -436,14 +436,13 @@ public class Main {
         }
     }
 
-    public static void listAllStores(Scanner s, Marketplace m) {
+     public static void listAllStores(Scanner s, Marketplace m) {
         List<Store> stores = m.listAllStores();
-        System.out.println("===Stores===");
-        for (int i = 0; i < stores.size(); i++) {
-            System.out.println((i + 1) + ". " + stores.get(i).getName());
-        }
-
-        System.out.println("Select store to view products.");
+        String store = "";
+        store = (String) JOptionPane.showInputDialog(null, "Select a store to view products.",
+                "===Stores===", JOptionPane.QUESTION_MESSAGE, null, new List[]{stores},
+                null);
+        // how to get selected store value from GUI into code?
         int storeIndex = readNumberOption(s, stores.size()) - 1;
         if (storeIndex >= stores.size()) return;
 
