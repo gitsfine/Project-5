@@ -20,10 +20,9 @@ public class Main {
 
     public static boolean startUserInput(Scanner s, Marketplace m) {
 
-        //making it a GUI
+        // making GUIs
         JOptionPane.showMessageDialog(null, "Welcome to coffee shop MarketPlace!",
                 "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
-
 
         boolean status = signupOrLogin(s, m);
         if (status == false)
@@ -70,22 +69,17 @@ public class Main {
                     } //end if
                 } while ((username == null) || (username.isEmpty()));
 
-
-                //enter password
-                do {
+                do { //enter password
                     password = JOptionPane.showInputDialog(null, "Please enter a password:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((password == null) || (password.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
-
                     } //end if
                 } while ((password == null) || (password.isEmpty()));
 
-
-                //enter email
-                do {
+                do { //enter email
                     email = JOptionPane.showInputDialog(null, "Please enter an email:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((email == null) || (email.isEmpty())) {
@@ -96,9 +90,7 @@ public class Main {
                     } //end if
                 } while ((email == null) || (email.isEmpty()));
 
-
-                //enter seller
-                do {
+                do { //enter seller
                     isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller?",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((isSellerStr == null) || (isSellerStr.isEmpty())) {
@@ -120,8 +112,7 @@ public class Main {
             String username, password;
             while (loginComplete == false) {
 
-                //enter username
-                do {
+                do { //enter username
                     username = JOptionPane.showInputDialog(null, "Enter a username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((username == null) || (username.isEmpty())) {
@@ -132,19 +123,15 @@ public class Main {
                     } //end if
                 } while ((username == null) || (username.isEmpty()));
 
-
-                //enter username
-                do {
+                do { //enter username
                     password = JOptionPane.showInputDialog(null, "Enter a password:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((password == null) || (password.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
-
                     } //end if
                 } while ((password == null) || (password.isEmpty()));
-
                 loginComplete = m.attemptLogin(username, password);
             }
         }
