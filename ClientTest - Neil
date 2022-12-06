@@ -7,19 +7,19 @@ public class ClientTest {
         MarketplaceClient marketplace = new MarketplaceClient();
 
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
-        while(startUserInput(scanner, marketplace));
+        while (startUserInput(scanner, marketplace)) ;
         marketplace.killServer();
     }
 
     public static boolean startUserInput(Scanner s, MarketplaceClient m) {
         System.out.println("Welcome to coffee shop marketplace on a server!");
-        boolean status = signupOrLogin(s,m);
+        boolean status = signupOrLogin(s, m);
         if (status == false)
             return false;
         if (m.isLoggedInUserSeller()) {
-            runSellerHandler(s,m);
+            runSellerHandler(s, m);
         } else {
-            runCustomerHandler(s,m);     
+            runCustomerHandler(s, m);
         }
         return true;
     }
@@ -67,7 +67,7 @@ public class ClientTest {
     public static int readNumberOption(Scanner s, int max) {
         int input = 0;
         while (input <= 0 || input > max) {
-            while (!s.hasNextInt()){
+            while (!s.hasNextInt()) {
                 s.nextLine();
                 System.out.println("Please enter a valid number!");
             }
@@ -86,7 +86,7 @@ public class ClientTest {
     }
 
     public static void runSellerHandler(Scanner s, MarketplaceClient m) {
-        System.out.println("Welcome seller: "+ m.getLoggedInUsername());
+        System.out.println("Welcome seller: " + m.getLoggedInUsername());
         boolean isActive = true;
         while (isActive) {
             System.out.println("Select an option to perform!");
@@ -98,10 +98,10 @@ public class ClientTest {
             int promptChoice = readNumberOption(s, 5);
             switch (promptChoice) {
                 case 1:
-                    createStore(s,m);
+                    createStore(s, m);
                     break;
                 case 2:
-                    modifyStore(s,m);
+                    modifyStore(s, m);
                     break;
                 case 3:
                     System.out.print(m.dashboardCustomerNumSales(promptDecending(s)));
@@ -109,11 +109,11 @@ public class ClientTest {
                 case 4:
                     System.out.print(m.dashboardProductNumSales(promptDecending(s)));
                     break;
-                case 5: 
+                case 5:
                     isActive = false;
                     break;
-            }   
-        } 
+            }
+        }
 
     }
 
@@ -131,11 +131,11 @@ public class ClientTest {
         List<Store> stores = m.listStoresForSeller();
         System.out.println("===Your Stores===");
         for (int i = 0; i < stores.size(); i++) {
-            System.out.println((i+1)+". "+ stores.get(i).getName());
+            System.out.println((i + 1) + ". " + stores.get(i).getName());
         }
 
         System.out.println("Select store to view or modify");
-        int storeIndex = readNumberOption(s, stores.size())-1;
+        int storeIndex = readNumberOption(s, stores.size()) - 1;
         Store store = stores.get(storeIndex);
 
         System.out.println("Choose an option");
@@ -152,10 +152,10 @@ public class ClientTest {
                 listSales(store);
                 break;
             case 2:
-                createNewProduct(s,m,store);
+                createNewProduct(s, m, store);
                 break;
             case 3:
-                modifyProducts(s,m,store);
+                modifyProducts(s, m, store);
                 break;
             case 4:
                 System.out.println(m.customerRevenueSaleList(store));
@@ -173,14 +173,14 @@ public class ClientTest {
                     System.out.println("Done!");
                 }
                 break;
-        }  
+        }
     }
 
     public static void listSales(Store store) {
         List<Sale> sales = store.getSales();
         System.out.println("===Sales===");
         for (int i = 0; i < sales.size(); i++) {
-            System.out.println((i+1)+". "+ sales.get(i));
+            System.out.println((i + 1) + ". " + sales.get(i));
         }
     }
 
@@ -199,9 +199,9 @@ public class ClientTest {
         System.out.println("Please enter the specials:");
         special = s.nextLine();
         System.out.println("Please enter the price as an integer:");
-        price = readNumberOption(s,Integer.MAX_VALUE);
+        price = readNumberOption(s, Integer.MAX_VALUE);
         System.out.println("Please enter the quantity as an integer:");
-        quantity = readNumberOption(s,Integer.MAX_VALUE);
+        quantity = readNumberOption(s, Integer.MAX_VALUE);
 
         boolean status = m.createProduct(store, name, milkType, coffeeType, syrup, special, price, quantity);
         if (status == false) {
@@ -215,11 +215,11 @@ public class ClientTest {
         List<Product> products = m.listProducts(store);
         System.out.println("===Products===");
         for (int i = 0; i < products.size(); i++) {
-            System.out.println((i+1)+". "+products.get(i).toExport());
+            System.out.println((i + 1) + ". " + products.get(i).toExport());
         }
 
         System.out.println("Which product to modify?");
-        int productIndex = readNumberOption(s, products.size())-1;
+        int productIndex = readNumberOption(s, products.size()) - 1;
         Product p = products.get(productIndex);
 
         System.out.println("Choose an option");
@@ -231,7 +231,7 @@ public class ClientTest {
         boolean status = false;
         switch (productOption) {
             case 1:
-                String name, milkType, coffeeType,syrup, special;
+                String name, milkType, coffeeType, syrup, special;
                 int price, quantity;
 
                 System.out.println("Please enter a new name:");
@@ -245,19 +245,19 @@ public class ClientTest {
                 System.out.println("Please enter the new specials:");
                 special = s.nextLine();
                 System.out.println("Please enter the price as an integer:");
-                price = readNumberOption(s,Integer.MAX_VALUE);
+                price = readNumberOption(s, Integer.MAX_VALUE);
                 System.out.println("Please enter the quantity as an integer:");
-                quantity = readNumberOption(s,Integer.MAX_VALUE);
-                
+                quantity = readNumberOption(s, Integer.MAX_VALUE);
+
                 status = m.editProduct(p, name, milkType, coffeeType, syrup, special, price, quantity);
-            break;
+                break;
             case 2:
                 m.removeProduct(p);
                 status = true;
-            break;
+                break;
             case 3:
                 status = true;
-            break;
+                break;
         }
         if (status == false) {
             System.out.println("Unable to completely perform operation!");
@@ -267,7 +267,7 @@ public class ClientTest {
     }
 
     public static void runCustomerHandler(Scanner s, MarketplaceClient m) {
-        System.out.println("Welcome customer: "+ m.getLoggedInUsername());
+        System.out.println("Welcome customer: " + m.getLoggedInUsername());
         boolean isActive = true;
         while (isActive) {
             System.out.println("Select an option to perform!");
@@ -281,13 +281,13 @@ public class ClientTest {
             int promptChoice = readNumberOption(s, 7);
             switch (promptChoice) {
                 case 1:
-                    listAllStores(s,m);
+                    listAllStores(s, m);
                     break;
                 case 2:
-                    searchForProduct(s,m);
+                    searchForProduct(s, m);
                     break;
                 case 3:
-                    viewCart(s,m);
+                    viewCart(s, m);
                     break;
                 case 4:
                     System.out.println(m.dashboardSaleCounterByStore(promptDecending(s)));
@@ -299,40 +299,40 @@ public class ClientTest {
                     System.out.println("Enter export filepath.");
                     m.exportDashboardPurchasesByStore(s.nextLine());
                     break;
-                case 7: 
+                case 7:
                     isActive = false;
                     break;
-            }   
-        } 
+            }
+        }
     }
 
     public static void listAllStores(Scanner s, MarketplaceClient m) {
         List<Store> stores = m.listAllStores();
         System.out.println("===Stores===");
         for (int i = 0; i < stores.size(); i++) {
-            System.out.println((i+1)+". "+ stores.get(i).getName());
+            System.out.println((i + 1) + ". " + stores.get(i).getName());
         }
 
         System.out.println("Select store to view products.");
-        int storeIndex = readNumberOption(s, stores.size())-1;
-        if(storeIndex>=stores.size())return;
-        
+        int storeIndex = readNumberOption(s, stores.size()) - 1;
+        if (storeIndex >= stores.size()) return;
+
         List<Product> storeProducts = m.viewProducts(stores.get(storeIndex));
-        shopFromProducts(s,m,storeProducts);
+        shopFromProducts(s, m, storeProducts);
     }
 
     public static void searchForProduct(Scanner s, MarketplaceClient m) {
         System.out.println("Enter search criteria.");
         String searchTerm = s.nextLine();
         List<Product> storeProducts = m.searchProducts(searchTerm);
-        shopFromProducts(s,m,storeProducts);
+        shopFromProducts(s, m, storeProducts);
     }
 
     public static void viewCart(Scanner s, MarketplaceClient m) {
         System.out.println("===Cart===");
         List<Product> cart = m.viewCart();
         for (int i = 0; i < cart.size(); i++) {
-            System.out.println((i+1)+". "+ cart.get(i).toCombinedString());
+            System.out.println((i + 1) + ". " + cart.get(i).toCombinedString());
         }
         System.out.println("Choose an option");
         System.out.println("1. Checkout");
@@ -344,16 +344,16 @@ public class ClientTest {
         switch (cartOption) {
             case 1:
                 status = m.checkoutCart();
-            break;
+                break;
             case 2:
                 System.out.println("Which item number to remove from cart?");
-                int deletionIndex = readNumberOption(s, cart.size())-1;
+                int deletionIndex = readNumberOption(s, cart.size()) - 1;
                 status = true;
                 m.deleteItemFromCart(cart.get(deletionIndex));
-            break;
+                break;
             case 3:
                 status = true;
-            break;
+                break;
         }
         if (status == false) {
             System.out.println("Unable to completely perform operation!");
@@ -365,14 +365,14 @@ public class ClientTest {
     public static void shopFromProducts(Scanner s, MarketplaceClient m, List<Product> storeProducts) {
         System.out.println("===Products===");
         for (int i = 0; i < storeProducts.size(); i++) {
-            System.out.println((i+1)+". "+ storeProducts.get(i).toListing());
+            System.out.println((i + 1) + ". " + storeProducts.get(i).toListing());
         }
-        if(storeProducts.size() == 0) {
+        if (storeProducts.size() == 0) {
             System.out.println("Store has no items!");
             return;
         }
         System.out.println("Choose a product:");
-        int productIndex = readNumberOption(s, storeProducts.size())-1;
+        int productIndex = readNumberOption(s, storeProducts.size()) - 1;
         Product p = storeProducts.get(productIndex);
 
         System.out.println("Choose an option");
@@ -385,13 +385,13 @@ public class ClientTest {
         switch (purchaseOption) {
             case 1:
                 status = m.buyNow(p);
-            break;
+                break;
             case 2:
                 status = m.addToCart(p);
-            break;
+                break;
             case 3:
                 status = true;
-            break;
+                break;
         }
         if (status == false) {
             System.out.println("Unable to completely perform operation!");
@@ -399,5 +399,5 @@ public class ClientTest {
             System.out.println("Done!");
         }
     }
-    
+
 }
