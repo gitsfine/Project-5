@@ -507,19 +507,19 @@ public class Main {
         }
     }
 
-    public static void shopFromProducts(Scanner s, Marketplace m, List<Product> storeProducts) {
-        System.out.println("===Products===");
-        for (int i = 0; i < storeProducts.size(); i++) {
-            System.out.println((i + 1) + ". " + storeProducts.get(i).toListing());
-        }
-        System.out.println("Choose a product:");
+    public static void shopFromProducts(Scanner s, Marketplace m, List<Product> storeProducts) { // Kate GUI
+        String choice;
+        choice = (String) JOptionPane.showInputDialog(null, "Select a product.",
+                "===Products===", JOptionPane.QUESTION_MESSAGE, null, new List[]{storeProducts},
+                null);
         int productIndex = readNumberOption(s, storeProducts.size()) - 1;
         Product p = storeProducts.get(productIndex);
 
-        System.out.println("Choose an option");
-        System.out.println("1. Buy it now");
-        System.out.println("2. Add to cart");
-        System.out.println("3. Cancel operation");
+        String[] productOptions = {"1. Purchase now", "2. Add to cart", "3. Cancel operation"};
+        choice = (String) JOptionPane.showInputDialog(null, "Select an option to preform!",
+                "===Products===", JOptionPane.QUESTION_MESSAGE, null, productOptions,
+                null);
+        // how to get selected cart choice from GUI into code?
         int purchaseOption = readNumberOption(s, 3);
 
         boolean status = false;
@@ -535,9 +535,11 @@ public class Main {
                 break;
         }
         if (status == false) {
-            System.out.println("Unable to completely perform operation!");
+            JOptionPane.showMessageDialog(null, "Unable to completely perform operation!",
+                    "===Products===", JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Done!");
+            JOptionPane.showMessageDialog(null, "Done!", "===Products===",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
