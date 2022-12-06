@@ -7,7 +7,6 @@ import java.util.Scanner;
 import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) {
         Marketplace marketplace = loadMarketplace();
         if (marketplace == null) {
@@ -19,7 +18,6 @@ public class Main {
     }
 
     public static boolean startUserInput(Scanner s, Marketplace m) {
-
         // making GUIs
         JOptionPane.showMessageDialog(null, "Welcome to coffee shop MarketPlace!",
                 "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
@@ -37,15 +35,14 @@ public class Main {
 
     public static boolean signupOrLogin(Scanner s, Marketplace m) {
         String newUserPromptInput = "";
-
-        //do-while makes sure they answer when prompted
+        //do-while makes sure user answers when prompted (will not continue without response)
         do {
-            newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are you " +
-                            "a new user? [yes/no/quit]",
+            newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are " +
+                            "you a new user? [yes/no/quit]",
                     "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
             if ((newUserPromptInput == null) || (newUserPromptInput.isEmpty())) {
-                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop MarketPlace",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
+                        "MarketPlace", JOptionPane.ERROR_MESSAGE);
 
             } //end if
         } while ((newUserPromptInput == null) || (newUserPromptInput.isEmpty()));
@@ -60,12 +57,11 @@ public class Main {
                 //enter username
                 do {
                     username = JOptionPane.showInputDialog(null, "Please enter a " +
-                                    "username?",
+                                    "username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((username == null) || (username.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop MarketPlace",
-                                JOptionPane.ERROR_MESSAGE);
-
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                     } //end if
                 } while ((username == null) || (username.isEmpty()));
 
@@ -111,7 +107,6 @@ public class Main {
             boolean loginComplete = false;
             String username, password;
             while (loginComplete == false) {
-
                 do { //enter username
                     username = JOptionPane.showInputDialog(null, "Enter a username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
@@ -159,17 +154,32 @@ public class Main {
         return option == 2;
     }
 
-    public static void runSellerHandler(Scanner s, Marketplace m) {
-        System.out.println("Welcome seller: " + m.getLoggedInUsername());
+    public static void runSellerHandler(Scanner s, Marketplace m) { // WORKING HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        JOptionPane.showMessageDialog(null, "Welcome seller: " + m.getLoggedInUsername(),
+                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
         boolean isActive = true;
         while (isActive) {
-            System.out.println("Select an option to perform!");
-            System.out.println("1. Create new store");
-            System.out.println("2. View or modify your stores");
-            System.out.println("3. Dashboard of sale count by customer");
-            System.out.println("4. Dashboard of sale count by product");
-            System.out.println("5. Log out");
+//            System.out.println("Select an option to perform!");
+//            System.out.println("1. Create new store");
+//            System.out.println("2. View or modify your stores");
+//            System.out.println("3. Dashboard of sale count by customer");
+//            System.out.println("4. Dashboard of sale count by product");
+//            System.out.println("5. Log out");
             int promptChoice = readNumberOption(s, 5);
+            String promptChoiceString = String.valueOf(promptChoice);
+            do { // enter prompt choice
+                promptChoiceString = JOptionPane.showInputDialog(null, "Select an option to" +
+                                " preform.\n1. Create new store\n2. View or modify your stores\n3. Dashboard of " +
+                                "sale count by customer\n4. Dashboard of sale count by product\n 5. Log out",
+                        "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                if (promptChoiceString.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                    "Shop MarketPlace",
+                            JOptionPane.ERROR_MESSAGE);
+                } //end if
+            } while ((promptChoiceString == null) || (promptChoiceString.isEmpty()));
+
+
             switch (promptChoice) {
                 case 1:
                     createStore(s, m);
@@ -188,7 +198,6 @@ public class Main {
                     break;
             }
         }
-
     }
 
     public static void createStore(Scanner s, Marketplace m) {
