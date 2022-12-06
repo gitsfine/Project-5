@@ -467,15 +467,17 @@ public class Main {
     }
 
     public static void viewCart(Scanner s, Marketplace m) {
-        System.out.println("===Cart===");
         List<Product> cart = m.viewCart();
-        for (int i = 0; i < cart.size(); i++) {
-            System.out.println((i + 1) + ". " + cart.get(i).toCombinedString());
-        }
-        System.out.println("Choose an option");
-        System.out.println("1. Checkout");
-        System.out.println("2. Delete from cart");
-        System.out.println("3. Cancel operation");
+
+        JOptionPane.showMessageDialog(null, "Current cart: " + cart,
+                "===Cart===", JOptionPane.PLAIN_MESSAGE); // show cart, user clicks "ok"
+
+        String[] cartOptions = {"1. Checkout", "2. Delete from cart", "3. Cancel operation"};
+        String choice;
+        choice = (String) JOptionPane.showInputDialog(null, "Select an option to preform!",
+                "===Cart===", JOptionPane.QUESTION_MESSAGE, null, cartOptions,
+                null);
+        // how to get selected cart choice from GUI into code?
         int cartOption = readNumberOption(s, 3);
 
         boolean status = false;
@@ -484,7 +486,10 @@ public class Main {
                 status = m.checkoutCart();
                 break;
             case 2:
-                System.out.println("Which item number to remove from cart?");
+                choice = (String) JOptionPane.showInputDialog(null, "Which item would you " +
+                                "like to remove?", "===Cart===", JOptionPane.QUESTION_MESSAGE, null,
+                        new List[]{cart}, null);
+                // how to get deleted item from GUI into code?
                 int deletionIndex = readNumberOption(s, cart.size()) - 1;
                 status = true;
                 m.deleteItemFromCart(cart.get(deletionIndex));
@@ -494,9 +499,11 @@ public class Main {
                 break;
         }
         if (status == false) {
-            System.out.println("Unable to completely perform operation!");
+            JOptionPane.showMessageDialog(null, "Unable to completely perform operation!",
+                    "===Cart===", JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Done!");
+            JOptionPane.showMessageDialog(null, "Done!", "===Cart===",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
