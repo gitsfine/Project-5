@@ -451,9 +451,18 @@ public class Main {
         shopFromProducts(s, m, storeProducts);
     }
 
-    public static void searchForProduct(Scanner s, Marketplace m) {
-        System.out.println("Enter search criteria.");
-        String searchTerm = s.nextLine();
+    public static void searchForProduct(Scanner s, Marketplace m) { // GUI compete & functioning
+        String searchTerm;
+        do {
+            searchTerm = JOptionPane.showInputDialog(null, "Enter search criteria.",
+                    "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+            if ((searchTerm == null) || (searchTerm.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
+                                "MarketPlace",
+                        JOptionPane.ERROR_MESSAGE);
+            } //end if
+        } while ((searchTerm == null) || (searchTerm.isEmpty()));
+            
         List<Product> storeProducts = m.searchProducts(searchTerm);
         shopFromProducts(s, m, storeProducts);
     }
