@@ -50,7 +50,7 @@ public class Main {
         if (newUserPromptInput.equals("yes")) {
             boolean signupComplete = false;
             String username, password, email, isSellerStr;
-            while (signupComplete == false) {
+            while (!signupComplete) {
 
                 boolean badUsername;
                 do { // enter username
@@ -250,7 +250,7 @@ public class Main {
         } else {
             boolean loginComplete = false;
             String username, password;
-            while (loginComplete == false) {
+            while (!loginComplete) {
                 do { //enter username
                     username = JOptionPane.showInputDialog(null, "Enter a username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
@@ -360,12 +360,22 @@ public class Main {
 
     public static void modifyStore(Scanner s, Marketplace m) { // GUI done
         List<Store> stores = m.listStoresForSeller();
+        String[] storeNames = new String[stores.size()];
+        for (int i = 0; i < stores.size(); i++) {
+            storeNames[i] = stores.get(i).getName();
+        }
 
         String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
                         "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
-                null, new List[]{stores}, null);
-
-        int storeIndex = readNumberOption(s, stores.size()) - 1;
+                null, storeNames, null);
+        
+        int storeIndex = -1;
+        for (int i = 0; i < stores.size(); i++) {
+            if (modifyingStore.equals(stores.get(i).getName())) {
+                storeIndex = i;
+                break;
+            }
+        }
         Store store = stores.get(storeIndex);
 
         String[] modifyOptions = {"1. List Sales", "2. Create new product", "3. List/Modify existing products",
@@ -505,11 +515,22 @@ public class Main {
 
     public static void modifyProducts(Scanner s, Marketplace m, Store store) { // GUI done, need to format products?
         List<Product> products = m.listProducts(store);
+        String[] productNames = new String[products.size()];
+        for (int i = 0; i < products.size(); i++) {
+            productNames[i] = products.get(i).getName();
+        }
+
         String modifyingProduct = (String) JOptionPane.showInputDialog(null, "Which product " +
                         "would you like to modify?", "===Products===", JOptionPane.QUESTION_MESSAGE,
-                null, new List[]{products}, null);
+                null, productNames, null);
 
-        int productIndex = readNumberOption(s, products.size()) - 1;
+        int productIndex = -1;
+        for (int i = 0; i < products.size(); i++) {
+            if (modifyingProduct.equals(products.get(i).getName())) {
+                productIndex = i;
+                break;
+            }
+        }
         Product p = products.get(productIndex);
 
         String[] modifyOptions = {"1. Edit product", "2. Delete product", "3. Cancel operation"};
