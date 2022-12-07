@@ -51,26 +51,111 @@ public class Main {
             boolean signupComplete = false;
             String username, password, email, isSellerStr;
             while (signupComplete == false) {
+
+                boolean badUsername;
                 do { // enter username
-                    username = JOptionPane.showInputDialog(null, "Please enter a " +
-                                    "username:",
+                    username = JOptionPane.showInputDialog(null, "Please create a username!\nNote: Username must contain at least one letter and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((username == null) || (username.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                 "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
-                    } // end if
-                } while ((username == null) || (username.isEmpty()));
+                        badUsername = true;
+                    } else {
+                        boolean hasLetter = false;
+                        boolean hasNumber = false;
+                        for (int i = 0; i < username.length(); i++) { // traverse length of given username
+                            if (Character.isDigit(username.charAt(i))) { // check for at least one number
+                                hasNumber = true;
+                            }
+                            if (Character.isLetter(username.charAt(i))) { // check for at least one letter
+                                hasLetter = true;
+                            }
+                        }
 
+                        if (hasNumber && hasLetter) {
+                            boolean alreadyTaken = false;
+                            for (int i = 0; i < Marketplace.users.size(); i++) {
+                                if (username.equals(Marketplace.users.get(i).getUsername())) {
+                                    alreadyTaken = true;
+                                    break;
+                                }
+                            }
+
+                            if (alreadyTaken) {
+                                JOptionPane.showMessageDialog(null, "I'm sorry, that username is already taken :(", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badUsername = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Thank you for creating a valid username :)", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+                                badUsername = false;
+                            }
+                        } else if (hasNumber) {
+                            JOptionPane.showMessageDialog(null, "Username is missing a letter. Please try again.", "Coffee " +
+                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            badUsername = true;
+                        } else if (hasLetter) {
+                            JOptionPane.showMessageDialog(null, "Username is missing a number. Please try again.", "Coffee " +
+                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            badUsername = true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Username is missing a letter and a number. Please try again.", "Coffee " +
+                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            badUsername = true;
+                        }
+                    }
+                } while (badUsername);
+
+                boolean badPassword;
                 do { // enter password
-                    password = JOptionPane.showInputDialog(null, "Please enter a password:",
+                    password = JOptionPane.showInputDialog(null, "Please enter a password!\nNote: Must contain at least six digits. Must contain at least one letter and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((password == null) || (password.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
-                    } // end if
-                } while ((password == null) || (password.isEmpty()));
+                        badPassword = true;
+                    } else {
+                        if (password.length() < 6) {
+                            JOptionPane.showMessageDialog(null, "Password is too short. Please try again.", "Coffee " +
+                                            "Shop MarketPlace",
+                                    JOptionPane.ERROR_MESSAGE);
+                            badPassword = true;
+                        } else { // password is longer than 6 characters
+                            boolean hasLetter = false;
+                            boolean hasNumber = false;
+                            for (int i = 0; i < password.length(); i++) { // traverse length of given username
+                                if (Character.isDigit(password.charAt(i))) { // check for at least one number
+                                    hasNumber = true;
+                                }
+                                if (Character.isLetter(password.charAt(i))) { // check for at least one letter
+                                    hasLetter = true;
+                                }
+                            }
 
+                            if (hasNumber && hasLetter) {
+                                JOptionPane.showMessageDialog(null, "Thank you for creating a valid password :)", "Coffee " +
+                                                "Shop MarketPlace",
+                                        JOptionPane.PLAIN_MESSAGE);
+                                badPassword = false;
+                            } else if (hasNumber) {
+                                JOptionPane.showMessageDialog(null, "Password is missing a letter. Please try again.", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badPassword = true;
+                            } else if (hasLetter) {
+                                JOptionPane.showMessageDialog(null, "Password is missing a number. Please try again.", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badPassword = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Password is missing a letter and a number. Please try again.", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badPassword = true;
+                            }
+                        }
+                    }
+                } while (badPassword);
+
+                boolean badEmail;
                 do { //enter email
                     email = JOptionPane.showInputDialog(null, "Please enter an email:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
@@ -78,11 +163,56 @@ public class Main {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
-                    } // end if
-                } while ((email == null) || (email.isEmpty()));
+                        badEmail = true;
+                    } else {
+                        boolean hasAtSign = false;
+                        boolean hasDot = false;
+
+                        for (int i = 0; i < email.length(); i++) { // traverse length of given username
+                            if (email.charAt(i) == 64) { // check for an @ sign, referencing an ascii table
+                                hasAtSign = true;
+                            }
+                            if (hasAtSign && (email.charAt(i) == 46)) { // check for a .extension, referencing an ascii table
+                                hasDot = true;
+                            }
+                        }
+
+                        if (hasAtSign && hasDot) {
+                            boolean alreadyTaken = false;
+                            for (int i = 0; i < Marketplace.users.size(); i++) {
+                                if (email.equals(Marketplace.users.get(i).getEmail())) {
+                                    alreadyTaken = true;
+                                    break;
+                                }
+                            }
+
+                            if (alreadyTaken) {
+                                JOptionPane.showMessageDialog(null, "It appears that email is already being used.\nPlease try a different email or login instead.\n", "Coffee " +
+                                                "Shop MarketPlace",
+                                        JOptionPane.ERROR_MESSAGE);
+                                badEmail = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Thank you for inputing a valid email :)", "Coffee " +
+                                                "Shop MarketPlace",
+                                        JOptionPane.PLAIN_MESSAGE);
+                                badEmail = false;
+                            }
+                        } else if (hasAtSign) {
+                            JOptionPane.showMessageDialog(null, "Email is missing a valid extension at the end.\nExample: .com", "Coffee " +
+                                            "Shop MarketPlace",
+                                    JOptionPane.ERROR_MESSAGE);
+                            badEmail = true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Email is improperly formatted.\nPlease ensure it includes an @ sign, and a valid extension (such as .com) at the end.", "Coffee " +
+                                            "Shop MarketPlace",
+                                    JOptionPane.ERROR_MESSAGE);
+                            badEmail = true;
+                        }
+                    }
+                } while (badEmail);
 
                 do { //enter seller
-                    isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller?",
+                    isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller? [yes/no]",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((isSellerStr == null) || (isSellerStr.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -176,7 +306,7 @@ public class Main {
                             "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE,
                     null, sellerOptions, null);
 
-            int choiceNum = Integer.parseInt(choice);
+            int choiceNum = Integer.parseInt(choice.substring(0,1));
             switch (choiceNum) {
                 case 1:
                     createStore(s, m);
