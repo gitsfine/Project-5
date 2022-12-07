@@ -287,24 +287,75 @@ public class Main {
                 "===Sales===", JOptionPane.PLAIN_MESSAGE); // show sales, user clicks "ok"
     }
 
-    public static void createNewProduct(Scanner s, Marketplace m, Store store) { // GUI to do
-        String name, milkType, coffeeType, syrup, special;
+    public static void createNewProduct(Scanner s, Marketplace m, Store store) { // GUI done
+        String name, milkType, coffeeType, syrup, special, priceString, quantityString;
         int price, quantity;
+        do { // enter name
+            name = JOptionPane.showInputDialog(null, "Please enter a name.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((name == null) || (name.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((name == null) || (name.isEmpty()));
 
-        System.out.println("Please enter a name:");
-        name = s.nextLine();
-        System.out.println("Please enter a milk type:");
-        milkType = s.nextLine();
-        System.out.println("Please enter a coffee type:");
-        coffeeType = s.nextLine();
-        System.out.println("Please enter a new syrup:");
-        syrup = s.nextLine();
-        System.out.println("Please enter the specials:");
-        special = s.nextLine();
-        System.out.println("Please enter the price as an integer:");
-        price = readNumberOption(s, Integer.MAX_VALUE);
-        System.out.println("Please enter the quantity as an integer:");
-        quantity = readNumberOption(s, Integer.MAX_VALUE);
+        do { // enter milk type
+            milkType = JOptionPane.showInputDialog(null, "Please enter a milk type.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((milkType == null) || (milkType.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((milkType == null) || (milkType.isEmpty()));
+
+        do { // enter coffee type
+            coffeeType = JOptionPane.showInputDialog(null, "Please enter a coffee type.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((coffeeType == null) || (coffeeType.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((coffeeType == null) || (coffeeType.isEmpty()));
+
+        do { // enter syrup
+            syrup = JOptionPane.showInputDialog(null, "Please enter a syrup.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((syrup == null) || (syrup.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((syrup == null) || (syrup.isEmpty()));
+
+        do { // enter specials
+            special = JOptionPane.showInputDialog(null, "Please enter the specials.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((special == null) || (special.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((special == null) || (special.isEmpty()));
+
+//        price = readNumberOption(s, Integer.MAX_VALUE);
+        do { // enter price
+            priceString = JOptionPane.showInputDialog(null, "Please enter a price as an " +
+                    "integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((priceString == null) || (priceString.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((priceString == null) || (priceString.isEmpty()));
+        price = Integer.parseInt(priceString);
+
+//        quantity = readNumberOption(s, Integer.MAX_VALUE);
+        do { // enter quantity
+            quantityString = JOptionPane.showInputDialog(null, "Please enter a quantity as " +
+                    "an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if ((quantityString == null) || (quantityString.isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while ((quantityString == null) || (quantityString.isEmpty()));
+        quantity = Integer.parseInt(quantityString);
 
         boolean status = m.createProduct(store, name, milkType, coffeeType, syrup, special, price, quantity);
         if (status == false) {
@@ -314,7 +365,7 @@ public class Main {
         }
     }
 
-    public static void modifyProducts(Scanner s, Marketplace m, Store store) { // GUI done
+    public static void modifyProducts(Scanner s, Marketplace m, Store store) { // GUI done, need to format products?
         List<Product> products = m.listProducts(store);
         String modifyingProduct = (String) JOptionPane.showInputDialog(null, "Which product " +
                         "would you like to modify?", "===Products===", JOptionPane.QUESTION_MESSAGE,
