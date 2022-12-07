@@ -82,24 +82,29 @@ public class Main {
                             }
 
                             if (alreadyTaken) {
-                                JOptionPane.showMessageDialog(null, "I'm sorry, that username is already taken :(", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "I'm sorry, that" +
+                                        " username is already taken :(", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                                 badUsername = true;
                             } else {
-                                JOptionPane.showMessageDialog(null, "Thank you for creating a valid username :)", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
+                                        "a valid username :)", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
                                 badUsername = false;
                             }
                         } else if (hasNumber) {
-                            JOptionPane.showMessageDialog(null, "Username is missing a letter. Please try again.", "Coffee " +
+                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+                                    "letter. Please try again.", "Coffee " +
                                     "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                             badUsername = true;
                         } else if (hasLetter) {
-                            JOptionPane.showMessageDialog(null, "Username is missing a number. Please try again.", "Coffee " +
+                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+                                    "number. Please try again.", "Coffee " +
                                     "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                             badUsername = true;
                         } else {
-                            JOptionPane.showMessageDialog(null, "Username is missing a letter and a number. Please try again.", "Coffee " +
+                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+                                    "letter and a number. Please try again.", "Coffee " +
                                     "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                             badUsername = true;
                         }
@@ -108,7 +113,9 @@ public class Main {
 
                 boolean badPassword;
                 do { // enter password
-                    password = JOptionPane.showInputDialog(null, "Please enter a password!\nNote: Must contain at least six digits. Must contain at least one letter and one number.",
+                    password = JOptionPane.showInputDialog(null, "Please enter a password!" +
+                                    "\nNote: Must contain at least six digits. Must contain at least one letter " +
+                                    "and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((password == null) || (password.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -117,7 +124,8 @@ public class Main {
                         badPassword = true;
                     } else {
                         if (password.length() < 6) {
-                            JOptionPane.showMessageDialog(null, "Password is too short. Please try again.", "Coffee " +
+                            JOptionPane.showMessageDialog(null, "Password is too short. " +
+                                            "Please try again.", "Coffee " +
                                             "Shop MarketPlace",
                                     JOptionPane.ERROR_MESSAGE);
                             badPassword = true;
@@ -134,20 +142,24 @@ public class Main {
                             }
 
                             if (hasNumber && hasLetter) {
-                                JOptionPane.showMessageDialog(null, "Thank you for creating a valid password :)", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
+                                                "a valid password :)", "Coffee " +
                                                 "Shop MarketPlace",
                                         JOptionPane.PLAIN_MESSAGE);
                                 badPassword = false;
                             } else if (hasNumber) {
-                                JOptionPane.showMessageDialog(null, "Password is missing a letter. Please try again.", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "Password is missing " +
+                                        "a letter. Please try again.", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                                 badPassword = true;
                             } else if (hasLetter) {
-                                JOptionPane.showMessageDialog(null, "Password is missing a number. Please try again.", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "Password is missing " +
+                                        "a number. Please try again.", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                                 badPassword = true;
                             } else {
-                                JOptionPane.showMessageDialog(null, "Password is missing a letter and a number. Please try again.", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "Password is missing " +
+                                        "a letter and a number. Please try again.", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                                 badPassword = true;
                             }
@@ -172,7 +184,8 @@ public class Main {
                             if (email.charAt(i) == 64) { // check for an @ sign, referencing an ascii table
                                 hasAtSign = true;
                             }
-                            if (hasAtSign && (email.charAt(i) == 46)) { // check for a .extension, referencing an ascii table
+                            if (hasAtSign && (email.charAt(i) == 46)) { // check for a .extension, referencing an
+                                // ascii table
                                 hasDot = true;
                             }
                         }
@@ -187,23 +200,29 @@ public class Main {
                             }
 
                             if (alreadyTaken) {
-                                JOptionPane.showMessageDialog(null, "It appears that email is already being used.\nPlease try a different email or login instead.\n", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "It appears that email " +
+                                                "is already being used.\nPlease try a different email or login " +
+                                                "instead.\n", "Coffee " +
                                                 "Shop MarketPlace",
                                         JOptionPane.ERROR_MESSAGE);
                                 badEmail = true;
                             } else {
-                                JOptionPane.showMessageDialog(null, "Thank you for inputing a valid email :)", "Coffee " +
+                                JOptionPane.showMessageDialog(null, "Thank you for inputting" +
+                                                " a valid email :)", "Coffee " +
                                                 "Shop MarketPlace",
                                         JOptionPane.PLAIN_MESSAGE);
                                 badEmail = false;
                             }
                         } else if (hasAtSign) {
-                            JOptionPane.showMessageDialog(null, "Email is missing a valid extension at the end.\nExample: .com", "Coffee " +
+                            JOptionPane.showMessageDialog(null, "Email is missing a valid " +
+                                            "extension at the end.\nExample: .com", "Coffee " +
                                             "Shop MarketPlace",
                                     JOptionPane.ERROR_MESSAGE);
                             badEmail = true;
                         } else {
-                            JOptionPane.showMessageDialog(null, "Email is improperly formatted.\nPlease ensure it includes an @ sign, and a valid extension (such as .com) at the end.", "Coffee " +
+                            JOptionPane.showMessageDialog(null, "Email is improperly " +
+                                            "formatted.\nPlease ensure it includes an @ sign, and a valid " +
+                                            "extension (such as .com) at the end.", "Coffee " +
                                             "Shop MarketPlace",
                                     JOptionPane.ERROR_MESSAGE);
                             badEmail = true;
@@ -212,7 +231,8 @@ public class Main {
                 } while (badEmail);
 
                 do { //enter seller
-                    isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller? [yes/no]",
+                    isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller? " +
+                                    "[yes/no]",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((isSellerStr == null) || (isSellerStr.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -260,18 +280,6 @@ public class Main {
         String inputStr = "";
         int input = 0;
 
-        //old proj4 code
-//        while (input <= 0 || input > max) {
-//            //while the next value is not an int
-//            while (!s.hasNextInt()) {
-//                s.nextLine();
-//                System.out.println("Please enter a valid number!");
-//            }
-//            input = s.nextInt();
-//            s.nextLine();
-//        }
-//        return input;
-
         while (input <= 0 || input > max) {
             //while the next value is not an int
             do {
@@ -290,6 +298,7 @@ public class Main {
                         "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null,
                 decendingOptions, null);
 
+//        int choiceSubInt = Integer.parseInt(choice.substring(0, 1));
         int option = readNumberOption(s, 2);
         return option == 2;
     }
@@ -306,7 +315,7 @@ public class Main {
                             "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE,
                     null, sellerOptions, null);
 
-            int choiceNum = Integer.parseInt(choice.substring(0,1));
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
             switch (choiceNum) {
                 case 1:
                     createStore(s, m);
@@ -366,9 +375,8 @@ public class Main {
                         "to perform!", "===Your Stores===", JOptionPane.QUESTION_MESSAGE, null,
                 modifyOptions, null);
 
-        int promptChoice = readNumberOption(s, 6);
-
-        switch (promptChoice) {
+        int choiceNum = Integer.parseInt(choice.substring(0, 1));
+        switch (choiceNum) {
             case 1:
                 listSales(store);
                 break;
@@ -510,9 +518,9 @@ public class Main {
                         "to perform!", "===Products===", JOptionPane.QUESTION_MESSAGE,
                 null, modifyOptions, null);
 
-        int productOption = readNumberOption(s, 3);
+        int choiceNum = Integer.parseInt(choice.substring(0, 1));
         boolean status = false;
-        switch (productOption) {
+        switch (choiceNum) {
             case 1:
                 String name, milkType, coffeeType, syrup, special, priceString, quantityString;
                 int price, quantity;
@@ -553,7 +561,8 @@ public class Main {
                 } while ((syrup == null) || (syrup.isEmpty()));
 
                 do { // enter new specials
-                    special = JOptionPane.showInputDialog(null, "Please enter the new specials.",
+                    special = JOptionPane.showInputDialog(null, "Please enter the new " +
+                                    "specials.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((special == null) || (special.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -612,9 +621,8 @@ public class Main {
             String choice = (String) JOptionPane.showInputDialog(null, "Select an option to " +
                             "perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null,
                     customerOptions, null);
-            // how to get selected choice from GUI into code?
-            int promptChoice = readNumberOption(s, 7);
-            switch (promptChoice) {
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            switch (choiceNum) {
                 case 1:
                     listAllStores(s, m);
                     break;
@@ -688,11 +696,10 @@ public class Main {
         choice = (String) JOptionPane.showInputDialog(null, "Select an option to preform!",
                 "===Cart===", JOptionPane.QUESTION_MESSAGE, null, cartOptions,
                 null);
-        // how to get selected cart choice from GUI into code?
-        int cartOption = readNumberOption(s, 3);
 
+        int choiceNum = Integer.parseInt(choice.substring(0, 1));
         boolean status = false;
-        switch (cartOption) {
+        switch (choiceNum) {
             case 1:
                 status = m.checkoutCart();
                 break;
@@ -730,11 +737,10 @@ public class Main {
         choice = (String) JOptionPane.showInputDialog(null, "Select an option to preform!",
                 "===Products===", JOptionPane.QUESTION_MESSAGE, null, productOptions,
                 null);
-        // how to get selected cart choice from GUI into code?
-        int purchaseOption = readNumberOption(s, 3);
+        int choiceNum = Integer.parseInt(choice.substring(0, 1));
 
         boolean status = false;
-        switch (purchaseOption) {
+        switch (choiceNum) {
             case 1:
                 status = m.buyNow(p);
                 break;
