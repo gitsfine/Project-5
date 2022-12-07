@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Marketplace implements java.io.Serializable {
-    private ArrayList<User> users;
+    public static ArrayList<User> users;
     private ArrayList<Store> stores;
 
     private User signedInUser;
@@ -21,14 +21,6 @@ public class Marketplace implements java.io.Serializable {
 
     public String getLoggedInUsername() {
         return signedInUser.getUsername();
-    }
-
-    public void setSignedInUser(User signedInUser) {
-        this.signedInUser = signedInUser;
-    }
-
-    public User getSignedInUser() {
-        return signedInUser;
     }
 
     public boolean createAccount(String username, String password, String email, boolean isSeller) {
@@ -67,11 +59,11 @@ public class Marketplace implements java.io.Serializable {
     private Customer getCustomer() {
         if (signedInUser instanceof Customer) {
             return (Customer) signedInUser;
-        } else {
+        }
+        else {
             throw new Error("Seller using customer action");
         }
     }
-
     public List<Store> listAllStores() {
         return stores;
     }
@@ -82,7 +74,7 @@ public class Marketplace implements java.io.Serializable {
 
     public List<Product> searchProducts(String item) {
         ArrayList<Product> matchedProducts = new ArrayList<>();
-        for (Store s : stores) {
+        for(Store s : stores) {
             for (Product p : s.getProducts()) {
                 if (p.toCombinedString().indexOf(item) > 0) {
                     matchedProducts.add(p);
@@ -123,17 +115,17 @@ public class Marketplace implements java.io.Serializable {
         ArrayList<String> dashboardRow = new ArrayList<String>();
 
         for (Store s : stores) {
-            dashboardRow.add(s.getSales().size() + "," + s.getName());
+            dashboardRow.add(s.getSales().size()+ ","+ s.getName());
         }
 
         // sort by sale count
-        if (!isDsc) {
-            dashboardRow.sort((String o1, String o2) -> 1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+        if(!isDsc) {
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2) -> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         }
 
-        return output + String.join("\n", dashboardRow) + "\n";
+        return output + String.join("\n",dashboardRow) + "\n";
     }
 
     public String dashboardPurchasesByStore(boolean isDsc) {
@@ -151,21 +143,21 @@ public class Marketplace implements java.io.Serializable {
                 purchases.add(0);
                 pos = saleStores.indexOf(saleStore);
             }
-            purchases.set(pos, purchases.get(pos) + 1);
+            purchases.set(pos,purchases.get(pos)+1);
         }
 
-        for (int i = 0; i < saleStores.size(); i++) {
-            dashboardRow.add(purchases.get(i) + "," + saleStores.get(i).getName());
+        for (int i = 0; i<saleStores.size(); i++) {
+            dashboardRow.add(purchases.get(i)+","+saleStores.get(i).getName());
         }
 
         // sort by sale count
-        if (!isDsc) {
-            dashboardRow.sort((String o1, String o2) -> 1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+        if(!isDsc) {
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2) -> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         }
 
-        return output + String.join("\n", dashboardRow) + "\n";
+        return output + String.join("\n",dashboardRow) + "\n";
     }
 
     public String exportDashboardPurchasesByStore(String filepath) {
@@ -184,7 +176,8 @@ public class Marketplace implements java.io.Serializable {
     private Seller getSeller() {
         if (signedInUser instanceof Seller) {
             return (Seller) signedInUser;
-        } else {
+        }
+        else {
             throw new Error("Customer using seller action");
         }
     }
@@ -239,14 +232,14 @@ public class Marketplace implements java.io.Serializable {
                 pos = customers.indexOf(saleBuyer);
             }
             int price = sale.getProduct().getPrice();
-            revenue.set(pos, revenue.get(pos) + price);
+            revenue.set(pos, revenue.get(pos)+price);
         }
 
-        for (int i = 0; i < customers.size(); i++) {
-            listRow.add(customers.get(i).getUsername() + "," + revenue.get(i));
+        for (int i = 0; i<customers.size(); i++) {
+            listRow.add(customers.get(i).getUsername()+","+revenue.get(i));
         }
 
-        return output + String.join("\n", listRow) + "\n";
+        return output + String.join("\n",listRow) + "\n";
     }
 
     public String getProductList(Store s) {
@@ -259,7 +252,7 @@ public class Marketplace implements java.io.Serializable {
             listRow.add(p.toExport());
         }
 
-        return output + String.join("\n", listRow) + "\n";
+        return output + String.join("\n",listRow) + "\n";
     }
 
     public String exportProductList(Store s, String filepath) {
@@ -304,21 +297,21 @@ public class Marketplace implements java.io.Serializable {
                 purchases.add(0);
                 pos = customers.indexOf(saleBuyer);
             }
-            purchases.set(pos, purchases.get(pos) + 1);
+            purchases.set(pos, purchases.get(pos)+1);
         }
 
-        for (int i = 0; i < customers.size(); i++) {
-            dashboardRow.add(purchases.get(i) + "," + customers.get(i).getUsername());
+        for (int i = 0; i<customers.size(); i++) {
+            dashboardRow.add(purchases.get(i)+","+customers.get(i).getUsername());
         }
 
         // sort by sale count
-        if (!isDsc) {
-            dashboardRow.sort((String o1, String o2) -> 1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+        if(!isDsc) {
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2) -> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         }
 
-        return output + String.join("\n", dashboardRow) + "\n";
+        return output + String.join("\n",dashboardRow) + "\n";
     }
 
     public String dashboardProductNumSales(boolean isDsc) {
@@ -336,21 +329,21 @@ public class Marketplace implements java.io.Serializable {
                 purchases.add(0);
                 pos = products.indexOf(saleProduct);
             }
-            purchases.set(pos, purchases.get(pos) + 1);
+            purchases.set(pos,purchases.get(pos)+1);
         }
 
-        for (int i = 0; i < products.size(); i++) {
-            dashboardRow.add(purchases.get(i) + "," + products.get(i).getName());
+        for (int i = 0; i<products.size(); i++) {
+            dashboardRow.add(purchases.get(i)+","+products.get(i).getName());
         }
 
         // sort by sale count
-        if (!isDsc) {
-            dashboardRow.sort((String o1, String o2) -> 1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+        if(!isDsc) {
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2) -> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
         }
 
-        return output + String.join("\n", dashboardRow) + "\n";
+        return output + String.join("\n",dashboardRow) + "\n";
     }
     // End seller actions
 }
