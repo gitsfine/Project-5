@@ -44,8 +44,17 @@ public class Marketplace implements java.io.Serializable {
         return true;
     }
 
-    public void setSignedInUser(User signedInUser) {
-        this.signedInUser = signedInUser;
+    public void setSignedInUser(User u) {
+        if(u == null) {
+            signedInUser = null;
+            return;
+        }
+        for (User user : users) {
+            if (user.getUsername().equals(u.getUsername()) && user.getPassword().equals(u.getPassword())) {
+                // user name and password match
+                signedInUser = user;
+            }
+        }
     }
 
     public User getSignedInUser() {
