@@ -7,7 +7,6 @@ import java.util.Scanner;
 import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) {
         Marketplace marketplace = loadMarketplace();
         if (marketplace == null) {
@@ -18,7 +17,7 @@ public class Main {
         saveMarketplace(marketplace);
     }
 
-    public static boolean startUserInput(Scanner s, Marketplace m) {
+    public static boolean startUserInput(Scanner s, Marketplace m) { // GUI done
         JOptionPane.showMessageDialog(null, "Welcome to Coffee Shop MarketPlace!",
                 "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
 
@@ -33,10 +32,8 @@ public class Main {
         return true;
     }
 
-    public static boolean signupOrLogin(Scanner s, Marketplace m) {
+    public static boolean signupOrLogin(Scanner s, Marketplace m) { // GUI done
         String newUserPromptInput = "";
-
-        //do-while makes sure they answer when prompted
         do {
             newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are " +
                             "you a new user? [yes/no/quit]", "Coffee Shop MarketPlace",
@@ -56,7 +53,7 @@ public class Main {
             while (signupComplete == false) {
                 do { // enter username
                     username = JOptionPane.showInputDialog(null, "Please enter a " +
-                                    "username?",
+                                    "username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((username == null) || (username.isEmpty())) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -129,13 +126,11 @@ public class Main {
         return true;
     }
 
-    //need to do
-    public static int readNumberOption(Scanner s, int max) {
+    public static int readNumberOption(Scanner s, int max) { // GUI done
         String inputStr = "";
         int input = 0;
 
         //old proj4 code
-
 //        while (input <= 0 || input > max) {
 //            //while the next value is not an int
 //            while (!s.hasNextInt()) {
@@ -169,26 +164,21 @@ public class Main {
         return option == 2;
     }
 
-    public static void runSellerHandler(Scanner s, Marketplace m) {
+    public static void runSellerHandler(Scanner s, Marketplace m) { // GUI done
         JOptionPane.showMessageDialog(null, "Welcome seller: " + m.getLoggedInUsername(),
                 "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
         String[] sellerOptions = {"1. Create new store", "2. View or modify your stores",
                 "3. Dashboard of sale count by customer", "4. Dashboard of sale count by product", "5. Log out"};
 
-        String choice = "";
         boolean isActive = true;
         while (isActive) {
-
-            choice = (String) JOptionPane.showInputDialog(null, "Select an option to perform!",
-                    "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null, sellerOptions,
-                    null);
+            String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                            "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE,
+                    null, sellerOptions, null);
 
             int choiceNum = Integer.parseInt(choice);
-
-            //not going into?
             switch (choiceNum) {
                 case 1:
-                    System.out.println("Working!");
                     createStore(s, m);
                     break;
                 case 2:
@@ -205,12 +195,10 @@ public class Main {
                     break;
             }
         }
-
     }
 
-    public static void createStore(Scanner s, Marketplace m) {
+    public static void createStore(Scanner s, Marketplace m) { // GUI done
         String storeName;
-
         do {
             storeName = JOptionPane.showInputDialog(null, "Enter Store Name:",
                     "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
@@ -218,8 +206,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                 "Shop MarketPlace",
                         JOptionPane.ERROR_MESSAGE);
-
-            } //end if
+            } // end if
         } while ((storeName == null) || (storeName.isEmpty()));
 
         boolean status = m.createStore(storeName);
@@ -232,25 +219,23 @@ public class Main {
         }
     }
 
-    //need to do
-    public static void modifyStore(Scanner s, Marketplace m) {
+    public static void modifyStore(Scanner s, Marketplace m) { // GUI done
         List<Store> stores = m.listStoresForSeller();
-        System.out.println("===Your Stores===");
-        for (int i = 0; i < stores.size(); i++) {
-            System.out.println((i + 1) + ". " + stores.get(i).getName());
-        }
 
-        System.out.println("Select store to view or modify");
+        String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
+                        "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
+                null, new List[]{stores}, null);
+
         int storeIndex = readNumberOption(s, stores.size()) - 1;
         Store store = stores.get(storeIndex);
 
-        System.out.println("Choose an option");
-        System.out.println("1. List sales");
-        System.out.println("2. Create new product");
-        System.out.println("3. List/Modify existing products"); //-> delete, edit
-        System.out.println("4. Dashboard of revenue by customer");
-        System.out.println("5. Export products as csv.");
-        System.out.println("6. Import products as csv.");
+        String[] modifyOptions = {"1. List Sales", "2. Create new product", "3. List/Modify existing products",
+                "4. Dashboard of revenue by customer", "5. Export products as csv.", "6. Import products as csv."};
+
+        String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                        "to perform!", "===Your Stores===", JOptionPane.QUESTION_MESSAGE, null,
+                modifyOptions, null);
+
         int promptChoice = readNumberOption(s, 6);
 
         switch (promptChoice) {
@@ -267,13 +252,27 @@ public class Main {
                 System.out.println(m.customerRevenueSaleList(store));
                 break;
             case 5:
-                System.out.println("Enter export filepath.");
-                System.out.println(m.exportProductList(store, s.nextLine()));
+                String filePath;
+                do {
+                    filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
+                            "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
+                    if ((filePath == null) || (filePath.isEmpty())) {
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                    } //end if
+                } while ((filePath == null) || (filePath.isEmpty()));
                 break;
             case 6:
-                System.out.println("Enter import filepath.");
                 boolean status = m.importProductList(store, s.nextLine());
-                if (status == false) {
+                do {
+                    filePath = JOptionPane.showInputDialog(null, "Enter import filepath.",
+                            "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
+                    if ((filePath == null) || (filePath.isEmpty())) {
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                    } //end if
+                } while ((filePath == null) || (filePath.isEmpty()));
+                if (!status) {
                     System.out.println("Failed to import all products");
                 } else {
                     System.out.println("Done!");
@@ -282,13 +281,13 @@ public class Main {
         }
     }
 
-   public static void listSales(Store store) {
+    public static void listSales(Store store) { // GUI done, need to format sales?
         List<Sale> sales = store.getSales();
         JOptionPane.showMessageDialog(null, "Sales: " + sales,
-                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE); // show sales, user clicks "ok"
+                "===Sales===", JOptionPane.PLAIN_MESSAGE); // show sales, user clicks "ok"
     }
 
-    public static void createNewProduct(Scanner s, Marketplace m, Store store) {
+    public static void createNewProduct(Scanner s, Marketplace m, Store store) { // GUI to do
         String name, milkType, coffeeType, syrup, special;
         int price, quantity;
 
@@ -317,12 +316,8 @@ public class Main {
 
     public static void modifyProducts(Scanner s, Marketplace m, Store store) { // GUI done
         List<Product> products = m.listProducts(store);
-
-        JOptionPane.showMessageDialog(null, "Products: " + products,
-                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE); // show sales, user clicks "ok"
-
         String modifyingProduct = (String) JOptionPane.showInputDialog(null, "Which product " +
-                        "would you like to modify?", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE,
+                        "would you like to modify?", "===Products===", JOptionPane.QUESTION_MESSAGE,
                 null, new List[]{products}, null);
 
         int productIndex = readNumberOption(s, products.size()) - 1;
@@ -331,7 +326,7 @@ public class Main {
         String[] modifyOptions = {"1. Edit product", "2. Delete product", "3. Cancel operation"};
 
         String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
-                        "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE,
+                        "to perform!", "===Products===", JOptionPane.QUESTION_MESSAGE,
                 null, modifyOptions, null);
 
         int productOption = readNumberOption(s, 3);
@@ -342,56 +337,56 @@ public class Main {
                 int price, quantity;
                 do { // enter new name
                     name = JOptionPane.showInputDialog(null, "Please enter a new name.",
-                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((name == null) || (name.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((name == null) || (name.isEmpty()));
 
                 do { // enter new milk type
                     milkType = JOptionPane.showInputDialog(null, "Please enter a new milk" +
-                                    " type.", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((milkType == null) || (milkType.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((milkType == null) || (milkType.isEmpty()));
 
                 do { // enter new coffee type
                     coffeeType = JOptionPane.showInputDialog(null, "Please enter a new coffee" +
-                                    " type.", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((coffeeType == null) || (coffeeType.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((coffeeType == null) || (coffeeType.isEmpty()));
 
                 do { // enter new syrup
                     syrup = JOptionPane.showInputDialog(null, "Please enter a new syrup.",
-                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((syrup == null) || (syrup.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((syrup == null) || (syrup.isEmpty()));
 
                 do { // enter new specials
                     special = JOptionPane.showInputDialog(null, "Please enter the new specials.",
-                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((special == null) || (special.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((special == null) || (special.isEmpty()));
 
 //                price = readNumberOption(s, Integer.MAX_VALUE);
                 do { // enter new price
                     priceString = JOptionPane.showInputDialog(null, "Please enter a new " +
-                            "price as an integer.", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            "price as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((priceString == null) || (priceString.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((priceString == null) || (priceString.isEmpty()));
                 price = Integer.parseInt(priceString);
@@ -399,10 +394,10 @@ public class Main {
 //                quantity = readNumberOption(s, Integer.MAX_VALUE);
                 do { // enter new quantity
                     quantityString = JOptionPane.showInputDialog(null, "Please enter a new " +
-                            "quantity as an integer.", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                            "quantity as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if ((quantityString == null) || (quantityString.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please answer!",
+                                "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
                 } while ((quantityString == null) || (quantityString.isEmpty()));
                 quantity = Integer.parseInt(quantityString);
@@ -424,7 +419,7 @@ public class Main {
         }
     }
 
-    public static void runCustomerHandler(Scanner s, Marketplace m) {
+    public static void runCustomerHandler(Scanner s, Marketplace m) { // GUI done
         JOptionPane.showMessageDialog(null, "Welcome customer: " + m.getLoggedInUsername(),
                 "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE); // show username, user clicks "ok"
 
@@ -473,7 +468,7 @@ public class Main {
         }
     }
 
-    public static void listAllStores(Scanner s, Marketplace m) {
+    public static void listAllStores(Scanner s, Marketplace m) { // GUI done
         List<Store> stores = m.listAllStores();
         String store = "";
         store = (String) JOptionPane.showInputDialog(null, "Select a store to view products.",
@@ -487,14 +482,13 @@ public class Main {
         shopFromProducts(s, m, storeProducts);
     }
 
-    public static void searchForProduct(Scanner s, Marketplace m) {
+    public static void searchForProduct(Scanner s, Marketplace m) { // GUI done
         String searchTerm;
         do {
             searchTerm = JOptionPane.showInputDialog(null, "Enter search criteria.",
-                    "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    "===Stores===", JOptionPane.QUESTION_MESSAGE);
             if ((searchTerm == null) || (searchTerm.isEmpty())) {
-                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
-                                "MarketPlace",
+                JOptionPane.showMessageDialog(null, "Please answer!", "===Stores===",
                         JOptionPane.ERROR_MESSAGE);
             } //end if
         } while ((searchTerm == null) || (searchTerm.isEmpty()));
@@ -503,9 +497,8 @@ public class Main {
         shopFromProducts(s, m, storeProducts);
     }
 
-    public static void viewCart(Scanner s, Marketplace m) {
+    public static void viewCart(Scanner s, Marketplace m) { // GUI done
         List<Product> cart = m.viewCart();
-
         JOptionPane.showMessageDialog(null, "Current cart: " + cart,
                 "===Cart===", JOptionPane.PLAIN_MESSAGE); // show cart, user clicks "ok"
 
@@ -544,7 +537,7 @@ public class Main {
         }
     }
 
-    public static void shopFromProducts(Scanner s, Marketplace m, List<Product> storeProducts) { // Kate GUI
+    public static void shopFromProducts(Scanner s, Marketplace m, List<Product> storeProducts) { // GUI done
         String choice;
         choice = (String) JOptionPane.showInputDialog(null, "Select a product.",
                 "===Products===", JOptionPane.QUESTION_MESSAGE, null, new List[]{storeProducts},
