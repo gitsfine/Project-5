@@ -158,11 +158,13 @@ public class Main {
         return input;
     }
 
-    //need to do
-    public static boolean promptDecending(Scanner s) {
-        System.out.println("Choose an option");
-        System.out.println("1. Ascending");
-        System.out.println("2. Descending");
+    public static boolean promptDecending(Scanner s) { // GUI done
+        String[] decendingOptions = {"1. Ascending", "2. Descending"};
+
+        String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                        "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null,
+                decendingOptions, null);
+
         int option = readNumberOption(s, 2);
         return option == 2;
     }
