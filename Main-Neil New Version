@@ -1,10 +1,16 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Scanner;
 import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,9 +23,21 @@ public class Main {
         saveMarketplace(marketplace);
     }
 
+
     public static boolean startUserInput(Scanner s, Marketplace m) { // GUI done
         JOptionPane.showMessageDialog(null, "Welcome to Coffee Shop MarketPlace!",
                 "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+
+        // beginning of cancel button fix
+        JFrame frame = null;
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Terminate the program after the close button is clicked.
+                System.exit(0);
+            }
+        });
+
 
         boolean status = signupOrLogin(s, m);
         if (status == false)
@@ -50,7 +68,7 @@ public class Main {
         if (newUserPromptInput.equals("yes")) {
             boolean signupComplete = false;
             String username, password, email, isSellerStr;
-            while (!signupComplete) {
+            while (signupComplete == false) {
 
                 boolean badUsername;
                 do { // enter username
@@ -250,7 +268,7 @@ public class Main {
         } else {
             boolean loginComplete = false;
             String username, password;
-            while (!loginComplete) {
+            while (loginComplete == false) {
                 do { //enter username
                     username = JOptionPane.showInputDialog(null, "Enter a username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
@@ -360,22 +378,12 @@ public class Main {
 
     public static void modifyStore(Scanner s, Marketplace m) { // GUI done
         List<Store> stores = m.listStoresForSeller();
-        String[] storeNames = new String[stores.size()];
-        for (int i = 0; i < stores.size(); i++) {
-            storeNames[i] = stores.get(i).getName();
-        }
 
         String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
                         "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
-                null, storeNames, null);
-        
-        int storeIndex = -1;
-        for (int i = 0; i < stores.size(); i++) {
-            if (modifyingStore.equals(stores.get(i).getName())) {
-                storeIndex = i;
-                break;
-            }
-        }
+                null, new List[]{stores}, null);
+
+        int storeIndex = readNumberOption(s, stores.size()) - 1;
         Store store = stores.get(storeIndex);
 
         String[] modifyOptions = {"1. List Sales", "2. Create new product", "3. List/Modify existing products",
@@ -515,22 +523,11 @@ public class Main {
 
     public static void modifyProducts(Scanner s, Marketplace m, Store store) { // GUI done, need to format products?
         List<Product> products = m.listProducts(store);
-        String[] productNames = new String[products.size()];
-        for (int i = 0; i < products.size(); i++) {
-            productNames[i] = products.get(i).getName();
-        }
-
         String modifyingProduct = (String) JOptionPane.showInputDialog(null, "Which product " +
                         "would you like to modify?", "===Products===", JOptionPane.QUESTION_MESSAGE,
-                null, productNames, null);
+                null, new List[]{products}, null);
 
-        int productIndex = -1;
-        for (int i = 0; i < products.size(); i++) {
-            if (modifyingProduct.equals(products.get(i).getName())) {
-                productIndex = i;
-                break;
-            }
-        }
+        int productIndex = readNumberOption(s, products.size()) - 1;
         Product p = products.get(productIndex);
 
         String[] modifyOptions = {"1. Edit product", "2. Delete product", "3. Cancel operation"};
