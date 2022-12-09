@@ -1,14 +1,34 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import java.util.*;
 
-public class Main {
+public class Main implements Runnable {
+
+    /* action listener for buttons */
+//    ActionListener actionListener = new ActionListener() {
+
+
+//        @Override
+//        //need?
+//        public void actionPerformed(ActionEvent e) {
+//            if (e.getSource() == cancelButton) {
+//                paint.clear();
+//            }
+//        }
+
+    static JButton enterButton; // button to go to next GUI
+
+
     public static void main(String[] args) {
         Marketplace marketplace = loadMarketplace();
         if (marketplace == null) {
@@ -19,11 +39,48 @@ public class Main {
         saveMarketplace(marketplace);
     }
 
-    public static boolean startUserInput(Scanner s, Marketplace m) { // GUI done
-        JOptionPane.showMessageDialog(null, "Welcome to Coffee Shop MarketPlace!",
-                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
 
-        boolean status = signupOrLogin(s, m);
+    public static boolean startUserInput(Scanner s, Marketplace m) {
+
+        //welcome GUI
+        JFrame welcomeFr = new JFrame("Coffee Shop MarketPlace");
+        Container content = welcomeFr.getContentPane();
+        content.setLayout(new BorderLayout());
+        enterButton = new JButton("Enter");
+
+        //add them to our frame by creating a JPanel and adding the panel to the content container.
+        JPanel panel = new JPanel();
+        panel.add(enterButton);
+        content.add(panel, BorderLayout.SOUTH);
+
+        //add text
+        welcomeFr.add(new JLabel("Welcome to Coffee Shop MarketPlace!"), BorderLayout.CENTER);
+
+        //set the size, location, close operation, and visibility
+        welcomeFr.setSize(400, 200);
+        welcomeFr.setLocationRelativeTo(null);
+        welcomeFr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        welcomeFr.setVisible(true);
+
+        boolean status = true;
+        boolean stat = true;
+
+        //for button to function
+        enterButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Main ma = new Main();
+
+                boolean stat = ma.signupOrLogin(s, m);
+            }
+        });
+
+
+        if (stat)
+            status = true;
+        else {
+            status = false;
+        }
+
         if (!status)
             return false;
         if (m.isLoggedInUserSeller()) {
@@ -32,7 +89,13 @@ public class Main {
             runCustomerHandler(s, m);
         }
         return true;
+
     }
+
+
+//    public void loginFr(){
+//
+//    }
 
     public static boolean signupOrLogin(Scanner s, Marketplace m) { // GUI done
         String newUserPromptInput = "";
@@ -826,5 +889,10 @@ public class Main {
         } catch (Exception e) {
             // nothing
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }
