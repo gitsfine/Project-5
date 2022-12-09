@@ -98,7 +98,6 @@ public class Main implements Runnable {
             runCustomerHandler(s, m);
         }
         return true;
-
     }
 
 
@@ -109,8 +108,6 @@ public class Main implements Runnable {
     public static boolean signupOrLogin(Scanner s, Marketplace m) { // GUI done
         String newUserPromptInput = "";
 
-        //goes into
-
         do {
 
             //old GUI
@@ -120,48 +117,73 @@ public class Main implements Runnable {
 
 
             //new newUserPromptInput GUI
-            JFrame nUPIFr = new JFrame("Coffee Shop MarketPlace");
-            Container content = nUPIFr.getContentPane();
+            JFrame newUserFrame = new JFrame("Coffee Shop MarketPlace");
+            Container content = newUserFrame.getContentPane();
             content.setLayout(new BorderLayout());
             enterButton = new JButton("Enter");
             cancelButton = new JButton("Cancel");
 
-            //add them to our frame by creating a JPanel and adding the panel to the content container.
             JPanel panel = new JPanel();
             panel.add(enterButton);
             panel.add(cancelButton);
             panel.add(strTextField);
             content.add(panel, BorderLayout.SOUTH);
 
-            //add text
-            nUPIFr.add(new JLabel("Let's get started! Are you a new user? [yes/no/quit]"), BorderLayout.CENTER);
+            newUserFrame.add(new JLabel("Let's get started! Are you a new user? [yes/no/quit]"), BorderLayout.CENTER);
 
-            //set the size, location, close operation, and visibility
-            nUPIFr.setSize(400, 200);
-            nUPIFr.setLocationRelativeTo(null);
-            nUPIFr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            nUPIFr.setVisible(true);
+            newUserFrame.setSize(400, 200);
+            newUserFrame.setLocationRelativeTo(null);
+            newUserFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            newUserFrame.setVisible(true);
 
-            //for button to function
             enterButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     String newUserPromptInput = strTextField.getText();
                 }
             });
 
-            //System.out.println(newUserPromptInput);
-
-            //for button to function
             cancelButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    nUPIFr.setVisible(false);
+                    newUserFrame.setVisible(false);
                 }
             });
-            
 
             if ((newUserPromptInput == null) || (newUserPromptInput.isEmpty())) {
-                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
-                        "MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                //old GUI
+//                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
+//                        "MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                //new Error Message GUI
+                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                content = errorFrame.getContentPane();
+                content.setLayout(new BorderLayout());
+                enterButton = new JButton("Enter");
+                cancelButton = new JButton("Cancel");
+
+                panel = new JPanel();
+                panel.add(enterButton);
+                panel.add(cancelButton);
+                content.add(panel, BorderLayout.SOUTH);
+                errorFrame.add(new JLabel("Please answer!"), BorderLayout.CENTER);
+
+                errorFrame.setSize(400, 200);
+                errorFrame.setLocationRelativeTo(null);
+                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                errorFrame.setVisible(true);
+
+                enterButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        //should take them back to input
+                        boolean badUsername = true;
+                    }
+                });
+
+                cancelButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        errorFrame.setVisible(false);
+                    }
+                });
 
             } //end if
         } while ((newUserPromptInput == null) || (newUserPromptInput.isEmpty()));
@@ -171,17 +193,86 @@ public class Main implements Runnable {
 
         if (newUserPromptInput.equals("yes")) {
             boolean signupComplete = false;
-            String username, password, email, isSellerStr;
+            String username = "", password, email, isSellerStr;
             while (!signupComplete) {
 
                 boolean badUsername;
                 do { // enter username
-                    username = JOptionPane.showInputDialog(null, "Please create a username!\nNote: Username must contain at least one letter and one number.",
-                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    //old GUI
+//                    username = JOptionPane.showInputDialog(null, "Please create a username!\nNote: Username must contain at least one letter and one number.",
+//                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+
+                    //new username input GUI
+                    JFrame usernameFrame = new JFrame("Coffee Shop MarketPlace");
+                    Container content = usernameFrame.getContentPane();
+                    content.setLayout(new BorderLayout());
+                    enterButton = new JButton("Enter");
+                    cancelButton = new JButton("Cancel");
+
+                    JPanel panel = new JPanel();
+                    panel.add(enterButton);
+                    panel.add(cancelButton);
+                    panel.add(strTextField);
+                    content.add(panel, BorderLayout.SOUTH);
+
+                    usernameFrame.add(new JLabel("Please create a username!\nNote: Username must " +
+                            "contain at least one letter and one number."), BorderLayout.CENTER);
+
+                    usernameFrame.setSize(400, 200);
+                    usernameFrame.setLocationRelativeTo(null);
+                    usernameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    usernameFrame.setVisible(true);
+
+                    enterButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            String username = strTextField.getText();
+                        }
+                    });
+
+                    cancelButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            usernameFrame.setVisible(false);
+                        }
+                    });
+
                     if ((username == null) || (username.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        //old gui
+//                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+//                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                        //new Error Message GUI
+                        JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                        content = errorFrame.getContentPane();
+                        content.setLayout(new BorderLayout());
+                        enterButton = new JButton("Enter");
+                        cancelButton = new JButton("Cancel");
+
+                        panel = new JPanel();
+                        panel.add(enterButton);
+                        panel.add(cancelButton);
+                        content.add(panel, BorderLayout.SOUTH);
+                        errorFrame.add(new JLabel("Please answer!"), BorderLayout.CENTER);
+
+                        errorFrame.setSize(400, 200);
+                        errorFrame.setLocationRelativeTo(null);
+                        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        errorFrame.setVisible(true);
+
+                        enterButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                //should take them back to input
+                                boolean badUsername = true;
+                            }
+                        });
+
+                        cancelButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                errorFrame.setVisible(false);
+                            }
+                        });
+
                         badUsername = true;
+
                     } else {
                         boolean hasLetter = false;
                         boolean hasNumber = false;
@@ -204,6 +295,8 @@ public class Main implements Runnable {
                             }
 
                             if (alreadyTaken) {
+
+
                                 JOptionPane.showMessageDialog(null, "I'm sorry, that" +
                                         " username is already taken :(", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
