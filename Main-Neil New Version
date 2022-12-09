@@ -15,7 +15,7 @@ import java.util.*;
 public class Main implements Runnable {
 
     /* action listener for buttons */
-//    ActionListener actionListener = new ActionListener() {
+    //ActionListener actionListener = new ActionListener() {
 
 
 //        @Override
@@ -27,6 +27,8 @@ public class Main implements Runnable {
 //        }
 
     static JButton enterButton; // button to go to next GUI
+    static JButton cancelButton;
+    static JTextField strTextField; // text field for input
 
 
     public static void main(String[] args) {
@@ -47,10 +49,12 @@ public class Main implements Runnable {
         Container content = welcomeFr.getContentPane();
         content.setLayout(new BorderLayout());
         enterButton = new JButton("Enter");
+        cancelButton = new JButton("Cancel");
 
         //add them to our frame by creating a JPanel and adding the panel to the content container.
         JPanel panel = new JPanel();
         panel.add(enterButton);
+        panel.add(cancelButton);
         content.add(panel, BorderLayout.SOUTH);
 
         //add text
@@ -63,19 +67,24 @@ public class Main implements Runnable {
         welcomeFr.setVisible(true);
 
         boolean status = true;
-        boolean stat = true;
 
         //for button to function
         enterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main ma = new Main();
+                boolean status = ma.signupOrLogin(s, m);
+            }
+        });
 
-                boolean stat = ma.signupOrLogin(s, m);
+        //for button to function
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                welcomeFr.setVisible(false);
             }
         });
 
 
-        if (stat)
+        if (status)
             status = true;
         else {
             status = false;
@@ -99,13 +108,61 @@ public class Main implements Runnable {
 
     public static boolean signupOrLogin(Scanner s, Marketplace m) { // GUI done
         String newUserPromptInput = "";
+
+        //goes into
+
         do {
-            newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are " +
-                            "you a new user? [yes/no/quit]", "Coffee Shop MarketPlace",
-                    JOptionPane.QUESTION_MESSAGE);
+
+            //old GUI
+//            newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are " +
+//                            "you a new user? [yes/no/quit]", "Coffee Shop MarketPlace",
+//                    JOptionPane.QUESTION_MESSAGE);
+
+
+            //new newUserPromptInput GUI
+            JFrame nUPIFr = new JFrame("Coffee Shop MarketPlace");
+            Container content = nUPIFr.getContentPane();
+            content.setLayout(new BorderLayout());
+            enterButton = new JButton("Enter");
+            cancelButton = new JButton("Cancel");
+
+            //add them to our frame by creating a JPanel and adding the panel to the content container.
+            JPanel panel = new JPanel();
+            panel.add(enterButton);
+            panel.add(cancelButton);
+            panel.add(strTextField);
+            content.add(panel, BorderLayout.SOUTH);
+
+            //add text
+            nUPIFr.add(new JLabel("Let's get started! Are you a new user? [yes/no/quit]"), BorderLayout.CENTER);
+
+            //set the size, location, close operation, and visibility
+            nUPIFr.setSize(400, 200);
+            nUPIFr.setLocationRelativeTo(null);
+            nUPIFr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            nUPIFr.setVisible(true);
+
+            //for button to function
+            enterButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    String newUserPromptInput = strTextField.getText();
+                }
+            });
+
+            //System.out.println(newUserPromptInput);
+
+            //for button to function
+            cancelButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    nUPIFr.setVisible(false);
+                }
+            });
+            
+
             if ((newUserPromptInput == null) || (newUserPromptInput.isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
                         "MarketPlace", JOptionPane.ERROR_MESSAGE);
+
             } //end if
         } while ((newUserPromptInput == null) || (newUserPromptInput.isEmpty()));
 
