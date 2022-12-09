@@ -143,10 +143,10 @@ public class ClientTest {
         System.out.println("2. Create new product");
         System.out.println("3. List/Modify existing products"); //-> delete, edit
         System.out.println("4. Dashboard of revenue by customer");
-        System.out.println("5. Export products as csv");
-        System.out.println("6. Import products as csv");
+        System.out.println("5. Export products as csv.");
+        System.out.println("6. Import products as csv.");
         System.out.println("7. Back");
-        int promptChoice = readNumberOption(s, 7);
+        int promptChoice = readNumberOption(s, 6);
 
         switch (promptChoice) {
             case 1:
