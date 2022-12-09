@@ -296,11 +296,45 @@ public class Main implements Runnable {
 
                             if (alreadyTaken) {
 
+                                //old gui
+//                                JOptionPane.showMessageDialog(null, "I'm sorry, that" +
+//                                        " username is already taken :(", "Coffee " +
+//                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
 
-                                JOptionPane.showMessageDialog(null, "I'm sorry, that" +
-                                        " username is already taken :(", "Coffee " +
-                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                //new Error Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+                                enterButton = new JButton("Enter");
+                                cancelButton = new JButton("Cancel");
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("I'm sorry, that username is already taken :("),
+                                        BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them back to input
+                                        boolean badUsername = true;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        errorFrame.setVisible(false);
+                                    }
+                                });
+
                                 badUsername = true;
+
                             } else {
                                 JOptionPane.showMessageDialog(null, "Thank you for creating " +
                                         "a valid username :)", "Coffee " +
