@@ -15,7 +15,7 @@ public class Main {
             marketplace = new Marketplace();
         }
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
-        while (startUserInput(scanner, marketplace));
+        while (startUserInput(scanner, marketplace)) ;
         saveMarketplace(marketplace);
     }
 
@@ -301,8 +301,7 @@ public class Main {
                         "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null,
                 decendingOptions, null);
 
-//        int choiceSubInt = Integer.parseInt(choice.substring(0, 1));
-        int option = readNumberOption(s, 2);
+        int option = Integer.parseInt(choice.substring(0, 1));
         return option == 2;
     }
 
@@ -373,7 +372,7 @@ public class Main {
         String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
                         "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
                 null, storeNames, null);
-        
+
         int storeIndex = -1;
         for (int i = 0; i < stores.size(); i++) {
             if (modifyingStore.equals(stores.get(i).getName())) {
@@ -488,7 +487,6 @@ public class Main {
             } // end if
         } while ((special == null) || (special.isEmpty()));
 
-//        price = readNumberOption(s, Integer.MAX_VALUE);
         do { // enter price
             priceString = JOptionPane.showInputDialog(null, "Please enter a price as an " +
                     "integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
@@ -499,7 +497,6 @@ public class Main {
         } while ((priceString == null) || (priceString.isEmpty()));
         price = Integer.parseInt(priceString);
 
-//        quantity = readNumberOption(s, Integer.MAX_VALUE);
         do { // enter quantity
             quantityString = JOptionPane.showInputDialog(null, "Please enter a quantity as " +
                     "an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
@@ -596,7 +593,6 @@ public class Main {
                     } // end if
                 } while ((special == null) || (special.isEmpty()));
 
-//                price = readNumberOption(s, Integer.MAX_VALUE);
                 do { // enter new price
                     priceString = JOptionPane.showInputDialog(null, "Please enter a new " +
                             "price as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
@@ -607,7 +603,6 @@ public class Main {
                 } while ((priceString == null) || (priceString.isEmpty()));
                 price = Integer.parseInt(priceString);
 
-//                quantity = readNumberOption(s, Integer.MAX_VALUE);
                 do { // enter new quantity
                     quantityString = JOptionPane.showInputDialog(null, "Please enter a new " +
                             "quantity as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
