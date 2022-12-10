@@ -41,6 +41,7 @@ public class Main {
                             "you a new user? [yes/no/quit]", "Coffee Shop MarketPlace",
                     JOptionPane.QUESTION_MESSAGE);
             if (newUserPromptInput == null) {
+                saveMarketplace(m);
                 System.exit(0);
 
             } else if (newUserPromptInput.isEmpty()) {
@@ -62,6 +63,7 @@ public class Main {
                     username = JOptionPane.showInputDialog(null, "Please create a username!\nNote: Username must contain at least one letter and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if ((username == null)) {
+                        saveMarketplace(m);
                         System.exit(0);
                         badUsername = true;
                     } else if (username.isEmpty()) {
@@ -126,6 +128,7 @@ public class Main {
                                     "and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if (password == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                         badPassword = true;
                     } else if (password.isEmpty()) {
@@ -183,6 +186,7 @@ public class Main {
                     email = JOptionPane.showInputDialog(null, "Please enter an email:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if (email == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                         badEmail = true;
                     } else if (email.isEmpty()) {
@@ -249,6 +253,7 @@ public class Main {
                                     "[yes/no]",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if (isSellerStr == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (isSellerStr.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -272,6 +277,7 @@ public class Main {
                     username = JOptionPane.showInputDialog(null, "Enter a username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if (username == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (username.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -284,6 +290,7 @@ public class Main {
                     password = JOptionPane.showInputDialog(null, "Enter a password:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                     if (password == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (password.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -364,6 +371,7 @@ public class Main {
             storeName = JOptionPane.showInputDialog(null, "Enter Store Name:",
                     "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
             if (storeName == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (storeName.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
@@ -430,6 +438,7 @@ public class Main {
                     filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
                             "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
                     if (filePath == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (filePath.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -443,6 +452,7 @@ public class Main {
                     filePath = JOptionPane.showInputDialog(null, "Enter import filepath.",
                             "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
                     if (filePath == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (filePath.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -471,6 +481,7 @@ public class Main {
             name = JOptionPane.showInputDialog(null, "Please enter a name.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (name == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -482,6 +493,7 @@ public class Main {
             milkType = JOptionPane.showInputDialog(null, "Please enter a milk type.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (milkType == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (milkType.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -493,6 +505,7 @@ public class Main {
             coffeeType = JOptionPane.showInputDialog(null, "Please enter a coffee type.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (coffeeType == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (coffeeType.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -504,6 +517,7 @@ public class Main {
             syrup = JOptionPane.showInputDialog(null, "Please enter a syrup.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (syrup == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (syrup.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -515,6 +529,7 @@ public class Main {
             special = JOptionPane.showInputDialog(null, "Please enter the specials.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (special == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (special.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -526,6 +541,7 @@ public class Main {
             priceString = JOptionPane.showInputDialog(null, "Please enter a price as an " +
                     "integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (priceString == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (priceString.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -538,6 +554,7 @@ public class Main {
             quantityString = JOptionPane.showInputDialog(null, "Please enter a quantity as " +
                     "an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
             if (quantityString == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (quantityString.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
@@ -590,6 +607,7 @@ public class Main {
                     name = JOptionPane.showInputDialog(null, "Please enter a new name.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (name == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (name.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -601,6 +619,7 @@ public class Main {
                     milkType = JOptionPane.showInputDialog(null, "Please enter a new milk" +
                             " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (milkType == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (milkType.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -612,6 +631,7 @@ public class Main {
                     coffeeType = JOptionPane.showInputDialog(null, "Please enter a new coffee" +
                             " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (coffeeType == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (coffeeType.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -623,6 +643,7 @@ public class Main {
                     syrup = JOptionPane.showInputDialog(null, "Please enter a new syrup.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (syrup == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (syrup.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -635,6 +656,7 @@ public class Main {
                                     "specials.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (special == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (special.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -646,6 +668,7 @@ public class Main {
                     priceString = JOptionPane.showInputDialog(null, "Please enter a new " +
                             "price as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (priceString == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (priceString.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -658,6 +681,7 @@ public class Main {
                     quantityString = JOptionPane.showInputDialog(null, "Please enter a new " +
                             "quantity as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
                     if (quantityString == null) {
+                        saveMarketplace(m);
                         System.exit(0);
                     } else if (quantityString.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
@@ -720,6 +744,7 @@ public class Main {
                         filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
                                 "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
                         if (filePath == null) {
+                            saveMarketplace(m);
                             System.exit(0);
                         } else if (filePath.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Please answer!",
@@ -763,6 +788,7 @@ public class Main {
             searchTerm = JOptionPane.showInputDialog(null, "Enter search criteria.",
                     "===Stores===", JOptionPane.QUESTION_MESSAGE);
             if (searchTerm == null) {
+                saveMarketplace(m);
                 System.exit(0);
             } else if (searchTerm.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!", "===Stores===",
