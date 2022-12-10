@@ -476,7 +476,7 @@ public class Main implements Runnable {
                     panel.add(strTextField);
                     content.add(panel, BorderLayout.SOUTH);
 
-                    passFrame.add(new JLabel("Please create a username!\nNote: Username must " +
+                    passFrame.add(new JLabel("Please create a password!\nNote: Username must " +
                                     "contain at least six digits. Must contain at least one letter and one number."),
                             BorderLayout.CENTER);
 
@@ -531,10 +531,11 @@ public class Main implements Runnable {
                         badPassword = true;
                     } else {
                         if (password.length() < 6) {
-                            JOptionPane.showMessageDialog(null, "Password is too short. " +
-                                            "Please try again.", "Coffee " +
-                                            "Shop MarketPlace",
-                                    JOptionPane.ERROR_MESSAGE);
+                            //old GUI
+//                            JOptionPane.showMessageDialog(null, "Password is too short. " +
+//                                            "Please try again.", "Coffee " +
+//                                            "Shop MarketPlace",
+//                                    JOptionPane.ERROR_MESSAGE);
 
                             //new Error Message GUI
                             JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
@@ -562,7 +563,7 @@ public class Main implements Runnable {
                             cancelButton.addActionListener(e -> {
                                 errorFrame.setVisible(false);
                             });
-                            
+
                             badPassword = true;
                         } else { // password is longer than 6 characters
                             boolean hasLetter = false;
@@ -577,25 +578,142 @@ public class Main implements Runnable {
                             }
 
                             if (hasNumber && hasLetter) {
-                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
-                                                "a valid password :)", "Coffee " +
-                                                "Shop MarketPlace",
-                                        JOptionPane.PLAIN_MESSAGE);
+                                //old GUI
+//                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
+//                                                "a valid password :)", "Coffee " +
+//                                                "Shop MarketPlace",
+//                                        JOptionPane.PLAIN_MESSAGE);
+
+                                //new valid password Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("Thank you for creating a valid password!"),
+                                        BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them out of loop
+                                        boolean badPassword = false;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
                                 badPassword = false;
                             } else if (hasNumber) {
-                                JOptionPane.showMessageDialog(null, "Password is missing " +
-                                        "a letter. Please try again.", "Coffee " +
-                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+//                                JOptionPane.showMessageDialog(null, "Password is missing " +
+//                                        "a letter. Please try again.", "Coffee " +
+//                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                                //new Error Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("Password is Missing a letter. Please try again." +
+                                        ""), BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them back to input
+                                        boolean badPassword = true;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
+
                                 badPassword = true;
                             } else if (hasLetter) {
-                                JOptionPane.showMessageDialog(null, "Password is missing " +
-                                        "a number. Please try again.", "Coffee " +
-                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+//                                JOptionPane.showMessageDialog(null, "Password is missing " +
+//                                        "a number. Please try again.", "Coffee " +
+//                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                                //new Error Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("Password is missing a number"), BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them back to input
+                                        boolean badPassword = true;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
                                 badPassword = true;
                             } else {
                                 JOptionPane.showMessageDialog(null, "Password is missing " +
                                         "a letter and a number. Please try again.", "Coffee " +
                                         "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                                //new Error Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("Password is missing a letter and a number. " +
+                                        "Please try again."), BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them back to input
+                                        boolean badPassword = true;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
                                 badPassword = true;
                             }
                         }
@@ -604,12 +722,70 @@ public class Main implements Runnable {
 
                 boolean badEmail;
                 do { //enter email
-                    email = JOptionPane.showInputDialog(null, "Please enter an email:",
-                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+//                    email = JOptionPane.showInputDialog(null, "Please enter an email:",
+//                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+
+                    //new password input GUI
+                    JFrame emailFrame = new JFrame("Coffee Shop MarketPlace");
+                    Container content = emailFrame.getContentPane();
+                    content.setLayout(new BorderLayout());
+
+                    JPanel panel = new JPanel();
+                    panel.add(enterButton);
+                    panel.add(cancelButton);
+                    panel.add(strTextField);
+                    content.add(panel, BorderLayout.SOUTH);
+
+                    emailFrame.add(new JLabel("Please enter an email"),
+                            BorderLayout.CENTER);
+
+                    emailFrame.setSize(400, 200);
+                    emailFrame.setLocationRelativeTo(null);
+                    emailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    emailFrame.setVisible(true);
+
+                    enterButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            String email = strTextField.getText();
+                        }
+                    });
+
+                    cancelButton.addActionListener(e -> {
+                        emailFrame.setVisible(false);
+                    });
+
                     if ((email == null) || (email.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                        "Shop MarketPlace",
-                                JOptionPane.ERROR_MESSAGE);
+//                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+//                                        "Shop MarketPlace",
+//                                JOptionPane.ERROR_MESSAGE);
+
+                        //new Error Message GUI
+                        JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                        content = errorFrame.getContentPane();
+                        content.setLayout(new BorderLayout());
+
+                        panel = new JPanel();
+                        panel.add(enterButton);
+                        panel.add(cancelButton);
+                        content.add(panel, BorderLayout.SOUTH);
+                        errorFrame.add(new JLabel("Please answer!"), BorderLayout.CENTER);
+
+                        errorFrame.setSize(400, 200);
+                        errorFrame.setLocationRelativeTo(null);
+                        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        errorFrame.setVisible(true);
+
+                        enterButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                //should take them back to input
+                                boolean badEmail = true;
+                            }
+                        });
+
+                        cancelButton.addActionListener(e -> {
+                            errorFrame.setVisible(false);
+                        });
+
                         badEmail = true;
                     } else {
                         boolean hasAtSign = false;
@@ -635,31 +811,148 @@ public class Main implements Runnable {
                             }
 
                             if (alreadyTaken) {
-                                JOptionPane.showMessageDialog(null, "It appears that email " +
-                                                "is already being used.\nPlease try a different email or login " +
-                                                "instead.\n", "Coffee " +
-                                                "Shop MarketPlace",
-                                        JOptionPane.ERROR_MESSAGE);
+//                                JOptionPane.showMessageDialog(null, "It appears that email " +
+//                                                "is already being used.\nPlease try a different email or login " +
+//                                                "instead.\n", "Coffee " +
+//                                                "Shop MarketPlace",
+//                                        JOptionPane.ERROR_MESSAGE);
+
+                                //new Error Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("It appears that email is already being used.\n" +
+                                        "Please try a different email or login instead.\n"), BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them back to input
+                                        boolean badEmail = true;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
                                 badEmail = true;
                             } else {
-                                JOptionPane.showMessageDialog(null, "Thank you for inputting" +
-                                                " a valid email :)", "Coffee " +
-                                                "Shop MarketPlace",
-                                        JOptionPane.PLAIN_MESSAGE);
+//                                JOptionPane.showMessageDialog(null, "Thank you for inputting" +
+//                                                " a valid email :)", "Coffee " +
+//                                                "Shop MarketPlace",
+//                                        JOptionPane.PLAIN_MESSAGE);
+
+                                //new valid Email Message GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("Thank you for inputting a valid email."),
+                                        BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them out
+                                        boolean badEmail = false;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
                                 badEmail = false;
                             }
                         } else if (hasAtSign) {
-                            JOptionPane.showMessageDialog(null, "Email is missing a valid " +
-                                            "extension at the end.\nExample: .com", "Coffee " +
-                                            "Shop MarketPlace",
-                                    JOptionPane.ERROR_MESSAGE);
+//                            JOptionPane.showMessageDialog(null, "Email is missing a valid " +
+//                                            "extension at the end.\nExample: .com", "Coffee " +
+//                                            "Shop MarketPlace",
+//                                    JOptionPane.ERROR_MESSAGE);
+
+                            //new Error Message GUI
+                            JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                            content = errorFrame.getContentPane();
+                            content.setLayout(new BorderLayout());
+
+                            panel = new JPanel();
+                            panel.add(enterButton);
+                            panel.add(cancelButton);
+                            content.add(panel, BorderLayout.SOUTH);
+                            errorFrame.add(new JLabel("Email is missing a valid extension at the end." +
+                                    "\nExample: .com"), BorderLayout.CENTER);
+
+                            errorFrame.setSize(400, 200);
+                            errorFrame.setLocationRelativeTo(null);
+                            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            errorFrame.setVisible(true);
+
+                            enterButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    //should take them back to input
+                                    boolean badEmail = true;
+                                }
+                            });
+
+                            cancelButton.addActionListener(e -> {
+                                errorFrame.setVisible(false);
+                            });
+
                             badEmail = true;
                         } else {
-                            JOptionPane.showMessageDialog(null, "Email is improperly " +
-                                            "formatted.\nPlease ensure it includes an @ sign, and a valid " +
+                            JOptionPane.showMessageDialog(null, "Email is improperly formatted.\nPlease ensure it includes an @ sign, and a valid " +
                                             "extension (such as .com) at the end.", "Coffee " +
                                             "Shop MarketPlace",
                                     JOptionPane.ERROR_MESSAGE);
+
+                            //new Error Message GUI
+                            JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                            content = errorFrame.getContentPane();
+                            content.setLayout(new BorderLayout());
+
+                            panel = new JPanel();
+                            panel.add(enterButton);
+                            panel.add(cancelButton);
+                            content.add(panel, BorderLayout.SOUTH);
+                            errorFrame.add(new JLabel("Email is improperly formatted.\n" +
+                                    "Please ensure it includes " +
+                                    "an @ sign, and a valid extension (such as .com) at the end." +
+                                    "\nExample: .com"), BorderLayout.CENTER);
+
+                            errorFrame.setSize(400, 200);
+                            errorFrame.setLocationRelativeTo(null);
+                            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            errorFrame.setVisible(true);
+
+                            enterButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    //should take them back to input
+                                    boolean badEmail = true;
+                                }
+                            });
+
+                            cancelButton.addActionListener(e -> {
+                                errorFrame.setVisible(false);
+                            });
+
                             badEmail = true;
                         }
                     }
