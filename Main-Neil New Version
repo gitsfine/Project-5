@@ -531,7 +531,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((priceString == null) || (priceString.isEmpty()));
+        } while (priceString.isEmpty());
         price = Integer.parseInt(priceString);
 
         do { // enter quantity
@@ -589,67 +589,81 @@ public class Main {
                 do { // enter new name
                     name = JOptionPane.showInputDialog(null, "Please enter a new name.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((name == null) || (name.isEmpty())) {
+                    if (name == null) {
+                        System.exit(0);
+                    } else if (name.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((name == null) || (name.isEmpty()));
+                } while (name.isEmpty());
 
                 do { // enter new milk type
                     milkType = JOptionPane.showInputDialog(null, "Please enter a new milk" +
                             " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((milkType == null) || (milkType.isEmpty())) {
+                    if (milkType == null) {
+                        System.exit(0);
+                    } else if (milkType.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((milkType == null) || (milkType.isEmpty()));
+                } while (milkType.isEmpty());
 
                 do { // enter new coffee type
                     coffeeType = JOptionPane.showInputDialog(null, "Please enter a new coffee" +
                             " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((coffeeType == null) || (coffeeType.isEmpty())) {
+                    if (coffeeType == null) {
+                        System.exit(0);
+                    } else if (coffeeType.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((coffeeType == null) || (coffeeType.isEmpty()));
+                } while (coffeeType.isEmpty());
 
                 do { // enter new syrup
                     syrup = JOptionPane.showInputDialog(null, "Please enter a new syrup.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((syrup == null) || (syrup.isEmpty())) {
+                    if (syrup == null) {
+                        System.exit(0);
+                    } else if (syrup.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((syrup == null) || (syrup.isEmpty()));
+                } while (syrup.isEmpty());
 
                 do { // enter new specials
                     special = JOptionPane.showInputDialog(null, "Please enter the new " +
                                     "specials.",
                             "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((special == null) || (special.isEmpty())) {
+                    if (special == null) {
+                        System.exit(0);
+                    } else if (special.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((special == null) || (special.isEmpty()));
+                } while (special.isEmpty());
 
                 do { // enter new price
                     priceString = JOptionPane.showInputDialog(null, "Please enter a new " +
                             "price as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((priceString == null) || (priceString.isEmpty())) {
+                    if (priceString == null) {
+                        System.exit(0);
+                    } else if (priceString.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((priceString == null) || (priceString.isEmpty()));
+                } while (priceString.isEmpty());
                 price = Integer.parseInt(priceString);
 
                 do { // enter new quantity
                     quantityString = JOptionPane.showInputDialog(null, "Please enter a new " +
                             "quantity as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
-                    if ((quantityString == null) || (quantityString.isEmpty())) {
+                    if (quantityString == null) {
+                        System.exit(0);
+                    } else if (quantityString.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "===Products===", JOptionPane.ERROR_MESSAGE);
                     } // end if
-                } while ((quantityString == null) || (quantityString.isEmpty()));
+                } while (quantityString.isEmpty());
                 quantity = Integer.parseInt(quantityString);
 
                 status = m.editProduct(p, name, milkType, coffeeType, syrup, special, price, quantity);
@@ -705,11 +719,13 @@ public class Main {
                     do {
                         filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
                                 "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                        if ((filePath == null) || (filePath.isEmpty())) {
+                        if (filePath == null) {
+                            System.exit(0);
+                        } else if (filePath.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Please answer!",
                                     "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                         } //end if
-                    } while ((filePath == null) || (filePath.isEmpty()));
+                    } while (filePath.isEmpty());
                     m.exportDashboardPurchasesByStore(filePath);
                     break;
                 case 7:
@@ -746,11 +762,13 @@ public class Main {
         do {
             searchTerm = JOptionPane.showInputDialog(null, "Enter search criteria.",
                     "===Stores===", JOptionPane.QUESTION_MESSAGE);
-            if ((searchTerm == null) || (searchTerm.isEmpty())) {
+            if (searchTerm == null) {
+                System.exit(0);
+            } else if (searchTerm.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!", "===Stores===",
                         JOptionPane.ERROR_MESSAGE);
             } //end if
-        } while ((searchTerm == null) || (searchTerm.isEmpty()));
+        } while (searchTerm.isEmpty());
 
         List<Product> storeProducts = m.searchProducts(searchTerm);
         shopFromProducts(s, m, storeProducts);
