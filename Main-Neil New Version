@@ -40,10 +40,13 @@ public class Main {
             newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are " +
                             "you a new user? [yes/no/quit]", "Coffee Shop MarketPlace",
                     JOptionPane.QUESTION_MESSAGE);
-            if ((newUserPromptInput == null) || (newUserPromptInput.isEmpty())) {
+            if (newUserPromptInput == null) {
+                System.exit(0);
+
+            } else if (newUserPromptInput.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
                         "MarketPlace", JOptionPane.ERROR_MESSAGE);
-            } //end if
+            }
         } while ((newUserPromptInput == null) || (newUserPromptInput.isEmpty()));
 
         if (newUserPromptInput.equals("quit"))
@@ -58,7 +61,10 @@ public class Main {
                 do { // enter username
                     username = JOptionPane.showInputDialog(null, "Please create a username!\nNote: Username must contain at least one letter and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                    if ((username == null) || (username.isEmpty())) {
+                    if ((username == null)) {
+                        System.exit(0);
+                        badUsername = true;
+                    } else if (username.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                 "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                         badUsername = true;
@@ -119,7 +125,10 @@ public class Main {
                                     "\nNote: Must contain at least six digits. Must contain at least one letter " +
                                     "and one number.",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                    if ((password == null) || (password.isEmpty())) {
+                    if (password == null) {
+                        System.exit(0);
+                        badPassword = true;
+                    } else if (password.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
@@ -173,7 +182,10 @@ public class Main {
                 do { //enter email
                     email = JOptionPane.showInputDialog(null, "Please enter an email:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                    if ((email == null) || (email.isEmpty())) {
+                    if (email == null) {
+                        System.exit(0);
+                        badEmail = true;
+                    } else if (email.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
@@ -236,7 +248,9 @@ public class Main {
                     isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller? " +
                                     "[yes/no]",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                    if ((isSellerStr == null) || (isSellerStr.isEmpty())) {
+                    if (isSellerStr == null) {
+                        System.exit(0);
+                    } else if (isSellerStr.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
@@ -257,7 +271,9 @@ public class Main {
                 do { //enter username
                     username = JOptionPane.showInputDialog(null, "Enter a username:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                    if ((username == null) || (username.isEmpty())) {
+                    if (username == null) {
+                        System.exit(0);
+                    } else if (username.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
@@ -267,7 +283,9 @@ public class Main {
                 do { // enter password
                     password = JOptionPane.showInputDialog(null, "Enter a password:",
                             "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-                    if ((password == null) || (password.isEmpty())) {
+                    if (password == null) {
+                        System.exit(0);
+                    } else if (password.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                         "Shop MarketPlace",
                                 JOptionPane.ERROR_MESSAGE);
@@ -345,12 +363,15 @@ public class Main {
         do {
             storeName = JOptionPane.showInputDialog(null, "Enter Store Name:",
                     "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
-            if ((storeName == null) || (storeName.isEmpty())) {
+            if (storeName == null) {
+                System.exit(0);
+            } else if (storeName.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
                                 "Shop MarketPlace",
                         JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((storeName == null) || (storeName.isEmpty()));
+            //changed to just while isEmpty() (took out null condition)
+        } while (storeName.isEmpty());
 
         boolean status = m.createStore(storeName);
         if (status) {
@@ -408,22 +429,26 @@ public class Main {
                 do {
                     filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
                             "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
-                    if ((filePath == null) || (filePath.isEmpty())) {
+                    if (filePath == null) {
+                        System.exit(0);
+                    } else if (filePath.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                     } //end if
-                } while ((filePath == null) || (filePath.isEmpty()));
+                } while (filePath.isEmpty());
                 break;
             case 6:
                 boolean status = m.importProductList(store, s.nextLine());
                 do {
                     filePath = JOptionPane.showInputDialog(null, "Enter import filepath.",
                             "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
-                    if ((filePath == null) || (filePath.isEmpty())) {
+                    if (filePath == null) {
+                        System.exit(0);
+                    } else if (filePath.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please answer!",
                                 "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
                     } //end if
-                } while ((filePath == null) || (filePath.isEmpty()));
+                } while (filePath.isEmpty());
                 if (!status) {
                     System.out.println("Failed to import all products");
                 } else {
@@ -445,52 +470,64 @@ public class Main {
         do { // enter name
             name = JOptionPane.showInputDialog(null, "Please enter a name.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((name == null) || (name.isEmpty())) {
+            if (name == null) {
+                System.exit(0);
+            } else if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((name == null) || (name.isEmpty()));
+        } while (name.isEmpty());
 
         do { // enter milk type
             milkType = JOptionPane.showInputDialog(null, "Please enter a milk type.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((milkType == null) || (milkType.isEmpty())) {
+            if (milkType == null) {
+                System.exit(0);
+            } else if (milkType.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((milkType == null) || (milkType.isEmpty()));
+        } while (milkType.isEmpty());
 
         do { // enter coffee type
             coffeeType = JOptionPane.showInputDialog(null, "Please enter a coffee type.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((coffeeType == null) || (coffeeType.isEmpty())) {
+            if (coffeeType == null) {
+                System.exit(0);
+            } else if (coffeeType.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((coffeeType == null) || (coffeeType.isEmpty()));
+        } while (coffeeType.isEmpty());
 
         do { // enter syrup
             syrup = JOptionPane.showInputDialog(null, "Please enter a syrup.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((syrup == null) || (syrup.isEmpty())) {
+            if (syrup == null) {
+                System.exit(0);
+            } else if (syrup.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((syrup == null) || (syrup.isEmpty()));
+        } while (syrup.isEmpty());
 
         do { // enter specials
             special = JOptionPane.showInputDialog(null, "Please enter the specials.",
                     "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((special == null) || (special.isEmpty())) {
+            if (special == null) {
+                System.exit(0);
+            } else if (special.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((special == null) || (special.isEmpty()));
+        } while (special.isEmpty());
 
         do { // enter price
             priceString = JOptionPane.showInputDialog(null, "Please enter a price as an " +
                     "integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((priceString == null) || (priceString.isEmpty())) {
+            if (priceString == null) {
+                System.exit(0);
+            } else if (priceString.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
@@ -500,11 +537,13 @@ public class Main {
         do { // enter quantity
             quantityString = JOptionPane.showInputDialog(null, "Please enter a quantity as " +
                     "an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
-            if ((quantityString == null) || (quantityString.isEmpty())) {
+            if (quantityString == null) {
+                System.exit(0);
+            } else if (quantityString.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please answer!",
                         "===Products===", JOptionPane.ERROR_MESSAGE);
             } // end if
-        } while ((quantityString == null) || (quantityString.isEmpty()));
+        } while (quantityString.isEmpty());
         quantity = Integer.parseInt(quantityString);
 
         boolean status = m.createProduct(store, name, milkType, coffeeType, syrup, special, price, quantity);
