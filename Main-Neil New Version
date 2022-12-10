@@ -26,8 +26,8 @@ public class Main implements Runnable {
 //            }
 //        }
 
-    static JButton enterButton; // button to go to next GUI
-    static JButton cancelButton;
+    static JButton enterButton = new JButton("Enter"); // button to go to next GUI
+    static JButton cancelButton = new JButton("Cancel");
     static JTextField strTextField; // text field for input
 
 
@@ -48,8 +48,6 @@ public class Main implements Runnable {
         JFrame welcomeFr = new JFrame("Coffee Shop MarketPlace");
         Container content = welcomeFr.getContentPane();
         content.setLayout(new BorderLayout());
-        enterButton = new JButton("Enter");
-        cancelButton = new JButton("Cancel");
 
         //add them to our frame by creating a JPanel and adding the panel to the content container.
         JPanel panel = new JPanel();
@@ -76,11 +74,8 @@ public class Main implements Runnable {
             }
         });
 
-        //for button to function
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                welcomeFr.setVisible(false);
-            }
+        cancelButton.addActionListener(e -> {
+            welcomeFr.setVisible(false);
         });
 
 
@@ -120,8 +115,6 @@ public class Main implements Runnable {
             JFrame newUserFrame = new JFrame("Coffee Shop MarketPlace");
             Container content = newUserFrame.getContentPane();
             content.setLayout(new BorderLayout());
-            enterButton = new JButton("Enter");
-            cancelButton = new JButton("Cancel");
 
             JPanel panel = new JPanel();
             panel.add(enterButton);
@@ -142,10 +135,8 @@ public class Main implements Runnable {
                 }
             });
 
-            cancelButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    newUserFrame.setVisible(false);
-                }
+            cancelButton.addActionListener(e -> {
+                newUserFrame.setVisible(false);
             });
 
             if ((newUserPromptInput == null) || (newUserPromptInput.isEmpty())) {
@@ -158,8 +149,6 @@ public class Main implements Runnable {
                 JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
                 content = errorFrame.getContentPane();
                 content.setLayout(new BorderLayout());
-                enterButton = new JButton("Enter");
-                cancelButton = new JButton("Cancel");
 
                 panel = new JPanel();
                 panel.add(enterButton);
@@ -179,10 +168,8 @@ public class Main implements Runnable {
                     }
                 });
 
-                cancelButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        errorFrame.setVisible(false);
-                    }
+                cancelButton.addActionListener(e -> {
+                    errorFrame.setVisible(false);
                 });
 
             } //end if
@@ -206,8 +193,6 @@ public class Main implements Runnable {
                     JFrame usernameFrame = new JFrame("Coffee Shop MarketPlace");
                     Container content = usernameFrame.getContentPane();
                     content.setLayout(new BorderLayout());
-                    enterButton = new JButton("Enter");
-                    cancelButton = new JButton("Cancel");
 
                     JPanel panel = new JPanel();
                     panel.add(enterButton);
@@ -229,10 +214,8 @@ public class Main implements Runnable {
                         }
                     });
 
-                    cancelButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            usernameFrame.setVisible(false);
-                        }
+                    cancelButton.addActionListener(e -> {
+                        usernameFrame.setVisible(false);
                     });
 
                     if ((username == null) || (username.isEmpty())) {
@@ -244,8 +227,6 @@ public class Main implements Runnable {
                         JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
                         content = errorFrame.getContentPane();
                         content.setLayout(new BorderLayout());
-                        enterButton = new JButton("Enter");
-                        cancelButton = new JButton("Cancel");
 
                         panel = new JPanel();
                         panel.add(enterButton);
@@ -265,10 +246,8 @@ public class Main implements Runnable {
                             }
                         });
 
-                        cancelButton.addActionListener(new ActionListener() {
-                            public void actionPerformed(ActionEvent e) {
-                                errorFrame.setVisible(false);
-                            }
+                        cancelButton.addActionListener(e -> {
+                            errorFrame.setVisible(false);
                         });
 
                         badUsername = true;
@@ -305,8 +284,6 @@ public class Main implements Runnable {
                                 JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
                                 content = errorFrame.getContentPane();
                                 content.setLayout(new BorderLayout());
-                                enterButton = new JButton("Enter");
-                                cancelButton = new JButton("Cancel");
 
                                 panel = new JPanel();
                                 panel.add(enterButton);
@@ -327,10 +304,8 @@ public class Main implements Runnable {
                                     }
                                 });
 
-                                cancelButton.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        errorFrame.setVisible(false);
-                                    }
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
                                 });
 
                                 badUsername = true;
