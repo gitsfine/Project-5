@@ -32,6 +32,8 @@ public class Main implements Runnable {
 
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Main());
+
         Marketplace marketplace = loadMarketplace();
         if (marketplace == null) {
             marketplace = new Marketplace();
@@ -180,7 +182,7 @@ public class Main implements Runnable {
 
         if (newUserPromptInput.equals("yes")) {
             boolean signupComplete = false;
-            String username = "", password, email, isSellerStr;
+            String username = "", password = "", email = "", isSellerStr = "";
             while (!signupComplete) {
 
                 boolean badUsername;
@@ -311,25 +313,145 @@ public class Main implements Runnable {
                                 badUsername = true;
 
                             } else {
-                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
-                                        "a valid username :)", "Coffee " +
-                                        "Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+                                //old GUI
+//                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
+//                                        "a valid username :)", "Coffee " +
+//                                        "Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+
+                                //new Valid Username GUI
+                                JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                                content = errorFrame.getContentPane();
+                                content.setLayout(new BorderLayout());
+
+                                panel = new JPanel();
+                                panel.add(enterButton);
+                                panel.add(cancelButton);
+                                content.add(panel, BorderLayout.SOUTH);
+                                errorFrame.add(new JLabel("Thank you for creating a valid username :)"),
+                                        BorderLayout.CENTER);
+
+                                errorFrame.setSize(400, 200);
+                                errorFrame.setLocationRelativeTo(null);
+                                errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                errorFrame.setVisible(true);
+
+                                enterButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        //should take them out of whiles
+                                        boolean badUsername = false;
+                                    }
+                                });
+
+                                cancelButton.addActionListener(e -> {
+                                    errorFrame.setVisible(false);
+                                });
+
                                 badUsername = false;
                             }
                         } else if (hasNumber) {
-                            JOptionPane.showMessageDialog(null, "Username is missing a " +
-                                    "letter. Please try again.", "Coffee " +
-                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            //old GUI
+//                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+//                                    "letter. Please try again.", "Coffee " +
+//                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                            //new Error GUI
+                            JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                            content = errorFrame.getContentPane();
+                            content.setLayout(new BorderLayout());
+
+                            panel = new JPanel();
+                            panel.add(enterButton);
+                            panel.add(cancelButton);
+                            content.add(panel, BorderLayout.SOUTH);
+                            errorFrame.add(new JLabel("Username is missing a letter. Please try again."),
+                                    BorderLayout.CENTER);
+
+                            errorFrame.setSize(400, 200);
+                            errorFrame.setLocationRelativeTo(null);
+                            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            errorFrame.setVisible(true);
+
+                            enterButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    //should take them through whiles
+                                    boolean badUsername = true;
+                                }
+                            });
+
+                            cancelButton.addActionListener(e -> {
+                                errorFrame.setVisible(false);
+                            });
+
                             badUsername = true;
                         } else if (hasLetter) {
-                            JOptionPane.showMessageDialog(null, "Username is missing a " +
-                                    "number. Please try again.", "Coffee " +
-                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            //old GUI
+//                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+//                                    "number. Please try again.", "Coffee " +
+//                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                            //new Error GUI
+                            JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                            content = errorFrame.getContentPane();
+                            content.setLayout(new BorderLayout());
+
+                            panel = new JPanel();
+                            panel.add(enterButton);
+                            panel.add(cancelButton);
+                            content.add(panel, BorderLayout.SOUTH);
+                            errorFrame.add(new JLabel("Username is missing a number. Please try again."),
+                                    BorderLayout.CENTER);
+
+                            errorFrame.setSize(400, 200);
+                            errorFrame.setLocationRelativeTo(null);
+                            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            errorFrame.setVisible(true);
+
+                            enterButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    //should take them through whiles
+                                    boolean badUsername = true;
+                                }
+                            });
+
+                            cancelButton.addActionListener(e -> {
+                                errorFrame.setVisible(false);
+                            });
+
                             badUsername = true;
                         } else {
-                            JOptionPane.showMessageDialog(null, "Username is missing a " +
-                                    "letter and a number. Please try again.", "Coffee " +
-                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            //old GUI
+//                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+//                                    "letter and a number. Please try again.", "Coffee " +
+//                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+
+                            //new Error GUI
+                            JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                            content = errorFrame.getContentPane();
+                            content.setLayout(new BorderLayout());
+
+                            panel = new JPanel();
+                            panel.add(enterButton);
+                            panel.add(cancelButton);
+                            content.add(panel, BorderLayout.SOUTH);
+                            errorFrame.add(new JLabel("Username is missing a letter and number. Please try again.")
+                                    , BorderLayout.CENTER);
+
+                            errorFrame.setSize(400, 200);
+                            errorFrame.setLocationRelativeTo(null);
+                            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            errorFrame.setVisible(true);
+
+                            enterButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    //should take them through whiles
+                                    boolean badUsername = true;
+                                }
+                            });
+
+                            cancelButton.addActionListener(e -> {
+                                errorFrame.setVisible(false);
+                            });
+
                             badUsername = true;
                         }
                     }
@@ -337,14 +459,75 @@ public class Main implements Runnable {
 
                 boolean badPassword;
                 do { // enter password
-                    password = JOptionPane.showInputDialog(null, "Please enter a password!" +
-                                    "\nNote: Must contain at least six digits. Must contain at least one letter " +
-                                    "and one number.",
-                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    //old GUI
+//                    password = JOptionPane.showInputDialog(null, "Please enter a password!" +
+//                                    "\nNote: Must contain at least six digits. Must contain at least one letter " +
+//                                    "and one number.",
+//                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+
+                    //new password input GUI
+                    JFrame passFrame = new JFrame("Coffee Shop MarketPlace");
+                    Container content = passFrame.getContentPane();
+                    content.setLayout(new BorderLayout());
+
+                    JPanel panel = new JPanel();
+                    panel.add(enterButton);
+                    panel.add(cancelButton);
+                    panel.add(strTextField);
+                    content.add(panel, BorderLayout.SOUTH);
+
+                    passFrame.add(new JLabel("Please create a username!\nNote: Username must " +
+                                    "contain at least six digits. Must contain at least one letter and one number."),
+                            BorderLayout.CENTER);
+
+                    passFrame.setSize(400, 200);
+                    passFrame.setLocationRelativeTo(null);
+                    passFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    passFrame.setVisible(true);
+
+                    enterButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            String password = strTextField.getText();
+                        }
+                    });
+
+                    cancelButton.addActionListener(e -> {
+                        passFrame.setVisible(false);
+                    });
+
                     if ((password == null) || (password.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
-                                        "Shop MarketPlace",
-                                JOptionPane.ERROR_MESSAGE);
+                        //old GUI
+//                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+//                                        "Shop MarketPlace",
+//                                JOptionPane.ERROR_MESSAGE);
+
+                        //new Error Message GUI
+                        JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                        content = errorFrame.getContentPane();
+                        content.setLayout(new BorderLayout());
+
+                        panel = new JPanel();
+                        panel.add(enterButton);
+                        panel.add(cancelButton);
+                        content.add(panel, BorderLayout.SOUTH);
+                        errorFrame.add(new JLabel("Please answer!"), BorderLayout.CENTER);
+
+                        errorFrame.setSize(400, 200);
+                        errorFrame.setLocationRelativeTo(null);
+                        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        errorFrame.setVisible(true);
+
+                        enterButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                //should take them back to input
+                                boolean badPassword = true;
+                            }
+                        });
+
+                        cancelButton.addActionListener(e -> {
+                            errorFrame.setVisible(false);
+                        });
+
                         badPassword = true;
                     } else {
                         if (password.length() < 6) {
@@ -352,6 +535,34 @@ public class Main implements Runnable {
                                             "Please try again.", "Coffee " +
                                             "Shop MarketPlace",
                                     JOptionPane.ERROR_MESSAGE);
+
+                            //new Error Message GUI
+                            JFrame errorFrame = new JFrame("Coffee Shop MarketPlace");
+                            content = errorFrame.getContentPane();
+                            content.setLayout(new BorderLayout());
+
+                            panel = new JPanel();
+                            panel.add(enterButton);
+                            panel.add(cancelButton);
+                            content.add(panel, BorderLayout.SOUTH);
+                            errorFrame.add(new JLabel("Password is too short."), BorderLayout.CENTER);
+
+                            errorFrame.setSize(400, 200);
+                            errorFrame.setLocationRelativeTo(null);
+                            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            errorFrame.setVisible(true);
+
+                            enterButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    //should take them back to input
+                                    boolean badPassword = true;
+                                }
+                            });
+
+                            cancelButton.addActionListener(e -> {
+                                errorFrame.setVisible(false);
+                            });
+                            
                             badPassword = true;
                         } else { // password is longer than 6 characters
                             boolean hasLetter = false;
