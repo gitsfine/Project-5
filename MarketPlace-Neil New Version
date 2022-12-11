@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -6,7 +7,7 @@ import java.util.*;
 
 public class Marketplace implements java.io.Serializable {
     public ArrayList<User> users;
-    private ArrayList<Store> stores;
+    public ArrayList<Store> stores;
 
     private User signedInUser;
 
@@ -132,14 +133,14 @@ public class Marketplace implements java.io.Serializable {
         ArrayList<String> dashboardRow = new ArrayList<String>();
 
         for (Store s : stores) {
-            dashboardRow.add(s.getSales().size()+ ","+ s.getName());
+            dashboardRow.add(s.getSales().size()+ " - "+ s.getName());
         }
 
         // sort by sale count
         if(!isDsc) {
-            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         }
 
         return output + String.join("\n",dashboardRow) + "\n";
@@ -164,14 +165,14 @@ public class Marketplace implements java.io.Serializable {
         }
 
         for (int i = 0; i<saleStores.size(); i++) {
-            dashboardRow.add(purchases.get(i)+","+saleStores.get(i).getName());
+            dashboardRow.add(purchases.get(i)+" - "+saleStores.get(i).getName());
         }
 
         // sort by sale count
         if(!isDsc) {
-            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         }
 
         return output + String.join("\n",dashboardRow) + "\n";
@@ -235,7 +236,7 @@ public class Marketplace implements java.io.Serializable {
     }
 
     public String customerRevenueSaleList(Store s) {
-        String output = "Revenue by customer for {s.getName}\n";
+        String output = String.format("Revenue by customer for %s:\n", s.getName());
         ArrayList<Customer> customers = new ArrayList<>();
         ArrayList<Integer> revenue = new ArrayList<>();
         ArrayList<String> listRow = new ArrayList<String>();
@@ -253,7 +254,7 @@ public class Marketplace implements java.io.Serializable {
         }
 
         for (int i = 0; i<customers.size(); i++) {
-            listRow.add(customers.get(i).getUsername()+","+revenue.get(i));
+            listRow.add(customers.get(i).getUsername()+" - $"+revenue.get(i));
         }
 
         return output + String.join("\n",listRow) + "\n";
@@ -293,12 +294,51 @@ public class Marketplace implements java.io.Serializable {
                 String[] p = productString.split(", ");
                 status = status && createProduct(s, p[0], p[1], p[2], p[3], p[4], Integer.parseInt(p[5]), Integer.parseInt(p[6]));
             }
+            br.close();
             return status;
         } catch (IOException e) {
             return false;
         }
     }
 
+    public void dashboardCustomerNumSalesVoid(boolean isDsc) {
+        Seller s = getSeller();
+        String output = "Number of your sales by customer:\n";
+        ArrayList<Customer> customers = new ArrayList<>();
+        ArrayList<Integer> purchases = new ArrayList<>();
+        ArrayList<String> dashboardRow = new ArrayList<String>();
+
+        for (Sale sale : s.getSales()) {
+            Customer saleBuyer = sale.getBuyer();
+            int pos = customers.indexOf(saleBuyer);
+            if (pos == -1) {
+                customers.add(saleBuyer);
+                purchases.add(0);
+                pos = customers.indexOf(saleBuyer);
+            }
+            purchases.set(pos, purchases.get(pos) + 1);
+        }
+
+        for (int i = 0; i < customers.size(); i++) {
+            dashboardRow.add(purchases.get(i) + " - " + customers.get(i).getUsername());
+        }
+
+        // sort by sale count
+        if (!isDsc) {
+            dashboardRow.sort((String o1, String o2) -> 1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
+        } else {
+            dashboardRow.sort((String o1, String o2) -> -1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
+        }
+
+        String results = String.format(output + String.join("\n", dashboardRow) + "\n");
+        if (dashboardRow.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You have no sales :(",
+                    "===Sales===", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, results,
+                    "===Sales===", JOptionPane.PLAIN_MESSAGE);
+        }
+    }
     public String dashboardCustomerNumSales(boolean isDsc) {
         Seller s = getSeller();
         String output = "Number of your sales by customer\n";
@@ -318,19 +358,57 @@ public class Marketplace implements java.io.Serializable {
         }
 
         for (int i = 0; i<customers.size(); i++) {
-            dashboardRow.add(purchases.get(i)+","+customers.get(i).getUsername());
+            dashboardRow.add(purchases.get(i)+" - "+customers.get(i).getUsername());
         }
 
         // sort by sale count
         if(!isDsc) {
-            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         }
 
         return output + String.join("\n",dashboardRow) + "\n";
     }
 
+    public void dashboardProductNumSalesVoid(boolean isDsc) {
+        Seller s = getSeller();
+        String output = "Number of your sales by product\n";
+        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<Integer> purchases = new ArrayList<>();
+        ArrayList<String> dashboardRow = new ArrayList<String>();
+
+        for (Sale sale : s.getSales()) {
+            Product saleProduct = sale.getProduct();
+            int pos = products.indexOf(saleProduct);
+            if (pos == -1) {
+                products.add(saleProduct);
+                purchases.add(0);
+                pos = products.indexOf(saleProduct);
+            }
+            purchases.set(pos,purchases.get(pos)+1);
+        }
+
+        for (int i = 0; i<products.size(); i++) {
+            dashboardRow.add(purchases.get(i)+" - "+products.get(i).getName());
+        }
+
+        // sort by sale count
+        if(!isDsc) {
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
+        } else {
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
+        }
+
+        String results = String.format(output + String.join("\n", dashboardRow) + "\n");
+        if (dashboardRow.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You have no sales :(",
+                    "===Sales===", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, results,
+                    "===Sales===", JOptionPane.PLAIN_MESSAGE);
+        }
+    }
     public String dashboardProductNumSales(boolean isDsc) {
         Seller s = getSeller();
         String output = "Number of your sales by product\n";
@@ -350,17 +428,18 @@ public class Marketplace implements java.io.Serializable {
         }
 
         for (int i = 0; i<products.size(); i++) {
-            dashboardRow.add(purchases.get(i)+","+products.get(i).getName());
+            dashboardRow.add(purchases.get(i)+" - "+products.get(i).getName());
         }
 
         // sort by sale count
         if(!isDsc) {
-            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> 1*(Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         } else {
-            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(",")[0]) - Integer.parseInt(o2.split(",")[0])));
+            dashboardRow.sort((String o1, String o2)-> -1 * (Integer.parseInt(o1.split(" - ")[0]) - Integer.parseInt(o2.split(" - ")[0])));
         }
 
         return output + String.join("\n",dashboardRow) + "\n";
     }
+
     // End seller actions
 }
