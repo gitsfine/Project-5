@@ -10,7 +10,7 @@ public class Product implements java.io.Serializable {
     private Integer price;
     private Integer quantity;
 
-    public Product(Store store, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
+    public Product (Store store, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
         this.name = name;
         this.milkType = milkType;
         this.coffeeType = coffeeType;
@@ -22,11 +22,11 @@ public class Product implements java.io.Serializable {
     }
 
     public String toCombinedString() {
-        return store.getName() + ", " + toListing();
+        return store.getName() +", "+ toListing();
     }
 
     public String toListing() {
-        return name + " | " + milkType + " | " + coffeeType + " | " + syrup + " | " + special + " | " + "$" + price;
+        return name + ", " + milkType + ", " + coffeeType + ", " + syrup + ", " + special + ", "+ price + "$";
     }
 
     public boolean buy(Customer c) {
@@ -63,6 +63,6 @@ public class Product implements java.io.Serializable {
     }
 
     public String toExport() {
-        return name + " | " + milkType + " | " + coffeeType + " | " + syrup + " | " + special + " | " + "$" + price + " | " + quantity;
+        return name + ", " + milkType + ", " + coffeeType + ", " + syrup + ", " + special + ", " + price + ", " + quantity;
     }
 }
