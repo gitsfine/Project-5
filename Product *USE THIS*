@@ -26,7 +26,7 @@ public class Product implements java.io.Serializable {
     }
 
     public String toListing() {
-        return name + ", " + milkType + ", " + coffeeType + ", " + syrup + ", " + special + ", "+ price + "$";
+        return name + " | " + milkType + " | " + coffeeType + " | " + syrup + " | " + special + " | " + "$" + price;
     }
 
     public boolean buy(Customer c) {
@@ -63,6 +63,6 @@ public class Product implements java.io.Serializable {
     }
 
     public String toExport() {
-        return name + ", " + milkType + ", " + coffeeType + ", " + syrup + ", " + special + ", " + price + ", " + quantity;
+        return name + " | " + milkType + " | " + coffeeType + " | " + syrup + " | " + special + " | " + "$" + price + " | " + quantity;
     }
 }
