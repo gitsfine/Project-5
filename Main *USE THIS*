@@ -364,7 +364,7 @@ public class Main {
                     m.dashboardProductNumSalesVoid(promptDecending(s));
                     break;
                 case 5:
-                    JOptionPane.showMessageDialog(null, "You are being logged out....", "Coffee Shop MarketpLace", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "You are being logged out....", "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
                     isActive = false;
                     saveMarketplace(m);
                     break;
@@ -418,89 +418,89 @@ public class Main {
             JOptionPane.showMessageDialog(null, "You currently do not have any stores.\n Try making one!",
                     "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
         } else {
-        String[] storeNames = new String[stores.size()];
-        for (int i = 0; i < stores.size(); i++) {
-            storeNames[i] = stores.get(i).getName();
-        }
-
-        String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
-                        "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
-                null, storeNames, null);
-
-        int storeIndex = -1;
-        for (int i = 0; i < stores.size(); i++) {
-            if (modifyingStore.equals(stores.get(i).getName())) {
-                storeIndex = i;
-                break;
+            String[] storeNames = new String[stores.size()];
+            for (int i = 0; i < stores.size(); i++) {
+                storeNames[i] = stores.get(i).getName();
             }
-        }
-        Store store = stores.get(storeIndex);
 
-        String[] modifyOptions = {"1. List Sales", "2. Create new product", "3. List/Modify existing products",
-                "4. Dashboard of revenue by customer", "5. Export products as csv.", "6. Import products as csv."};
+            String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
+                            "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
+                    null, storeNames, null);
 
-        String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
-                        "to perform!", "===Your Stores===", JOptionPane.QUESTION_MESSAGE, null,
-                modifyOptions, null);
-
-        int choiceNum = Integer.parseInt(choice.substring(0, 1));
-        switch (choiceNum) {
-            case 1:
-                listSales(store);
-                break;
-            case 2:
-                createNewProduct(s, m, store);
-                break;
-            case 3:
-                modifyProducts(s, m, store);
-                break;
-            case 4:
-                String output = m.customerRevenueSaleList(store);
-                JOptionPane.showMessageDialog(null, output,
-                        "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
-                break;
-            case 5:
-                String filePath;
-                do {
-                    filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
-                            "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
-                    if (filePath == null) {
-                        saveMarketplace(m);
-                        System.exit(0);
-                    } else if (filePath.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Please answer!",
-                                "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
-                    } //end if
-
-                    String results = m.exportProductList(store, filePath);
-                    JOptionPane.showMessageDialog(null, "Done exporting product list!",
-                            "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
-                } while (filePath.isEmpty());
-
-
-                break;
-            case 6:
-                do {
-                    filePath = JOptionPane.showInputDialog(null, "Enter import filepath.",
-                            "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
-                    if (filePath == null) {
-                        saveMarketplace(m);
-                        System.exit(0);
-                    } else if (filePath.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Please answer!",
-                                "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
-                    } //end if
-                } while (filePath.isEmpty());
-
-                boolean status = m.importProductList(store, filePath);
-                if (!status) {
-                    JOptionPane.showMessageDialog(null, "Failed to import all products.\nPlease ensure your file is properly formatted.",
-                            "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Products Imported Successfully!",
-                            "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+            int storeIndex = -1;
+            for (int i = 0; i < stores.size(); i++) {
+                if (modifyingStore.equals(stores.get(i).getName())) {
+                    storeIndex = i;
+                    break;
                 }
-                break;
+            }
+            Store store = stores.get(storeIndex);
+
+            String[] modifyOptions = {"1. List Sales", "2. Create new product", "3. List/Modify existing products",
+                    "4. Dashboard of revenue by customer", "5. Export products as csv.", "6. Import products as csv."};
+
+            String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                            "to perform!", "===Your Stores===", JOptionPane.QUESTION_MESSAGE, null,
+                    modifyOptions, null);
+
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            switch (choiceNum) {
+                case 1:
+                    listSales(store);
+                    break;
+                case 2:
+                    createNewProduct(s, m, store);
+                    break;
+                case 3:
+                    modifyProducts(s, m, store);
+                    break;
+                case 4:
+                    String output = m.customerRevenueSaleList(store);
+                    JOptionPane.showMessageDialog(null, output,
+                            "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+                    break;
+                case 5:
+                    String filePath;
+                    do {
+                        filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
+                                "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
+                        if (filePath == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (filePath.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        } //end if
+
+                        String results = m.exportProductList(store, filePath);
+                        JOptionPane.showMessageDialog(null, "Done exporting product list!",
+                                "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+                    } while (filePath.isEmpty());
+
+
+                    break;
+                case 6:
+                    do {
+                        filePath = JOptionPane.showInputDialog(null, "Enter import filepath.",
+                                "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
+                        if (filePath == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (filePath.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        } //end if
+                    } while (filePath.isEmpty());
+
+                    boolean status = m.importProductList(store, filePath);
+                    if (!status) {
+                        JOptionPane.showMessageDialog(null, "Failed to import all products.\nPlease ensure your file is properly formatted.",
+                                "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Products Imported Successfully!",
+                                "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    break;
             }
         }
     }
@@ -815,6 +815,7 @@ public class Main {
                     m.exportDashboardPurchasesByStore(filePath);
                     break;
                 case 7:
+                    JOptionPane.showMessageDialog(null, "You are being logged out....", "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
                     isActive = false;
                     saveMarketplace(m);
                     break;
