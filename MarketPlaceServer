@@ -48,7 +48,7 @@ public class MarketplaceServer {
                 // commandName arg1, arg2, ect
                 ServerCommand serverCommand;
                 try {
-                    serverCommand = (ServerCommand) in.readObject(); // cast a Student class from reading the object 
+                    serverCommand = (ServerCommand) in.readObject(); 
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -150,6 +150,7 @@ public class MarketplaceServer {
                         saveMarketplace(marketplace);
                     }
                     try {
+                        out.reset();
                         out.writeObject(serverCommand);
                     }
                     catch(Exception e) {
@@ -193,4 +194,5 @@ public class MarketplaceServer {
          // nothing
       }
     }
+    
 }
