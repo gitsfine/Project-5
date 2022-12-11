@@ -35,7 +35,8 @@ public class MarketplaceClient{
     }
 
     public ServerCommand executeCommand(ServerCommand sc) {
-        try {   
+        try { 
+            out.reset();  
             out.writeObject(sc);
             out.flush();
             return (ServerCommand) in.readObject();
@@ -212,7 +213,7 @@ public class MarketplaceClient{
         sc.inInts = new Integer[]{price,quantity};
 
         sc = executeCommand(sc);
-
+        
         return sc.outBool;
     }
 
@@ -220,7 +221,7 @@ public class MarketplaceClient{
         ServerCommand sc = new ServerCommand("removeProduct");
         sc.inProducts = new Product[]{p};        
         
-        p.getStore().deleteProduct(p);
+        sc = executeCommand(sc);
     }
 
     public boolean editProduct(Product p, String name, String milkType, String coffeeType, String syrup, String special, Integer price, Integer quantity) {
