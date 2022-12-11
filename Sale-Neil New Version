@@ -18,6 +18,6 @@ public class Sale implements java.io.Serializable {
     }
 
     public String toString() {
-        return buyer.getUsername() + ", " + product.getName();
+        return buyer.getUsername() + " - " + product.getName();
     }
 }
