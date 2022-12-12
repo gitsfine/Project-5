@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class Marketplace implements java.io.Serializable {
-    public static ArrayList<User> users;
-    public static ArrayList<Store> stores;
+    public ArrayList<User> users;
+    public ArrayList<Store> stores;
 
     private User signedInUser;
 
