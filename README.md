@@ -1,97 +1,84 @@
 # CS 18000 - Project 5
 
 ## How to Compile and Run the Project 
-1. Import all files
-2. Run main method
+1. Run the MarketplaceServer class
+2. Run the main method
 
-## Notes
-1. If you are importing a file with product information, ensure it is formatted like the file named "imports.txt" that is provided for reference
-2. If you are running the program with a previous marketplace, ensure the serialized format of the marketplace is present
-
-### Project 4 Regrade
-To grade for project 4 requirements, there is a main method present that does not require a server to be running.  This should be used when Threading/Network IO are not needed.  This is under the mainProjectFour class.
 
 ## Submission 
-Katelyn Rockey - Submitted Vocareum workspace  
-Katelyn Rockey - Submitted report on Brightspace  
+Olivia Lund - Submitted Vocareum workspace  
+Heewon Kim - Submitted report on Brightspace  
 
 ## Description of Classes
 
-### 1. Marketplace (main)  
+### 1. Main  
 
 ### Methods:  
 
-- createAccount
-  - asks for email  
-    - try-catch used to make sure input follows standard email format  
-    - try-catch used to make sure input hasn’t been used before  
+- startUserInput
+  - shows “Welcome to Coffee Shop MarketPlace!” message
+  - sets status variable to signUpOrLogin
+- uses status to determine whether user is a seller or a customer
+  	-
+- signUpOrLogin
+  - do while until newUserPromptInput is null or isEmpty
+- if statements for newUserPromptInt being yes or quit
+-do while for usernames that do not fit criteria of username or are already taken
+-do while for passwords that do not fit criteria of  passwords or are already taken
+-do while for emails that do not fit criteria of emails or are already taken
+- while loop for if non new user is not able to login
+- if statement for login not being able to happen
 
-  - asks for a username
-    - try-catch used to make sure input follows format  		
-    (at least one character and one number)  
-    - try-catch used to make sure input isn’t already taken
+   - readNumberOption
+   	 - while loop for input not being a valid number
 
-  - asks for a password
-    - try-catch used to make sure input follows format 				
-    (at least one character, one number, more than 6 characters)
-    - constructs new User object
-    - offers option to user to either be a Seller or a Customer
-    - constructs either new Seller or Customer object
-
-- loginToAccount
-  - asks for email
-    - try-catch used to make sure input follows standard email format
-  - asks for password
-    - try-catch used to make sure there is an existing account with the provided email and password
-    - error message used if no account exists
-
-- editAccount
-    - prompts user with questions what they would like to edit
-    - implements said changes using getters & setters
-
-- deleteAccount
-  - asks the user for email and password
-    - try-catch used to make sure there is an existing account with the provided email and password
-    - error message used if no account exists
-  - erases the file contents associated with said User
-
+- promptDescending
+  - asks the user  to selection option to perform for dashboard
 - listStores
-  - prints out current list of stores using Store
 
-- processData
-  - creates an arrayList
-    - new ArrayList < User > users = new ArrayList<>();
-  - instantiates a fileReader object to read in data.txt
-    - at NEW USER   							
-    (next three lines have the parameters needed to construct a new user)
-      - create another new arrayList to help keep track of the stores
-    - at NEW STORE   						
-    (following lines will contain the store name and product info needed to construct new stores)
-      - create another new arrayList to help keep track of the products
-  - for-loop used to add the new products to the current store
-    - at SALES, CART, and PURCHASES 
-      - similar process
+- runSellerHandler
+-gives Seller options
+-while loop for option being null
+-switch-case for options seller can do
+-
+ 
+      -createStore 
+- do while for if storeName is null or isEmpty
+- if statement for store creation 
+ -modifyStore 
+- if statement for stores array being empty
+-ask seller which store they would like to modify
+-for loop for navigating stores
+- gives options to seller
 
-- Statistics (based on the user’s boolean seller value):
-    - Sellers can view a dashboard that lists statistics for each of their stores
-      - data will include a list of customers with the number of items that they have purchased and a list of products with the number of sales
-      - sellers can choose to sort the dashboard
-      - utilize the sales array lists for each store they have
-    - Customers can view a dashboard with store and seller information.
-      - data will include a list of stores by number of products sold and a list of stores by the products purchased by that particular customer
-      - customers can choose to sort the dashboard
-      - utilize the purchased array lists
+-listSales
+	-used to list and format sales
+-createNewProduct
+	- do whiles for names, milk type, coffee type,syrup,special,price and quantity
+-modifyProduct
+	- switch-case for choices for how to modify a product
 
-- exportFile (based on the user’s boolean seller value):
-  - Sellers can import or export products for their stores using a csv file
-    - all product details should be included, with one row per product
-  - Customers can export a file with their purchase history
+-runCustomerHandler
+	-switch-case for choices for what a customer can do
+-listAllStores
+	-it lists all the stores
+-searchForProduct
+	-it searches for the products
+-viewCart
+	-it views the cart
+-shopFromMarketPlace
+	-it allows customers to buy a product
+-loadMarketPlace
+	-try catch
+-creates File and ObjectInput streams, reads Marketplace, closes Fille and ObjectInput streams
+-saveMarketplace
+	-try catch
+		-creates File and ObjectOutput streams, writes Marketplace, closes Fille and ObjectOutput streams
+
+		-
 
 ### Main Method Process:
-- calls processData
-- provides menu that allows users to create/edit/login/delete an account
-  - call associated methods
-
+- runs the Marketplace code through GUIs
 ### Seller Track:
 - provides menu that allows user to either create/edit/delete their stores, exportFile, or view their statistics
 
@@ -103,8 +90,236 @@ Katelyn Rockey - Submitted report on Brightspace
 - provide option for users to view/edit their shopping cart  
 
 ___
+### 2. MarketplaceServer
 
-### 2. User
+### Fields/Constructor Parameters:
+ServerSocket serverSocket;
+ Marketplace marketplace;
+Boolean running;
+
+
+### Methods:
+-loadMarketplace
+	-try catch
+		- creates a new FileInputStream
+		- creates a new ObjectInputStream
+		-reads in Marketplace
+		-closes FileInputStream
+		- closes ObjectInputStream
+		- return Marketplace
+ 
+-saveMarketplace
+
+	-try catch
+		- creates a new FileOutputStream
+		- creates a new ObjectOutputStream
+		-writes out Marketplace
+		-closes FileInputStream
+		- closes ObjectInputStream
+		- return Marketplace
+___
+### 3. MarketplaceClient
+### Fields/Constructor Parameters:
+ private Socket client = null;
+   private ObjectOutputStream out = null;
+   private ObjectInputStream in = null;
+ 
+  
+
+### Methods:
+-disconnectClient
+	-try catch used to close out and in 
+
+-killServer
+	- calls executeCommand() to quit
+
+-executeCommand
+	-try catch used to reset out, write the ServerCommand object, calls flush(), returns in reading ServerCommand
+
+-isLoggedInUserSeller
+	-creates a new ServerCommand named isLoggedInUserSeller
+	-calls executeCommand
+	- returns outBool
+-getLoggedInUsername
+- returns outString
+-createAccount
+	-creates a new ServerCommand named createAccount
+	-creates a new inStrings array
+	-creates a new inBools array
+	-calls executeCommand
+	-returns outBool
+-attemptLogin
+	-creates a new ServerCommand named attemptLogin
+	-creates a new inStrings array
+	-creates a new inBools array
+	-calls executeCommand
+	-returns outBool
+-listAllStores
+	-creates a new ServerCommand named listAllStores
+	-calls executeCommand
+	-returns outStoreList
+
+-viewProducts
+	-creates a new ServerCommand named viewProducts
+	-calls executeCommand
+	-returns outStoreList
+searchProducts
+-creates a new ServerCommand named searchProducts
+	-creates a new inStrings array
+	-calls executeCommand
+	-returns outProductList
+
+buyNow
+	--creates a new ServerCommand named searchProducts
+	-creates a new inStrings array
+	-calls executeCommand
+	-returns outBool
+
+addToCar
+--creates a new ServerCommand named searchProducts
+	-creates a new inStrings array
+	-calls executeCommand
+	-returns outBool
+ 
+viewCart
+	--creates a new ServerCommand named searchProducts
+	-calls executeCommand
+	-returns outProductList
+ 
+	-
+deleteItemFromCart
+--creates a new ServerCommand named searchProducts
+	-creates a new inProducts array
+ 
+checkoutCart
+--creates a new ServerCommand named searchProducts
+	-creates a new inProducts array
+ 
+	-returns outBool
+ 
+dashboardSaleCounterByStore
+--creates a new ServerCommand named searchProducts
+	-creates a new inBools array
+	-calls executeCommand
+ 
+	-returns outString
+ 
+dashboardPurchasesByStore
+--creates a new ServerCommand named searchProducts
+	-creates a new inBools array
+ 
+	-calls executeCommand
+ 
+	-returns outString
+ 
+exportDashboardPurchasesByStore
+--creates a new ServerCommand named searchProducts
+	-calls executeCommand
+	-creates a new inBools array
+ 
+	-returns outString
+ 
+createStore
+-creates a new ServerCommand named searchProducts
+	-creates a new inString array
+ 
+	-calls executeCommand
+ 
+	-returns outBool
+listStoresForSeller
+-creates a new ServerCommand named searchProducts
+ 
+	-calls executeCommand
+	-creates a new inString array
+ 
+	-returns outSoreList
+listProducts
+-creates a new ServerCommand named searchProducts
+	-calls executeCommand
+ 
+	-returns outString
+ 
+createProduct
+	--creates a new ServerCommand named searchProducts
+ 
+	-calls executeCommand
+ 
+	-returns outBool
+removeProduct
+-creates a new ServerCommand named searchProducts
+	-calls executeCommand
+ 
+	-returns outString
+ 
+editProduct
+-creates a new ServerCommand named searchProducts
+ 
+	-calls executeCommand
+	-creates a new inProducts array
+	-creates a new inString array
+	-creates a new inInts array
+ 
+ 
+	-returns outString
+ 
+customerRevenueSaleList
+-creates a new ServerCommand named searchProducts
+ 
+	-calls executeCommand
+ 
+	-returns outString
+ 
+getProductList
+-creates a new ServerCommand named searchProducts
+-creates a new inStores array
+
+-returns outString
+ 
+exportProductList
+-creates a new ServerCommand named searchProducts
+creates a new inStores array
+creates a new inStrings array
+ 
+	-calls executeCommand
+ 
+	-returns outString
+ 
+importProductList
+	-calls executeCommand
+creates a new inStores array
+creates a new inStrings array
+ 
+	-returns outBool
+ 
+dashboardCustomerNumSale
+-creates a new ServerCommand named searchProducts
+ 
+	-calls executeCommand
+-creates a new inBoolss array
+ 
+	-returns outString
+ 
+dashboardProductNumSales
+-creates a new ServerCommand named searchProducts
+ 
+	-calls executeCommand
+creates a new inBools array
+ 
+	-returns outString
+ 
+ 
+
+ 
+ 
+ 
+
+
+
+
+
+
+___
+### 3. User
 
 ### Fields/Constructor Parameters:
 - String username
@@ -119,51 +334,127 @@ ___
 ### 3. Seller (User subclass)
 
 ### Fields/Constructor Parameters:
-- super(username, email, password)
-- boolean seller (true)
-- ArrayList<String> sales containing sales
+String userName;
+ String email;
+  String password;
+  
 
 ### Methods:
-- createStore 
-  - constructs a new store object based on provided information
-  - write the new store into the user’s file
-  - prompt the user with questions to gather the information needed
+-getUsername
+	-returns usernames
 
-- deleteStore 
-  - deletes the store requested based on provided information
-  - remove the old store from the user’s file
-  - prompt the user with questions to gather the information needed
+-getStores
+	-returns stores
+-getEmails
+	-returns emails
 
-- editStore 
-  - allows the seller to edit the store with getters & setters
-  - try-catch used for products that does not already exist
-  - prompt the user with questions that ask them about the changes they would like to make
+
+### 3. User
+
+### Fields/Constructor Parameters:
+- String username
+- String email
+- String password  
+
+### Methods:
+- getters/setters for fields  
+
+___
+
+### 3. Seller (User subclass)
+
+### Fields/Constructor Parameters:
+String userName;
+ String email;
+  String password;
+  
+
+### Methods:
+-getUsername
+	-returns usernames
+
+-getStores
+	-returns stores
+-getEmails
+	-returns emails
+
+___
+
+### 3. Seller (User subclass)
+
+### Fields/Constructor Parameters:
+String userName;
+ String email;
+  String password;
+  
+
+### Methods:
+-getUsername
+	-returns usernames
+
+-getStores
+	-returns stores
+-getEmails
+	-returns emails
+
+___
+
+
+### 3. User
+
+### Fields/Constructor Parameters:
+- String username
+- String email
+- String password  
+
+### Methods:
+- getters/setters for fields  
+
+___
+
+### 3. Seller (User subclass)
+
+### Fields/Constructor Parameters:
+String userName;
+ String email;
+  String password;
+  
+
+### Methods:
+-getUsername
+	-returns usernames
+
+-getStores
+	-returns stores
+-getEmails
+	-returns emails
+
 ___
 
 ### 4. Customer (User subclass)
   
 ### Fields/Constructor Parameters:
 - super(username, email, password)
-- boolean seller (will be false)
+- ArrayList<Sale> history
 - ArrayList<String> cart
-- ArrayList<String> purchased
 
 ### Methods:
-- getters/setters for fields
-- buy a product
-  - calls the products sell method
-  - updates the purchased array list
-- addToCart a product
-  - updates the cart array list
-- editCart
-  - allows user to edit and view the cart
-
+- getCart()
+-addtoCart
+	-updates cart array list if product is not  in the  cart
+- removeFromCart
+-removes product from cart   
+- addToSaleHistory
+  - updates the history array list
+- checkout
+  - allows users to checkout products from cart
 ___
 
 ### 5. Store
 
 ### Fields/Constructor Parameters:
 - String storeName
+-Seller owner
 - ArraryList<Product> products
 - ArrayList<String> sales
 
@@ -175,51 +466,71 @@ ___
   - prompts the user with questions to gather the information needed
 
 - editProduct 
-  - uses getters/setters to edit an already existing product
-  - try-catch used for products that don’t already exist
-  - prompts the user with questions to gather the information needed
+  - uses getters and for loop to see if product exists
+  - calls edit() to edit the product
 
 - deleteProduct 
   - deletes a product object based on provided information
-  - removes object from array list
-  - removes the old product from the user’s file
-  - prompts the user with questions to gather the information needed
+  - removes product from product array list
+  
+addSales
+ 	  - updates the sales array list
 
-- listProducts 
-  - prints out the items from this store
-  - uses Products to print out the current available products
-  - calls product.toString() to get the description
+- getSales
+	- returns sales
 
-- getters/setters for fields
-- toString returns a string formatted as “username’s store: store_name”
+- getNames
+	- returns names
 
-___
+
+- getProducts
+	- returns products
+
+__
 
 ### 6. Product
 
 ### Fields/Constructor Parameters:
-
-- String product_name
+Store store
+- String name
 - String milk_type (options: cream, 2%, oat, almond, etc.)
 - String coffee_type (options: cold brew, latte, cappuccino, etc.)
 - String syrup (options: vanilla, caramel, mocha, pumpkin, etc.)
 - String special (options: decaf, blonde, extra hot, etc.)
-- int price
-- int quantity
+- Integer price
+- Integer quantity
 
 ### Methods:
 - toString
-  - creates a string description based on the drink’s qualities
-  - used as the product’s description in the marketplace and sellers’ files
-  - Format:
-    - Pumpkin Spice Latte
-      Type: Latte | Milk: Oat | Syrup: Pumpkin | Special: Extra Hot
-      Price: $5 | Quantity: 5
+  - creates a string based on the name of the store and the value of the toListing() method.
 
 - getters/setters for fields
-- sell
-  - called when product is sold
-  - update the quantity of product
-  - setter used to modify the shop’s sales array list
+-toListing
+	- creates a string based on name, milkType, coffeeType  , syrup  ,  special  , price, and dollar symbol
+- toExport
+	- creates a string based on name, milkType,coffeeType  , syrup  ,  special  , price ,  and quantity
 
+- buy
+  - called when product is bought
+  - remove one unit quantity of product
+  - updates shop’s history array list
+  - updates shop’s sales array list
+
+-edit
+	- sets the name, milkType,coffeeType  , syrup  ,  special  , price ,  and quantity
+
+### 7. ServerCommand
+### Fields/Constructor Parameters:
+- String commandName
+String[] inStrings;
+   Boolean[] inBools;
+ Store[] inStores;
+   Integer[] inInts;
+   Product[] inProducts;
+ 
+ Boolean outBool;
+  String outString;
+   List<Store> outStoreList;
+   List<Product> outProductList;
+  
 
