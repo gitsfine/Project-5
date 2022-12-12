@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import java.util.*;
 
-public class Main {
+public class mainProjectFour {
     public static void main(String[] args) {
         Marketplace marketplace = loadMarketplace();
         if (marketplace == null) {
