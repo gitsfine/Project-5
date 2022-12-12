@@ -1,8 +1,18 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 import java.util.*;
-import java.io.*;
 
-public class ClientTest {
+public class ClientTest implements Runnable {
     public static void main(String[] args) {
         MarketplaceClient marketplace = new MarketplaceClient();
 
@@ -12,7 +22,9 @@ public class ClientTest {
     }
 
     public static boolean startUserInput(Scanner s, MarketplaceClient m) {
-        System.out.println("Welcome to coffee shop marketplace on a server!");
+        JOptionPane.showMessageDialog(null, "Welcome to Coffee Shop MarketPlace!",
+                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+
         boolean status = signupOrLogin(s, m);
         if (status == false)
             return false;
@@ -25,78 +37,315 @@ public class ClientTest {
     }
 
     public static boolean signupOrLogin(Scanner s, MarketplaceClient m) {
-        System.out.println("Let's get started! Are you a new user? [yes/no/quit]");
         String newUserPromptInput = "";
-        while (!newUserPromptInput.equals("yes") && !newUserPromptInput.equals("no") && !newUserPromptInput.equals("quit")) {
-            newUserPromptInput = s.nextLine();
-        }
+        do {
+            newUserPromptInput = JOptionPane.showInputDialog(null, "Let's get started! Are " +
+                            "you a new user? [yes/no/quit]", "Coffee Shop MarketPlace",
+                    JOptionPane.QUESTION_MESSAGE);
+            if (newUserPromptInput == null) {
+                saveMarketplace(m);
+                System.exit(0);
+
+            } else if (newUserPromptInput.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee Shop " +
+                        "MarketPlace", JOptionPane.ERROR_MESSAGE);
+            }
+        } while ((newUserPromptInput == null) || (newUserPromptInput.isEmpty()));
+
         if (newUserPromptInput.equals("quit"))
             return false;
+
         if (newUserPromptInput.equals("yes")) {
             boolean signupComplete = false;
             String username, password, email, isSellerStr;
-            while (signupComplete == false) {
-                System.out.println("Please enter a username:");
-                username = s.nextLine();
-                System.out.println("Please enter a password:");
-                password = s.nextLine();
-                System.out.println("Please enter an email:");
-                email = s.nextLine();
-                System.out.println("Are you a seller: [yes/no]");
-                isSellerStr = s.nextLine();
+            while (!signupComplete) {
+
+                boolean badUsername = false;
+                do { // enter username
+                    username = JOptionPane.showInputDialog(null, "Please create a username!\nNote: Username must contain at least one letter and one number.",
+                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    if ((username == null)) {
+                        saveMarketplace(m);
+                        System.exit(0);
+                        badUsername = true;
+                    } else if (username.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        badUsername = true;
+                    } else {
+                        boolean hasLetter = false;
+                        boolean hasNumber = false;
+                        for (int i = 0; i < username.length(); i++) { // traverse length of given username
+                            if (Character.isDigit(username.charAt(i))) { // check for at least one number
+                                hasNumber = true;
+                            }
+                            if (Character.isLetter(username.charAt(i))) { // check for at least one letter
+                                hasLetter = true;
+                            }
+                        }
+
+                        if (hasNumber && hasLetter) {
+                            boolean alreadyTaken = false;
+
+
+                            if (alreadyTaken) {
+                                JOptionPane.showMessageDialog(null, "I'm sorry, that" +
+                                        " username is already taken :(", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badUsername = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
+                                        "a valid username :)", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+                                System.out.println();
+                                badUsername = false;
+                            }
+                        } else if (hasNumber) {
+                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+                                    "letter. Please try again.", "Coffee " +
+                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            badUsername = true;
+                        } else if (hasLetter) {
+                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+                                    "number. Please try again.", "Coffee " +
+                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            badUsername = true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Username is missing a " +
+                                    "letter and a number. Please try again.", "Coffee " +
+                                    "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                            badUsername = true;
+                        }
+                    }
+                } while (badUsername);
+
+                boolean badPassword;
+                do { // enter password
+                    password = JOptionPane.showInputDialog(null, "Please enter a password!" +
+                                    "\nNote: Must contain at least six digits. Must contain at least one letter " +
+                                    "and one number.",
+                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    if (password == null) {
+                        saveMarketplace(m);
+                        System.exit(0);
+                        badPassword = true;
+                    } else if (password.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                        "Shop MarketPlace",
+                                JOptionPane.ERROR_MESSAGE);
+                        badPassword = true;
+                    } else {
+                        if (password.length() < 6) {
+                            JOptionPane.showMessageDialog(null, "Password is too short. " +
+                                            "Please try again.", "Coffee " +
+                                            "Shop MarketPlace",
+                                    JOptionPane.ERROR_MESSAGE);
+                            badPassword = true;
+                        } else { // password is longer than 6 characters
+                            boolean hasLetter = false;
+                            boolean hasNumber = false;
+                            for (int i = 0; i < password.length(); i++) { // traverse length of given username
+                                if (Character.isDigit(password.charAt(i))) { // check for at least one number
+                                    hasNumber = true;
+                                }
+                                if (Character.isLetter(password.charAt(i))) { // check for at least one letter
+                                    hasLetter = true;
+                                }
+                            }
+
+                            if (hasNumber && hasLetter) {
+                                JOptionPane.showMessageDialog(null, "Thank you for creating " +
+                                                "a valid password :)", "Coffee " +
+                                                "Shop MarketPlace",
+                                        JOptionPane.PLAIN_MESSAGE);
+                                badPassword = false;
+                            } else if (hasNumber) {
+                                JOptionPane.showMessageDialog(null, "Password is missing " +
+                                        "a letter. Please try again.", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badPassword = true;
+                            } else if (hasLetter) {
+                                JOptionPane.showMessageDialog(null, "Password is missing " +
+                                        "a number. Please try again.", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badPassword = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Password is missing " +
+                                        "a letter and a number. Please try again.", "Coffee " +
+                                        "Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                                badPassword = true;
+                            }
+                        }
+                    }
+                } while (badPassword);
+
+                boolean badEmail;
+                do { //enter email
+                    email = JOptionPane.showInputDialog(null, "Please enter an email:",
+                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    if (email == null) {
+                        saveMarketplace(m);
+                        System.exit(0);
+                        badEmail = true;
+                    } else if (email.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                        "Shop MarketPlace",
+                                JOptionPane.ERROR_MESSAGE);
+                        badEmail = true;
+                    } else {
+                        boolean hasAtSign = false;
+                        boolean hasDot = false;
+
+                        for (int i = 0; i < email.length(); i++) { // traverse length of given username
+                            if (email.charAt(i) == 64) { // check for an @ sign, referencing an ascii table
+                                hasAtSign = true;
+                            }
+                            if (hasAtSign && (email.charAt(i) == 46)) { // check for a .extension, referencing an
+                                // ascii table
+                                hasDot = true;
+                            }
+                        }
+
+                        if (hasAtSign && hasDot) {
+                            boolean alreadyTaken = false;
+
+
+                            if(Marketplace.users != null) {
+                                for (int i = 0; i < Marketplace.users.size(); i++) {
+                                    if (username.equals(Marketplace.users.get(i).getUsername())) {
+                                        alreadyTaken = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (alreadyTaken) {
+                                JOptionPane.showMessageDialog(null, "It appears that email " +
+                                                "is already being used.\nPlease try a different email or login " +
+                                                "instead.\n", "Coffee " +
+                                                "Shop MarketPlace",
+                                        JOptionPane.ERROR_MESSAGE);
+                                badEmail = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Thank you for inputting" +
+                                                " a valid email :)", "Coffee " +
+                                                "Shop MarketPlace",
+                                        JOptionPane.PLAIN_MESSAGE);
+                                badEmail = false;
+                            }
+                        } else if (hasAtSign) {
+                            JOptionPane.showMessageDialog(null, "Email is missing a valid " +
+                                            "extension at the end.\nExample: .com", "Coffee " +
+                                            "Shop MarketPlace",
+                                    JOptionPane.ERROR_MESSAGE);
+                            badEmail = true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Email is improperly " +
+                                            "formatted.\nPlease ensure it includes an @ sign, and a valid " +
+                                            "extension (such as .com) at the end.", "Coffee " +
+                                            "Shop MarketPlace",
+                                    JOptionPane.ERROR_MESSAGE);
+                            badEmail = true;
+                        }
+                    }
+                } while (badEmail);
+
+                do { //enter seller
+                    isSellerStr = JOptionPane.showInputDialog(null, "Are you a seller? " +
+                                    "[yes/no]",
+                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    if (isSellerStr == null) {
+                        saveMarketplace(m);
+                        System.exit(0);
+                    } else if (isSellerStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                        "Shop MarketPlace",
+                                JOptionPane.ERROR_MESSAGE);
+                    } //end if
+                } while ((isSellerStr == null) || (isSellerStr.isEmpty()));
+
                 boolean isSeller = false;
                 if (isSellerStr.equals("yes")) {
                     isSeller = true;
                 }
                 signupComplete = m.createAccount(username, password, email, isSeller);
+                System.out.println(signupComplete);
+
             }
         } else {
             boolean loginComplete = false;
             String username, password;
-            while (loginComplete == false) {
-                System.out.println("Please enter a username:");
-                username = s.nextLine();
-                System.out.println("Please enter a password:");
-                password = s.nextLine();
+            while (!loginComplete) {
+                do { //enter username
+                    username = JOptionPane.showInputDialog(null, "Enter your username:",
+                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    if (username == null) {
+                        saveMarketplace(m);
+                        System.exit(0);
+                    } else if (username.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                        "Shop MarketPlace",
+                                JOptionPane.ERROR_MESSAGE);
+                    } // end if
+                } while ((username == null) || (username.isEmpty()));
+
+                do { // enter password
+                    password = JOptionPane.showInputDialog(null, "Enter your password:",
+                            "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                    if (password == null) {
+                        saveMarketplace(m);
+                        System.exit(0);
+                    } else if (password.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                        "Shop MarketPlace",
+                                JOptionPane.ERROR_MESSAGE);
+                    } // end if
+                } while ((password == null) || (password.isEmpty()));
                 loginComplete = m.attemptLogin(username, password);
+                if (!loginComplete) {
+                    JOptionPane.showMessageDialog(null, "We could not find an account matching the provided information:(\nPlease try again!", "Coffee " +
+                                    "Shop MarketPlace",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
         return true;
     }
 
-    public static int readNumberOption(Scanner s, int max) {
+    public static int readNumberOption(Scanner s, int max) { // GUI done
+        String inputStr = "";
         int input = 0;
+
         while (input <= 0 || input > max) {
-            while (!s.hasNextInt()) {
-                s.nextLine();
-                System.out.println("Please enter a valid number!");
-            }
-            input = s.nextInt();
-            s.nextLine();
+            //while the next value is not an int
+            do {
+                inputStr = JOptionPane.showInputDialog(null, "Please enter a valid number!",
+                        "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                input = Integer.parseInt(inputStr);
+            } while (input != (int) input);
         }
         return input;
     }
 
-    public static boolean promptDescending(Scanner s) {
-        System.out.println("Choose an option");
-        System.out.println("1. Ascending");
-        System.out.println("2. Descending");
-        int option = readNumberOption(s, 2);
-        return option == 2;
-    }
+    public static void runSellerHandler(Scanner s, MarketplaceClient m) { // GUI done
+        JOptionPane.showMessageDialog(null, "Welcome seller: " + m.getLoggedInUsername(),
+                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+        String[] sellerOptions = {"1. Create new store", "2. View or modify your stores",
+                "3. Dashboard of sale count by customer", "4. Dashboard of sale count by product", "5. Log out"};
 
-    public static void runSellerHandler(Scanner s, MarketplaceClient m) {
-        System.out.println("Welcome seller: " + m.getLoggedInUsername());
         boolean isActive = true;
         while (isActive) {
-            System.out.println("Select an option to perform!");
-            System.out.println("1. Create new store");
-            System.out.println("2. View or modify your stores");
-            System.out.println("3. Dashboard of sale count by customer");
-            System.out.println("4. Dashboard of sale count by product");
-            System.out.println("5. Log out");
-            int promptChoice = readNumberOption(s, 5);
-            switch (promptChoice) {
+            saveMarketplace(m);
+            String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                            "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE,
+                    null, sellerOptions, null);
+
+            if (choice == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            }
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            switch (choiceNum) {
                 case 1:
                     createStore(s, m);
                     break;
@@ -104,186 +353,427 @@ public class ClientTest {
                     modifyStore(s, m);
                     break;
                 case 3:
-                    System.out.print(m.dashboardCustomerNumSales(promptDescending(s)));
+                    m.dashboardCustomerNumSalesVoid(promptDecending(s));
                     break;
                 case 4:
-                    System.out.print(m.dashboardProductNumSales(promptDescending(s)));
+                    m.dashboardProductNumSalesVoid(promptDecending(s));
                     break;
                 case 5:
+                    JOptionPane.showMessageDialog(null, "You are being logged out....", "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
                     isActive = false;
+                    saveMarketplace(m);
                     break;
             }
         }
-
     }
 
-    public static void createStore(Scanner s, MarketplaceClient m) {
-        System.out.println("Enter store name.");
-        boolean status = m.createStore(s.nextLine());
-        if (status) {
-            System.out.println("Store created!");
+    public static void createStore(Scanner s, MarketplaceClient m) { // GUI done
+        String storeName;
+        do {
+            storeName = JOptionPane.showInputDialog(null, "Enter Store Name:",
+                    "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+            if (storeName == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (storeName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!", "Coffee " +
+                                "Shop MarketPlace",
+                        JOptionPane.ERROR_MESSAGE);
+            } // end if
+            //changed to just while isEmpty() (took out null condition)
+        } while (storeName.isEmpty());
+
+        boolean alreadyTaken = false;
+        for (int i = 0; i < Marketplace.stores.size(); i++) {
+            if (Marketplace.stores.get(i).getName().equals(storeName)) {
+                alreadyTaken = true;
+                break;
+            }
+        }
+
+        if (!alreadyTaken) {
+            boolean status = m.createStore(storeName);
+            if (status) {
+                JOptionPane.showMessageDialog(null, "Store Created!",
+                        "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Store name in use!",
+                        "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
-            System.out.println("Store name in use");
+            JOptionPane.showMessageDialog(null, "Store name in use!",
+                    "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public static void modifyStore(Scanner s, MarketplaceClient m) {
+    public static void modifyStore(Scanner s, MarketplaceClient m) { // GUI done
         List<Store> stores = m.listStoresForSeller();
-        System.out.println("===Your Stores===");
-        for (int i = 0; i < stores.size(); i++) {
-            System.out.println((i + 1) + ". " + stores.get(i).getName());
-        }
 
-        System.out.println("Select store to view or modify");
-        int storeIndex = readNumberOption(s, stores.size()) - 1;
-        Store store = stores.get(storeIndex);
+        if (stores.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You currently do not have any stores.\n Try making one!",
+                    "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            String[] storeNames = new String[stores.size()];
+            for (int i = 0; i < stores.size(); i++) {
+                storeNames[i] = stores.get(i).getName();
+            }
 
-        System.out.println("Choose an option");
-        System.out.println("1. List sales");
-        System.out.println("2. Create new product");
-        System.out.println("3. List/Modify existing products"); //-> delete, edit
-        System.out.println("4. Dashboard of revenue by customer");
-        System.out.println("5. Export products as csv.");
-        System.out.println("6. Import products as csv.");
-        System.out.println("7. Back");
-        int promptChoice = readNumberOption(s, 6);
+            String modifyingStore = (String) JOptionPane.showInputDialog(null, "Which store " +
+                            "would you like to modify?", "===Your Stores===", JOptionPane.QUESTION_MESSAGE,
+                    null, storeNames, null);
 
-        switch (promptChoice) {
-            case 1:
-                listSales(store);
-                break;
-            case 2:
-                createNewProduct(s, m, store);
-                break;
-            case 3:
-                modifyProducts(s, m, store);
-                break;
-            case 4:
-                System.out.println(m.customerRevenueSaleList(store));
-                break;
-            case 5:
-                System.out.println("Enter export filepath.");
-                System.out.println(m.exportProductList(store, s.nextLine()));
-                break;
-            case 6:
-                System.out.println("Enter import filepath.");
-                boolean status = m.importProductList(store, s.nextLine());
-                if (status == false) {
-                    System.out.println("Failed to import all products");
-                } else {
-                    System.out.println("Done!");
+            int storeIndex = -1;
+            for (int i = 0; i < stores.size(); i++) {
+                if (modifyingStore.equals(stores.get(i).getName())) {
+                    storeIndex = i;
+                    break;
                 }
-            case 7:
-                break;
+            }
+            Store store = stores.get(storeIndex);
+
+            String[] modifyOptions = {"1. List Sales", "2. Create new product", "3. List/Modify existing products",
+                    "4. Dashboard of revenue by customer", "5. Export products as csv.", "6. Import products as csv."};
+
+            String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                            "to perform!", "===Your Stores===", JOptionPane.QUESTION_MESSAGE, null,
+                    modifyOptions, null);
+
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            switch (choiceNum) {
+                case 1:
+                    listSales(store);
+                    break;
+                case 2:
+                    createNewProduct(s, m, store);
+                    break;
+                case 3:
+                    modifyProducts(s, m, store);
+                    break;
+                case 4:
+                    String output = m.customerRevenueSaleList(store);
+                    JOptionPane.showMessageDialog(null, output,
+                            "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
+                    break;
+                case 5:
+                    String filePath;
+                    do {
+                        filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
+                                "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
+                        if (filePath == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (filePath.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        } //end if
+
+                        String results = m.exportProductList(store, filePath);
+                        JOptionPane.showMessageDialog(null, "Done exporting product list!",
+                                "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+                    } while (filePath.isEmpty());
+
+
+                    break;
+                case 6:
+                    do {
+                        filePath = JOptionPane.showInputDialog(null, "Enter import filepath.",
+                                "===Your Stores===", JOptionPane.QUESTION_MESSAGE);
+                        if (filePath == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (filePath.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        } //end if
+                    } while (filePath.isEmpty());
+
+                    boolean status = m.importProductList(store, filePath);
+                    if (!status) {
+                        JOptionPane.showMessageDialog(null, "Failed to import all products.\nPlease ensure your file is properly formatted.",
+                                "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Products Imported Successfully!",
+                                "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    break;
+            }
         }
     }
+    public static void listSales(Store store) { // GUI done, need to format sales?
+        if (store.getSales().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "It appears you have no sales yet :(",
+                    "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            String title = String.format("Sales for %s:\n", store.getName());
+            String sales = "#1  " + store.getSales().get(0).toString();
+            for (int i = 1; i < store.getSales().size(); i++) {
+                sales += String.format("\n#%d  %s", (i + 1), store.getSales().get(i).toString());
+            }
 
-    public static void listSales(Store store) {
-        List<Sale> sales = store.getSales();
-        System.out.println("===Sales===");
-        for (int i = 0; i < sales.size(); i++) {
-            System.out.println((i + 1) + ". " + sales.get(i));
+            JOptionPane.showMessageDialog(null, title + sales,
+                    "===Sales===", JOptionPane.PLAIN_MESSAGE); // show sales, user clicks "ok"
         }
     }
-
-    public static void createNewProduct(Scanner s, MarketplaceClient m, Store store) {
-        String name, milkType, coffeeType, syrup, special;
+    public static void createNewProduct(Scanner s, MarketplaceClient m, Store store) { // GUI done
+        String name, milkType, coffeeType, syrup, special, priceString, quantityString;
         int price, quantity;
+        do { // enter name
+            name = JOptionPane.showInputDialog(null, "Please enter a name.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (name == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (name.isEmpty());
 
-        System.out.println("Please enter a name:");
-        name = s.nextLine();
-        System.out.println("Please enter a milk type:");
-        milkType = s.nextLine();
-        System.out.println("Please enter a coffee type:");
-        coffeeType = s.nextLine();
-        System.out.println("Please enter a new syrup:");
-        syrup = s.nextLine();
-        System.out.println("Please enter the specials:");
-        special = s.nextLine();
-        System.out.println("Please enter the price as an integer:");
-        price = readNumberOption(s, Integer.MAX_VALUE);
-        System.out.println("Please enter the quantity as an integer:");
-        quantity = readNumberOption(s, Integer.MAX_VALUE);
+        do { // enter milk type
+            milkType = JOptionPane.showInputDialog(null, "Please enter a milk type.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (milkType == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (milkType.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (milkType.isEmpty());
+
+        do { // enter coffee type
+            coffeeType = JOptionPane.showInputDialog(null, "Please enter a coffee type.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (coffeeType == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (coffeeType.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (coffeeType.isEmpty());
+
+        do { // enter syrup
+            syrup = JOptionPane.showInputDialog(null, "Please enter a syrup.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (syrup == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (syrup.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (syrup.isEmpty());
+
+        do { // enter specials
+            special = JOptionPane.showInputDialog(null, "Please enter the specials.",
+                    "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (special == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (special.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (special.isEmpty());
+
+        do { // enter price
+            priceString = JOptionPane.showInputDialog(null, "Please enter a price as an " +
+                    "integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (priceString == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (priceString.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (priceString.isEmpty());
+        price = Integer.parseInt(priceString);
+
+        do { // enter quantity
+            quantityString = JOptionPane.showInputDialog(null, "Please enter a quantity as " +
+                    "an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+            if (quantityString == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (quantityString.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } // end if
+        } while (quantityString.isEmpty());
+        quantity = Integer.parseInt(quantityString);
 
         boolean status = m.createProduct(store, name, milkType, coffeeType, syrup, special, price, quantity);
-        if (status == false) {
-            System.out.println("Name already exists in store");
+        if (!status) {
+            JOptionPane.showMessageDialog(null, "Name already exists in store",
+                    "===Products===", JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Done!");
+            JOptionPane.showMessageDialog(null, "Done!",
+                    "===Products===", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
-    public static void modifyProducts(Scanner s, MarketplaceClient m, Store store) {
+    public static void modifyProducts(Scanner s, MarketplaceClient m, Store store) { // GUI done, need to format products?
         List<Product> products = m.listProducts(store);
-        System.out.println("===Products===");
-        for (int i = 0; i < products.size(); i++) {
-            System.out.println((i + 1) + ". " + products.get(i).toExport());
-        }
-
-        System.out.println("Which product to modify?");
-        int productIndex = readNumberOption(s, products.size()) - 1;
-        Product p = products.get(productIndex);
-
-        System.out.println("Choose an option");
-        System.out.println("1. Edit product");
-        System.out.println("2. Delete product");
-        System.out.println("3. Cancel operation");
-        int productOption = readNumberOption(s, 3);
-
-        boolean status = false;
-        switch (productOption) {
-            case 1:
-                String name, milkType, coffeeType, syrup, special;
-                int price, quantity;
-
-                System.out.println("Please enter a new name:");
-                name = s.nextLine();
-                System.out.println("Please enter a new milk type:");
-                milkType = s.nextLine();
-                System.out.println("Please enter a new coffee type:");
-                coffeeType = s.nextLine();
-                System.out.println("Please enter a new syrup:");
-                syrup = s.nextLine();
-                System.out.println("Please enter the new specials:");
-                special = s.nextLine();
-                System.out.println("Please enter the price as an integer:");
-                price = readNumberOption(s, Integer.MAX_VALUE);
-                System.out.println("Please enter the quantity as an integer:");
-                quantity = readNumberOption(s, Integer.MAX_VALUE);
-
-                status = m.editProduct(p, name, milkType, coffeeType, syrup, special, price, quantity);
-                break;
-            case 2:
-                m.removeProduct(p);
-                status = true;
-                break;
-            case 3:
-                status = true;
-                break;
-        }
-        if (status == false) {
-            System.out.println("Unable to completely perform operation!");
+        if (products.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You currently do not have any products in this store.\nTry making one!",
+                    "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            System.out.println("Done!");
+            String[] productNames = new String[products.size()];
+            for (int i = 0; i < products.size(); i++) {
+                productNames[i] = products.get(i).getName();
+            }
+
+            String modifyingProduct = (String) JOptionPane.showInputDialog(null, "Which product " +
+                            "would you like to modify?", "===Products===", JOptionPane.QUESTION_MESSAGE,
+                    null, productNames, null);
+
+            int productIndex = -1;
+            for (int i = 0; i < products.size(); i++) {
+                if (modifyingProduct.equals(products.get(i).getName())) {
+                    productIndex = i;
+                    break;
+                }
+            }
+            Product p = products.get(productIndex);
+
+            String[] modifyOptions = {"1. Edit product", "2. Delete product", "3. Cancel operation"};
+
+            String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                            "to perform!", "===Products===", JOptionPane.QUESTION_MESSAGE,
+                    null, modifyOptions, null);
+
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            boolean status = false;
+            switch (choiceNum) {
+                case 1:
+                    String name, milkType, coffeeType, syrup, special, priceString, quantityString;
+                    int price, quantity;
+                    do { // enter new name
+                        name = JOptionPane.showInputDialog(null, "Please enter a new name.",
+                                "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (name == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (name.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (name.isEmpty());
+
+                    do { // enter new milk type
+                        milkType = JOptionPane.showInputDialog(null, "Please enter a new milk" +
+                                " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (milkType == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (milkType.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (milkType.isEmpty());
+
+                    do { // enter new coffee type
+                        coffeeType = JOptionPane.showInputDialog(null, "Please enter a new coffee" +
+                                " type.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (coffeeType == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (coffeeType.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (coffeeType.isEmpty());
+
+                    do { // enter new syrup
+                        syrup = JOptionPane.showInputDialog(null, "Please enter a new syrup.",
+                                "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (syrup == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (syrup.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (syrup.isEmpty());
+
+                    do { // enter new specials
+                        special = JOptionPane.showInputDialog(null, "Please enter the new " +
+                                        "specials.",
+                                "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (special == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (special.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (special.isEmpty());
+
+                    do { // enter new price
+                        priceString = JOptionPane.showInputDialog(null, "Please enter a new " +
+                                "price as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (priceString == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (priceString.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (priceString.isEmpty());
+                    price = Integer.parseInt(priceString);
+
+                    do { // enter new quantity
+                        quantityString = JOptionPane.showInputDialog(null, "Please enter a new " +
+                                "quantity as an integer.", "===Products===", JOptionPane.QUESTION_MESSAGE);
+                        if (quantityString == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (quantityString.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "===Products===", JOptionPane.ERROR_MESSAGE);
+                        } // end if
+                    } while (quantityString.isEmpty());
+                    quantity = Integer.parseInt(quantityString);
+
+                    status = m.editProduct(p, name, milkType, coffeeType, syrup, special, price, quantity);
+                    break;
+                case 2:
+                    m.removeProduct(p);
+                    status = true;
+                    break;
+                case 3:
+                    status = true;
+                    break;
+            }
+            if (!status) {
+                JOptionPane.showMessageDialog(null, "Unable to perform operation :(\n Please try again.",
+                        "===Products===", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Done!",
+                        "===Products===", JOptionPane.PLAIN_MESSAGE);
+            }
         }
     }
 
-    public static void runCustomerHandler(Scanner s, MarketplaceClient m) {
-        System.out.println("Welcome customer: " + m.getLoggedInUsername());
+    public static void runCustomerHandler(Scanner s, MarketplaceClient m) { // GUI done
+        JOptionPane.showMessageDialog(null, "Welcome customer: " + m.getLoggedInUsername(),
+                "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE); // show username, user clicks "ok"
+
         boolean isActive = true;
         while (isActive) {
-            System.out.println("Select an option to perform!");
-            System.out.println("1. List all stores");
-            System.out.println("2. Search for product");
-            System.out.println("3. View cart");
-            System.out.println("4. Dashboard of sales count by store");
-            System.out.println("5. Dashboard of purchases by store");
-            System.out.println("6. Export csv dashboard of purchases by store");
-            System.out.println("7. Log out");
-            int promptChoice = readNumberOption(s, 7);
-            switch (promptChoice) {
+            saveMarketplace(m);
+            String[] customerOptions = {"1. List all stores", "2. Search for product", "3. View cart", "4. Dashboard" +
+                    " of sales count by store", "5. Dashboard of purchases by store", "6. Export csv dashboard of" +
+                    " purchases by store", "7. Log out"};
+            String choice = (String) JOptionPane.showInputDialog(null, "Select an option to " +
+                            "perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null,
+                    customerOptions, null);
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            switch (choiceNum) {
                 case 1:
-                    listAllStores(s, m);
+                    Store store = listAllStores(s, m);
+                    List<Product> products = store.getProducts();
+                    shopFromProducts(s, m, products);
                     break;
                 case 2:
                     searchForProduct(s, m);
@@ -292,64 +782,113 @@ public class ClientTest {
                     viewCart(s, m);
                     break;
                 case 4:
-                    System.out.println(m.dashboardSaleCounterByStore(promptDescending(s)));
+                    String output = m.dashboardSaleCounterByStore(promptDecending(s));
+                    JOptionPane.showMessageDialog(null, output,
+                            "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 5:
-                    System.out.println(m.dashboardPurchasesByStore(promptDescending(s)));
+                    String output1 = m.dashboardPurchasesByStore(promptDecending(s));
+                    JOptionPane.showMessageDialog(null, output1,
+                            "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 6:
-                    System.out.println("Enter export filepath.");
-                    m.exportDashboardPurchasesByStore(s.nextLine());
+                    String filePath;
+                    do {
+                        filePath = JOptionPane.showInputDialog(null, "Enter export filepath.",
+                                "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE);
+                        if (filePath == null) {
+                            saveMarketplace(m);
+                            System.exit(0);
+                        } else if (filePath.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please answer!",
+                                    "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
+                        } //end if
+                    } while (filePath.isEmpty());
+                    m.exportDashboardPurchasesByStore(filePath);
                     break;
                 case 7:
                     isActive = false;
+                    saveMarketplace(m);
                     break;
             }
         }
     }
 
-    public static void listAllStores(Scanner s, MarketplaceClient m) {
+    public static Store listAllStores(Scanner s, MarketplaceClient m) { // GUI done
         List<Store> stores = m.listAllStores();
-        System.out.println("===Stores===");
+        String[] storeNames = new String[stores.size()];
         for (int i = 0; i < stores.size(); i++) {
-            System.out.println((i + 1) + ". " + stores.get(i).getName());
+            storeNames[i] = String.format("%d. %s", (i + 1), stores.get(i).getName());
         }
 
-        System.out.println("Select store to view products.");
-        int storeIndex = readNumberOption(s, stores.size()) - 1;
-        if (storeIndex >= stores.size()) return;
+        String names = (String) JOptionPane.showInputDialog(null, "Select a store to view products.",
+                "===Stores===", JOptionPane.QUESTION_MESSAGE, null, storeNames,
+                null);
 
-        List<Product> storeProducts = m.viewProducts(stores.get(storeIndex));
-        shopFromProducts(s, m, storeProducts);
+        int storeIndex = -1;
+        for (int i = 0; i < stores.size(); i++) {
+            if (names.equals(storeNames[i])) {
+                storeIndex = i;
+                break;
+            }
+        }
+        return stores.get(storeIndex);
     }
 
-    public static void searchForProduct(Scanner s, MarketplaceClient m) {
-        System.out.println("Enter search criteria.");
-        String searchTerm = s.nextLine();
+    public static void searchForProduct(Scanner s, MarketplaceClient m) { // GUI done
+        String searchTerm;
+        do {
+            searchTerm = JOptionPane.showInputDialog(null, "Enter search criteria.",
+                    "===Stores===", JOptionPane.QUESTION_MESSAGE);
+            if (searchTerm == null) {
+                saveMarketplace(m);
+                System.exit(0);
+            } else if (searchTerm.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please answer!", "===Stores===",
+                        JOptionPane.ERROR_MESSAGE);
+            } //end if
+        } while (searchTerm.isEmpty());
+
         List<Product> storeProducts = m.searchProducts(searchTerm);
         shopFromProducts(s, m, storeProducts);
     }
 
-    public static void viewCart(Scanner s, MarketplaceClient m) {
-        System.out.println("===Cart===");
+    public static void viewCart(Scanner s, MarketplaceClient m) { // GUI done
         List<Product> cart = m.viewCart();
-        for (int i = 0; i < cart.size(); i++) {
-            System.out.println((i + 1) + ". " + cart.get(i).toCombinedString());
-        }
-        System.out.println("Choose an option");
-        System.out.println("1. Checkout");
-        System.out.println("2. Delete from cart");
-        System.out.println("3. Cancel operation");
-        int cartOption = readNumberOption(s, 3);
+        String[] cartRemovals = new String[cart.size()];
 
+        String output = "";
+        for (int i = 0; i < cart.size(); i++) {
+            output += String.format("%s\n", cart.get(i).getName());
+            cartRemovals[i] = cart.get(i).getName();
+        }
+
+        JOptionPane.showMessageDialog(null, "Current cart:\n" + output,
+                "===Cart===", JOptionPane.PLAIN_MESSAGE); // show cart, user clicks "ok"
+
+        String[] cartOptions = {"1. Checkout", "2. Delete from cart", "3. Cancel operation"};
+        String choice;
+        choice = (String) JOptionPane.showInputDialog(null, "Select an option to perform!",
+                "===Cart===", JOptionPane.QUESTION_MESSAGE, null, cartOptions,
+                null);
+
+        int choiceNum = Integer.parseInt(choice.substring(0, 1));
         boolean status = false;
-        switch (cartOption) {
+        switch (choiceNum) {
             case 1:
                 status = m.checkoutCart();
                 break;
             case 2:
-                System.out.println("Which item number to remove from cart?");
-                int deletionIndex = readNumberOption(s, cart.size()) - 1;
+                choice = (String) JOptionPane.showInputDialog(null, "Which item would you " +
+                                "like to remove?", "===Cart===", JOptionPane.QUESTION_MESSAGE, null,
+                        cartRemovals, null);
+
+                int deletionIndex = -1;
+                for (int i = 0; i < cart.size(); i++) {
+                    if (choice.equals(cart.get(i).getName())) {
+                        deletionIndex = i;
+                    }
+                }
                 status = true;
                 m.deleteItemFromCart(cart.get(deletionIndex));
                 break;
@@ -358,33 +897,41 @@ public class ClientTest {
                 break;
         }
         if (status == false) {
-            System.out.println("Unable to completely perform operation!");
+            JOptionPane.showMessageDialog(null, "Unable to completely perform operation!",
+                    "===Cart===", JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Done!");
+            JOptionPane.showMessageDialog(null, "Done!", "===Cart===",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
-    public static void shopFromProducts(Scanner s, MarketplaceClient m, List<Product> storeProducts) {
-        System.out.println("===Products===");
+    public static void shopFromProducts(Scanner s, MarketplaceClient m, List<Product> storeProducts) { // GUI done
+        String[] productNames = new String[storeProducts.size()];
         for (int i = 0; i < storeProducts.size(); i++) {
-            System.out.println((i + 1) + ". " + storeProducts.get(i).toListing());
+            productNames[i] = String.format("%d. %s", (i + 1), storeProducts.get(i).getName());
         }
-        if (storeProducts.size() == 0) {
-            System.out.println("Store has no items!");
-            return;
+
+        String choice;
+        choice = (String) JOptionPane.showInputDialog(null, "Select a product.",
+                "===Products===", JOptionPane.QUESTION_MESSAGE, null, productNames,
+                null);
+        int productIndex = -1;
+        for (int i = 0; i < storeProducts.size(); i++) {
+            if (choice.equals(productNames[i])) {
+                productIndex = i;
+                break;
+            }
         }
-        System.out.println("Choose a product:");
-        int productIndex = readNumberOption(s, storeProducts.size()) - 1;
         Product p = storeProducts.get(productIndex);
 
-        System.out.println("Choose an option");
-        System.out.println("1. Buy it now");
-        System.out.println("2. Add to cart");
-        System.out.println("3. Cancel operation");
-        int purchaseOption = readNumberOption(s, 3);
+        String[] productOptions = {"1. Purchase now", "2. Add to cart", "3. Cancel operation"};
+        choice = (String) JOptionPane.showInputDialog(null, "Select an option to perform!",
+                "===Products===", JOptionPane.QUESTION_MESSAGE, null, productOptions,
+                null);
+        int choiceNum = Integer.parseInt(choice.substring(0, 1));
 
         boolean status = false;
-        switch (purchaseOption) {
+        switch (choiceNum) {
             case 1:
                 status = m.buyNow(p);
                 break;
@@ -395,11 +942,53 @@ public class ClientTest {
                 status = true;
                 break;
         }
-        if (status == false) {
-            System.out.println("Unable to completely perform operation!");
+        if (!status) {
+            JOptionPane.showMessageDialog(null, "It appears this item is sold out :(\nSo sorry!",
+                    "===Products===", JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Done!");
+            JOptionPane.showMessageDialog(null, "Done!", "===Products===",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
+    public static Marketplace loadMarketplace() { // no GUI
+        Marketplace m = null;
+        try {
+            FileInputStream fileIn = new FileInputStream("./MarketplaceState.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            m = (Marketplace) in.readObject();
+            in.close();
+            fileIn.close();
+            return m;
+        } catch (Exception e) {
+            return m;
+        }
+    }
+
+    public static void saveMarketplace(MarketplaceClient m) { // no GUI
+        try {
+            FileOutputStream fileOut = new FileOutputStream("./MarketplaceState.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(m);
+            out.close();
+            fileOut.close();
+        } catch (Exception e) {
+            // nothing
+        }
+    }
+    public static boolean promptDecending(Scanner s) { // GUI done
+        String[] decendingOptions = {"1. Ascending", "2. Descending"};
+
+        String choice = (String) JOptionPane.showInputDialog(null, "Select an option " +
+                        "to perform!", "Coffee Shop MarketPlace", JOptionPane.QUESTION_MESSAGE, null,
+                decendingOptions, null);
+
+        int option = Integer.parseInt(choice.substring(0, 1));
+        return option == 2;
+    }
+
+    @Override
+    public void run() {
+
+    }
 }
