@@ -210,7 +210,7 @@ public class ClientTest implements Runnable {
                             boolean alreadyTaken = false;
 
 
-                            if(Marketplace.users != null) {
+                            if (Marketplace.users != null) {
                                 for (int i = 0; i < Marketplace.users.size(); i++) {
                                     if (username.equals(Marketplace.users.get(i).getUsername())) {
                                         alreadyTaken = true;
@@ -353,10 +353,10 @@ public class ClientTest implements Runnable {
                     modifyStore(s, m);
                     break;
                 case 3:
-                    m.dashboardCustomerNumSalesVoid(promptDecending(s));
+                    m.dashboardCustomerNumSales(promptDecending(s));
                     break;
                 case 4:
-                    m.dashboardProductNumSalesVoid(promptDecending(s));
+                    m.dashboardProductNumSales(promptDecending(s));
                     break;
                 case 5:
                     JOptionPane.showMessageDialog(null, "You are being logged out....", "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
@@ -405,6 +405,7 @@ public class ClientTest implements Runnable {
                     "Coffee Shop MarketPlace", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     public static void modifyStore(Scanner s, MarketplaceClient m) { // GUI done
         List<Store> stores = m.listStoresForSeller();
 
@@ -498,6 +499,7 @@ public class ClientTest implements Runnable {
             }
         }
     }
+
     public static void listSales(Store store) { // GUI done, need to format sales?
         if (store.getSales().isEmpty()) {
             JOptionPane.showMessageDialog(null, "It appears you have no sales yet :(",
@@ -513,6 +515,7 @@ public class ClientTest implements Runnable {
                     "===Sales===", JOptionPane.PLAIN_MESSAGE); // show sales, user clicks "ok"
         }
     }
+
     public static void createNewProduct(Scanner s, MarketplaceClient m, Store store) { // GUI done
         String name, milkType, coffeeType, syrup, special, priceString, quantityString;
         int price, quantity;
@@ -976,6 +979,7 @@ public class ClientTest implements Runnable {
             // nothing
         }
     }
+
     public static boolean promptDecending(Scanner s) { // GUI done
         String[] decendingOptions = {"1. Ascending", "2. Descending"};
 
