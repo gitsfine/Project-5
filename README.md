@@ -2,7 +2,7 @@
 
 ## How to Compile and Run the Project 
 1. Run the MarketplaceServer class
-2. Run the main method
+2. Run the Main class
 
 
 ## Submission 
