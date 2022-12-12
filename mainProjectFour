@@ -908,45 +908,51 @@ public class mainProjectFour {
             cartRemovals[i] = cart.get(i).getName();
         }
 
-        JOptionPane.showMessageDialog(null, "Current cart:\n" + output,
-                "===Cart===", JOptionPane.PLAIN_MESSAGE); // show cart, user clicks "ok"
+        if (!((m.viewCart() == null) || m.viewCart().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Current cart:\n" + output,
+                    "===Cart===", JOptionPane.PLAIN_MESSAGE); // show cart, user clicks "ok"
 
-        String[] cartOptions = {"1. Checkout", "2. Delete from cart", "3. Cancel operation"};
-        String choice;
-        choice = (String) JOptionPane.showInputDialog(null, "Select an option to perform!",
-                "===Cart===", JOptionPane.QUESTION_MESSAGE, null, cartOptions,
-                null);
+            String[] cartOptions = {"1. Checkout", "2. Delete from cart", "3. Cancel operation"};
+            String choice;
+            choice = (String) JOptionPane.showInputDialog(null, "Select an option to perform!",
+                    "===Cart===", JOptionPane.QUESTION_MESSAGE, null, cartOptions,
+                    null);
 
-        int choiceNum = Integer.parseInt(choice.substring(0, 1));
-        boolean status = false;
-        switch (choiceNum) {
-            case 1:
-                status = m.checkoutCart();
-                break;
-            case 2:
-                choice = (String) JOptionPane.showInputDialog(null, "Which item would you " +
-                                "like to remove?", "===Cart===", JOptionPane.QUESTION_MESSAGE, null,
-                        cartRemovals, null);
+            int choiceNum = Integer.parseInt(choice.substring(0, 1));
+            boolean status = false;
+            switch (choiceNum) {
+                case 1:
+                    status = m.checkoutCart();
+                    break;
+                case 2:
+                    choice = (String) JOptionPane.showInputDialog(null, "Which item would you " +
+                                    "like to remove?", "===Cart===", JOptionPane.QUESTION_MESSAGE, null,
+                            cartRemovals, null);
 
-                int deletionIndex = -1;
-                for (int i = 0; i < cart.size(); i++) {
-                    if (choice.equals(cart.get(i).getName())) {
-                        deletionIndex = i;
+                    int deletionIndex = -1;
+                    for (int i = 0; i < cart.size(); i++) {
+                        if (choice.equals(cart.get(i).getName())) {
+                            deletionIndex = i;
+                        }
                     }
-                }
-                status = true;
-                m.deleteItemFromCart(cart.get(deletionIndex));
-                break;
-            case 3:
-                status = true;
-                break;
-        }
-        if (status == false) {
-            JOptionPane.showMessageDialog(null, "Unable to completely perform operation!",
-                    "===Cart===", JOptionPane.ERROR_MESSAGE);
+                    status = true;
+                    m.deleteItemFromCart(cart.get(deletionIndex));
+                    break;
+                case 3:
+                    status = true;
+                    break;
+            }
+            if (status == false) {
+                JOptionPane.showMessageDialog(null, "Unable to completely perform operation!",
+                        "===Cart===", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Done!", "===Cart===",
+                        JOptionPane.PLAIN_MESSAGE);
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Done!", "===Cart===",
-                    JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Your cart is empty, try adding something!", "===Cart===",
+                    JOptionPane.ERROR_MESSAGE);
+
         }
     }
 
