@@ -1,14 +1,16 @@
-# CS 18000 - Project 4
+# CS 18000 - Project 5
 
 ## How to Compile and Run the Project 
 1. Import all files
-2. Create data.txt user file in specified format (below)
-3. Run main method
+2. Run main method
 
+## Notes
+1. If you are importing a file with product information, ensure it is formatted like the file named "imports.txt" that is provided for reference
+2. If you are running the program with a previous marketplace, ensure the serialized format of the marketplace is present
 
 ## Submission 
-Olivia Lund - Submitted Vocareum workspace  
-Heewon Kim - Submitted report on Brightspace  
+Katelyn Rockey - Submitted Vocareum workspace  
+Katelyn Rockey - Submitted report on Brightspace  
 
 ## Description of Classes
 
