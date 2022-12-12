@@ -4,6 +4,12 @@
 1. Run the MarketplaceServer class
 2. Run the Main class
 
+## Notes
+1. If you are importing a file with product information, ensure it is formatted like the file named "imports.txt" that is provided for reference
+2. If you are running the program with a previous marketplace, ensure the serialized format of the marketplace is present
+
+### Project 4 Regrade / Single User Use
+To grade for project 4 requirements, there is a main method present that does not require a server to be running.  This should be used when Threading/Network IO are not needed.  This is under the mainProjectFour class.
 
 ## Submission 
 Olivia Lund - Submitted Vocareum workspace  
