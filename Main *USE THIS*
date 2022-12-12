@@ -312,10 +312,14 @@ public class Main {
                     modifyStore(s, m);
                     break;
                 case 3:
-                    m.dashboardCustomerNumSales(promptDecending(s));
+                String output =  m.dashboardCustomerNumSales(promptDecending(s));
+                    JOptionPane.showMessageDialog(null, output,
+                            "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 4:
-                    m.dashboardProductNumSales(promptDecending(s));
+                     output =  m.dashboardProductNumSales(promptDecending(s));
+                    JOptionPane.showMessageDialog(null, output,
+                            "Coffee Shop MarketPlace", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 5:
                     JOptionPane.showMessageDialog(null, "You are being logged out....", "Coffee Shop MarketPlace", JOptionPane.INFORMATION_MESSAGE);
